@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { ClarityApp } from "../../components/clarity-app";
 import type { Section } from "../../lib/types";
 
-const sections = ["discover", "learn", "reassess", "future-lab", "approach"];
+const sections = ["discover", "learn", "reassess", "future-lab", "advisor", "approach"];
 
 export function generateStaticParams() { return sections.map((section) => ({ section })); }
 

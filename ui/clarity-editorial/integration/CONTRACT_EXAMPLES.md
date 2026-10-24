@@ -1,6 +1,6 @@
 # Observed repository contracts
 
-These are actual fixture shapes and Python function contracts, **not HTTP request/response examples**. There is no current route mapping to show. Future URLs must be confirmed from an executable backend/OpenAPI before enabling the live adapter.
+These are actual fixture shapes, Python repository contracts and the merged TypeScript advisor contract, **not HTTP request/response examples**. There is no current route mapping to show. Future URLs must be confirmed from an executable backend/OpenAPI before enabling the live adapter.
 
 ## Published assessment content
 
@@ -67,3 +67,46 @@ This requires installing its handlers into a real FastAPI app, which is absent. 
 ## Proposal persistence
 
 Observed `actions_repo.create` arguments: owner, kind, title, summary, payload, idempotency key, summary source and expiry. It creates status `pending`. `set_status_if_pending` provides atomic decisions; `create_reminder` writes a **demo reminder** row. No bank or external messaging action is implemented. Routes still need ownership, expiry, payload validation and consent enforcement.
+
+## Merged advisor detection and planning
+
+Source: `frontend/src/lib/advisor/engine.ts` and original `demo.json`, now present through `main` at `673608e`, merged into the UI branch by `4554534`. The UI imports those files directly; the algorithm and fixture remain owned by the original module.
+
+```ts
+type Transaction = {
+  id: string;
+  date: string;       // YYYY-MM-DD
+  amount: number;     // USD: positive income, negative outflow
+  merchant: string;
+  category: string;
+};
+type Snapshot = { date: string; balance: number };
+type Moment = "new-job" | "moving" | "overspending" | "student-loan" | "idle-cash";
+
+detect(transactions: Transaction[], snapshots: Snapshot[], asOf: string): Nudge[];
+plan(kind: Moment, income: number, expenses: number, cash: number, apr: number);
+```
+
+A nudge has `{ id, kind, title, message, evidence, amount }`. Its amount describes the triggering transaction, excess spending or latest cash snapshot; it is not a transfer instruction. `detect` returns possible moments and performs no runtime input schema validation. The UI's `src/api/advisor.ts` adds calendar-date, finite-amount, category/text and duplicate-ID validation before invoking it. Future authenticated ownership must be enforced by an actual data service.
+
+The original synthetic fixture has `asOf: "2026-10-24"`. Running it through the detector yields all five kinds. Its scan date remains fixed so the demonstration is reproducible; it is not live monitoring. The UI displays evidence and requires confirmation of a sample moment before planning.
+
+Actual planner example:
+
+```ts
+plan("new-job", 4800, 3580, 5100, 4);
+// Numeric fields:
+// { surplus: 1220, gap: 5640, monthly: 610, interest: 204, ... }
+```
+
+| Field | Observed implementation |
+|---|---|
+| `surplus` | `max(0, income - expenses)` |
+| `gap` | `max(0, expenses * 3 - cash)` |
+| `monthly` | `round(min(surplus, gap || surplus) * 0.5)` |
+| `interest` | `round(cash * apr / 100)`; simple annual interest before taxes |
+| `explanation`, `action` | Educational copy and a proposed action string |
+
+All five moment kinds share this arithmetic and vary the explanatory text. The annual percentage is an assumed rate, not a live account quote or compounded APY. The UI adapter uses the field name `annualRate` and maps it to the engine's `apr` positional argument. Plan inputs are non-negative USD amounts; rates must be finite and within 0–100. The adapter additionally validates the moment and bounds USD amounts to $1,000,000,000.
+
+`AdvisorAdapter.getSignals()` and `getPlan()` expose this local module to the UI. They are not HTTP calls and do not enable any `ClarityBackend` capability. Proposal creation remains a separate local state operation; the existing Approach consent flow records approval or denial without transfers, bank activity, notification delivery or background scheduling.

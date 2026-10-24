@@ -1,6 +1,10 @@
 # Integration status
 
-This app is an isolated **React + TypeScript + Next.js demo**. Its source data is copied from the current backend fixtures with attribution. No current product feature is labeled live, and no user identity, Gemini result or external action is fabricated.
+This app is an isolated **React + TypeScript + Next.js demo**. Its educational source data is copied from backend fixtures with attribution. Advisor uses the actual merged `frontend/src/lib/advisor/engine.ts` and its original `demo.json` through a read-only adapter import; those sources remain outside this UI directory. No current product feature is labeled live, and no user identity, Gemini result or external action is fabricated.
+
+## Current source snapshot
+
+On October 24, 2026, the user requested another `main` pull. `main` at `673608e` merged cleanly into `feat/clarity-editorial-ui` as `4554534`. The merge supplied the advisor module, its fixture/documentation/tests and root README; no HTTP app or authenticated session was added. Post-merge UI implementation changes remain under `ui/clarity-editorial/`. The earlier inventory below is retained as historical evidence where labeled.
 
 ## Functional feature matrix
 
@@ -20,7 +24,7 @@ This app is an isolated **React + TypeScript + Next.js demo**. Its source data i
 | Public health probe | Optional configured network request only | Mock-transport tests cover HTTP errors/offline/timeout; no real server verified | Provide confirmed URL/path; health does not imply product integration |
 | Source library | Bundled actual fixture registry | Core source-reference tests | Source registry endpoint/warehouse integration |
 | Debt/savings engine | Waiting on `origin/deterministic-calculations` | Branch inspected read-only | Review merge and cents/status contract |
-| Proactive advisor | Waiting on `origin/feature/proactive-advisor` | Branch inspected read-only | Review merge, validate data and confirmed event flow |
+| Proactive advisor | Actual merged local engine on synthetic fixture | Adapter and desktop/mobile confirmation → plan → consent flows passed | Production activity source, ownership, monitoring and notification delivery remain absent |
 | Design preferences | Local browser preferences | Browser theme/mobile checks recorded in handoff | None required for independent demo |
 
 ## Verified endpoints
@@ -32,15 +36,31 @@ An operator may configure a separately verified public health URL using the two 
 ## Data provenance and storage
 
 - Baseline bank `2026.10.24-b1`, checkpoint bank `2026.10.24-c1`, lesson content `2026.10.24-l1` copied from `BackEnd/api/app/fixtures/` without changing the originals.
+- Advisor engine and fixture are imported directly from merged `frontend/src/lib/advisor/`; the fixture scan uses its fixed `asOf: "2026-10-24"`. All five moment kinds share one heuristic savings calculation with different explanations.
+- The Advisor path presents evidence, asks for confirmation, recomputes from editable sample assumptions, and creates only a pending local goal for the existing explicit consent workflow.
 - Nine reading sources are copied from `sources_fallback.json`; current demo answers and sample tutor text are transparent local educational records.
 - Design preferences may persist locally. Demo journey state is synthetic and stored separately from design preferences; see the app README for persistence controls. There is no production session or local access-token store.
 - Knowledge counts measure question performance only. Optional habits and goals are self-reports, not graded behavior change.
 
 ## Verification record
 
+**Current post-merge verification passed.** The production build includes the Advisor page and imports the actual engine from `main`; checks below cover the combined source. The separate historical record preserves the original UI baseline.
+
+| Current command | Post-merge result |
+|---|---|
+| `npm run typecheck` | Pass |
+| `npm run lint` | Pass, zero warnings |
+| `npm test` | 25 tests passed, zero failures; includes merged Advisor adapter coverage |
+| `npm run build` | Pass; seven experience pages and the app icon generated |
+| `npm run test:browser` | 14 tests passed, zero failures, against the combined production build |
+
+Current browser checks run at 1440×1000 and 390×844. The four added Advisor cases cover evidence, dismissal, explicit moment confirmation, the original planner's $610 result, editable assumptions, invalid drafts, zero-surplus blocking, fresh confirmation for a different signal, pending proposal consent/denial and history after refresh. All ten original journey cases also pass. Full-journey and direct-load regression cases assert no page errors or console errors. Advisor desktop/mobile layouts were visually inspected and fit the viewport. The six unchanged upstream advisor engine tests also passed without editing or installing dependencies in `frontend/`.
+
+### Historical baseline and original UI verification
+
 Before implementation: 12 Python files passed in-memory syntax parsing, five JSON files parsed, SQLite repository smoke passed in an in-memory database. Existing frontend lint/build initially could not run because Node/npm was unavailable. No committed backend test suite or executable server exists. No existing app files were altered to resolve that baseline environment limitation.
 
-Final verification used Node 22.23.4, Next.js 16.4.3, React 19.3.1 and Google Chrome through Playwright 1.64.1:
+Original UI verification at `8020167` used Node 22.23.4, Next.js 16.4.3, React 19.3.1 and Google Chrome through Playwright 1.64.1:
 
 | Command | Result |
 |---|---|
@@ -61,4 +81,4 @@ HTTP transport tests use synthetic mocked responses, not a shared/live database.
 - [Observed fixture/Python contracts](integration/CONTRACT_EXAMPLES.md)
 - [Unapplied frontend/backend migration proposal](integration/FRONTEND_MIGRATION.md)
 
-Review only `ui/clarity-editorial/` on `feat/clarity-editorial-ui`. Verify `git status --short` and `git diff --name-status` before a scoped commit. Open a PR against the team's current default branch; do not merge or force-push. Re-audit affected routes after teammate changes, then update this app's adapters and tests through review.
+Review the user-authorized merge separately from the UI adapter/view changes on `feat/clarity-editorial-ui`. Original `frontend/` advisor files and root README were imported from `main`, not edited by this UI implementation. The UI build now requires those sibling source files to remain present. Verify `git status --short` and `git diff --name-status` before a scoped commit. Open a PR against the team's current default branch and push normally. The explicitly requested `main` merge is already recorded; no force-push is required. Re-audit affected routes after teammate changes, then update this app's adapters and tests through review.

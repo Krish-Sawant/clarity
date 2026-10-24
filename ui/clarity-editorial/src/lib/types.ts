@@ -1,4 +1,4 @@
-export type Section = "overview" | "discover" | "learn" | "reassess" | "future-lab" | "approach";
+export type Section = "overview" | "discover" | "learn" | "reassess" | "future-lab" | "advisor" | "approach";
 export type CoreDomain = "budget" | "credit" | "saving" | "interest";
 export type Domain = CoreDomain | "advanced";
 export type AssessmentStage = "baseline" | "checkpoint";

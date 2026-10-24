@@ -1,5 +1,6 @@
 import { ApiError, requestJson, resolveApiUrl } from "./client";
-import type { ClarityBackend, FutureAdvisorAdapter, FutureDebtAdapter } from "./contracts";
+import type { AdvisorAdapter, ClarityBackend, FutureDebtAdapter } from "./contracts";
+import { createAdvisorPlan, getAdvisorSignals } from "./advisor";
 
 export class IntegrationUnavailableError extends ApiError {
   constructor(feature: string) {
@@ -42,8 +43,11 @@ export const backendService: ClarityBackend = {
 
 export const branchIntegrationStatus = [
   { id: "deterministic-calculations", title: "Debt & savings engine", branch: "origin/deterministic-calculations", status: "waiting-on-branch", detail: "Pure TypeScript engine is unmerged. Its USD-cent contract and outcome states need review before adoption." },
-  { id: "proactive-advisor", title: "Proactive advisor", branch: "origin/feature/proactive-advisor", status: "waiting-on-branch", detail: "Life-moment detection is unmerged. No bank connection, monitoring, delivery, or authenticated API is present." },
+  { id: "proactive-advisor", title: "Proactive advisor", branch: "main", status: "available-local", href: "/advisor", detail: "The merged detection and planning engine runs locally on validated synthetic activity. Bank connections, monitoring, delivery, and authenticated APIs are not connected." },
 ] as const;
 
-export const futureAdvisorAdapter: FutureAdvisorAdapter = { getSignals: async () => unavailable("Proactive advisor") };
+export const advisorAdapter: AdvisorAdapter = {
+  getSignals: async () => getAdvisorSignals(),
+  getPlan: async (kind, inputs) => createAdvisorPlan(kind, inputs),
+};
 export const futureDebtAdapter: FutureDebtAdapter = { calculate: async () => unavailable("Branch debt engine") };

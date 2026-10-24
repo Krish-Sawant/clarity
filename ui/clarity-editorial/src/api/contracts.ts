@@ -1,4 +1,5 @@
 import type { AssessmentStage, Horizon, Shock, SimulationInputs } from "../lib/types";
+import type { Moment, Nudge, plan } from "../../../../frontend/src/lib/advisor/engine";
 
 /** These are UI adapter contracts, NOT claims that HTTP routes currently exist. */
 export type BackendCapabilities = {
@@ -27,12 +28,15 @@ export interface ClarityBackend {
   actions: { propose(kind: "goal" | "reminder", payload: unknown): Promise<LiveProposal>; decide(id: string, decision: "approve" | "deny"): Promise<unknown> };
 }
 
-export type AdvisorSignal = {
-  id: string; kind: "new-job" | "moving" | "overspending" | "student-loan" | "idle-cash";
-  title: string; message: string; evidence: string; amount: number;
-};
-/** Branch review must verify date/category validation and authenticated ownership. */
-export interface FutureAdvisorAdapter { getSignals(): Promise<AdvisorSignal[]> }
+export type AdvisorMoment = Moment;
+export type AdvisorSignal = Nudge;
+export type AdvisorPlanInputs = { income: number; expenses: number; cash: number; annualRate: number };
+export type AdvisorPlan = ReturnType<typeof plan>;
+/** Merged local engine with synthetic input; this is not a live HTTP capability. */
+export interface AdvisorAdapter {
+  getSignals(): Promise<AdvisorSignal[]>;
+  getPlan(kind: AdvisorMoment, inputs: AdvisorPlanInputs): Promise<AdvisorPlan>;
+}
 /** Branch-only finance.ts uses integer USD cents; the local demo uses USD. */
 export interface FutureDebtAdapter {
   calculate(input: { balanceCents: number; aprPercent: number; monthlyPaymentCents: number; maxMonths?: number }): Promise<{

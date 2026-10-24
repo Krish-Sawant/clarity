@@ -4,7 +4,7 @@ import { baselineQuestions, checkpointQuestions, lessons, sources } from "../src
 import { getRecommendedLessons, matchedComparison, scoreAssessment } from "../src/lib/assessment";
 import { debtPayoff, simulatePaths } from "../src/lib/finance";
 import { ApiError, requestJson, resolveApiUrl } from "../src/api/client";
-import { backendService, futureAdvisorAdapter, futureDebtAdapter, IntegrationUnavailableError } from "../src/api/services";
+import { advisorAdapter, backendService, futureDebtAdapter, IntegrationUnavailableError } from "../src/api/services";
 
 const correctAnswers = (questions = baselineQuestions) => Object.fromEntries(questions.map((question) => [question.id, question.correct_option_id]));
 const inputs = { income: 3600, rent: 1300, transportation: 300, spending: 1250, cash: 1500 };
@@ -150,6 +150,6 @@ test("unavailable live and branch features reject rather than substituting fixtu
   await assert.rejects(backendService.assessment.start("baseline"), IntegrationUnavailableError);
   await assert.rejects(backendService.tutor.explain("budget-surplus", "example"), IntegrationUnavailableError);
   await assert.rejects(backendService.actions.decide("synthetic", "approve"), IntegrationUnavailableError);
-  await assert.rejects(futureAdvisorAdapter.getSignals(), IntegrationUnavailableError);
   await assert.rejects(futureDebtAdapter.calculate({ balanceCents: 1000, aprPercent: 20, monthlyPaymentCents: 100 }), IntegrationUnavailableError);
+  assert.equal((await advisorAdapter.getSignals()).length, 5);
 });

@@ -10,6 +10,7 @@ import { AssessmentView } from "../views/assessment";
 import { LearningView } from "../views/learning";
 import { FutureLabView } from "../views/future-lab";
 import { ApproachView } from "../views/approach";
+import { AdvisorView } from "../views/advisor";
 import { DesignControls } from "./design-controls";
 import { Icon } from "./icon";
 
@@ -19,6 +20,7 @@ const navigation: { section: Section; href: string; label: string; number?: stri
   { section: "learn", href: "/learn", label: "Learn", number: "02" },
   { section: "reassess", href: "/reassess", label: "Reassess", number: "03" },
   { section: "future-lab", href: "/future-lab", label: "Future Lab" },
+  { section: "advisor", href: "/advisor", label: "Advisor" },
   { section: "approach", href: "/approach", label: "Our approach" },
 ];
 
@@ -53,6 +55,7 @@ export function ClarityApp({ section }: { section: Section }) {
       {section === "learn" && <LearningView />}
       {section === "reassess" && <AssessmentView stage="checkpoint" />}
       {section === "future-lab" && <FutureLabView />}
+      {section === "advisor" && <AdvisorView />}
       {section === "approach" && <ApproachView />}
     </main>
     <footer className="site-footer"><div className="footer-top"><Link href="/" className="brand" aria-label="Clarity home"><Brand /></Link><p>Less noise.<br />More understanding.</p><Link href="/approach" className="text-link">Built on transparency <Icon name="arrow-up-right" size={16} /></Link></div><div className="footer-bottom"><span>CLARITY / FINANCIAL LEARNING, IN FOCUS.</span><span>Educational demo · Not personal financial advice</span><button onClick={() => setDesignOpen(true)}>MAKE IT YOURS <Icon name="sliders" size={13} /></button></div></footer>

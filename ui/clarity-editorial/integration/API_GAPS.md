@@ -17,18 +17,24 @@ No live product HTTP route is present in this checkout. The names below describe
 | Activity history | Authenticated owner → bounded events without secrets/raw answers | API team | Session-only demo events |
 | Source registry | Curated source IDs, URLs, provenance/content versions | Content/data team | Bundled current fixture registry |
 
-## Proactive advisor branch checklist
+## Merged proactive advisor: local integration and remaining gaps
 
-Source: `origin/feature/proactive-advisor`, not integrated. Owner noted in branch documentation: Abhijay / advisor team.
+Source: `frontend/src/lib/advisor/engine.ts` and `demo.json`, merged into `main` at `673608e` and this UI branch at `4554534` on October 24, 2026, following the user's explicit pull request. Owner noted in source documentation: Abhijay / advisor team.
 
-1. Merge through the team's reviewed process; then re-audit actual files.
-2. Validate dates, finite amounts, categories, unique transaction IDs and authenticated ownership before calling `detect`.
-3. Agree on transaction source, snapshot freshness, notification policy and delivered-signal deduplication.
-4. Present the detector's evidence and ask the user to confirm the inferred event.
-5. Preserve known sparse-history, merchant-matching and month-to-date comparison limits.
-6. Route any external next step through the authenticated consent workflow. The branch engine itself cannot execute one.
+The UI now imports the original engine and fixture directly through `src/api/advisor.ts` and exposes `/advisor`. No duplicate algorithm or fixture was copied. `AdvisorAdapter` in `src/api/contracts.ts` represents this working local capability; it is separate from `ClarityBackend` HTTP capabilities, which remain false.
 
-The disabled UI entry and `FutureAdvisorAdapter` do not imply live monitoring.
+The adapter validates actual calendar dates, finite bounded USD amounts, nonempty text, category shape and unique transaction IDs. The fixture scan uses its fixed October 24, 2026 as-of date. The view presents all five possible moments, evidence and explicit sample-moment confirmation before an editable plan. A proposed goal remains pending until approved or denied in the existing local consent workflow.
+
+Remaining production work:
+
+1. Provide an authenticated activity source and ownership checks. Synthetic fixture support does not establish a bank connection.
+2. Agree on snapshot freshness, categorization, notification policy and per-user delivered-signal deduplication. Stable detector IDs are not a delivery service.
+3. Retain event confirmation and disclose sparse-history, exact merchant matching and month-to-date comparison limits.
+4. Keep the same heuristic planning contract explicit: all five moments share one savings calculation, with different educational explanations. Rates are assumptions, and the interest field is simple annual interest before taxes.
+5. Route any future external effect through a verified authenticated action API. The engine has no scheduler, database, notification delivery or transfer execution.
+6. Preserve the repository source dependency. Deployments must build with the sibling `frontend/src/lib/advisor/` files; a UI-folder-only archive is insufficient.
+
+Post-merge verification of the adapter and page is recorded separately in `INTEGRATION_STATUS.md` and the handoff; historical pass counts do not prove this integration.
 
 ## Deterministic finance branch checklist
 

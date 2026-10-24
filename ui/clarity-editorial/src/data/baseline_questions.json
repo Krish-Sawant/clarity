@@ -1,0 +1,164 @@
+{
+  "bank_version": "2026.10.24-b1",
+  "stage": "baseline",
+  "review_note": "Hand-verified by the FORK team during HackPSU Fall 2026. Every math answer is recomputed in tests/test_question_pairing.py. Not a validated psychometric instrument.",
+  "questions": [
+    {
+      "id": "bq-budget-surplus",
+      "version": "1",
+      "domain": "budget",
+      "concept_id": "cash_flow_surplus",
+      "difficulty": 1,
+      "points": 1,
+      "kind": "math",
+      "prompt": "Your monthly take-home pay is $3,600 and your total monthly expenses are $2,850. How much remains before any new savings or spending?",
+      "options": [
+        {"id": "a", "text": "$650"},
+        {"id": "b", "text": "$750"},
+        {"id": "c", "text": "$850"},
+        {"id": "d", "text": "$6,450"}
+      ],
+      "correct_option_id": "b",
+      "math_check": {"op": "subtract", "args": [3600, 2850], "expected": 750},
+      "explanation": "Cash flow = take-home pay − expenses. $3,600 − $2,850 = $750. $6,450 adds the two numbers instead of subtracting.",
+      "source_ids": ["cfpb-budgeting-blog", "fdic-money-smart"]
+    },
+    {
+      "id": "bq-budget-fixed",
+      "version": "1",
+      "domain": "budget",
+      "concept_id": "fixed_vs_variable",
+      "difficulty": 1,
+      "points": 1,
+      "kind": "concept",
+      "prompt": "Which of these is usually a FIXED monthly expense — the same amount each month?",
+      "options": [
+        {"id": "a", "text": "Groceries"},
+        {"id": "b", "text": "Restaurant meals"},
+        {"id": "c", "text": "Rent under a 12-month lease"},
+        {"id": "d", "text": "Gas for your car"}
+      ],
+      "correct_option_id": "c",
+      "explanation": "A lease sets the same rent every month, so it is fixed. Groceries, dining out and gas change with how much you buy or drive, so they are variable — and usually the easiest place to adjust a budget.",
+      "source_ids": ["cfpb-budgeting-blog", "cfpb-ymyg"]
+    },
+    {
+      "id": "bq-credit-utilization",
+      "version": "1",
+      "domain": "credit",
+      "concept_id": "credit_utilization",
+      "difficulty": 2,
+      "points": 1,
+      "kind": "math",
+      "prompt": "You have one credit card with a $2,000 limit and a $600 balance. What is your credit utilization rate?",
+      "options": [
+        {"id": "a", "text": "3%"},
+        {"id": "b", "text": "12%"},
+        {"id": "c", "text": "30%"},
+        {"id": "d", "text": "60%"}
+      ],
+      "correct_option_id": "c",
+      "math_check": {"op": "percent", "args": [600, 2000], "expected": 30},
+      "explanation": "Utilization = balance ÷ credit limit. $600 ÷ $2,000 = 0.30 = 30%. The CFPB notes that experts advise keeping credit use at no more than 30% of your total limit.",
+      "source_ids": ["cfpb-credit-score-318"]
+    },
+    {
+      "id": "bq-credit-minimum",
+      "version": "1",
+      "domain": "credit",
+      "concept_id": "minimum_payment",
+      "difficulty": 2,
+      "points": 1,
+      "kind": "scenario",
+      "prompt": "If you pay only the minimum on a credit card balance each month and make no new charges, what usually happens?",
+      "options": [
+        {"id": "a", "text": "The balance is paid off quickly with no extra cost"},
+        {"id": "b", "text": "It takes much longer to pay off and you pay more total interest"},
+        {"id": "c", "text": "The card stops charging interest"},
+        {"id": "d", "text": "Your credit limit shrinks to the minimum payment"}
+      ],
+      "correct_option_id": "b",
+      "explanation": "Interest is charged on the balance you carry. A small payment leaves most of the balance in place, so interest keeps building month after month. Paying more than the minimum — or the full balance by the due date — keeps interest costs lower.",
+      "source_ids": ["cfpb-apr-44", "cfpb-credit-cards"]
+    },
+    {
+      "id": "bq-saving-emergency",
+      "version": "1",
+      "domain": "saving",
+      "concept_id": "emergency_buffer",
+      "difficulty": 1,
+      "points": 1,
+      "kind": "concept",
+      "prompt": "What is an emergency fund mainly for?",
+      "options": [
+        {"id": "a", "text": "A planned vacation"},
+        {"id": "b", "text": "Unexpected costs like a car repair, a medical bill or a loss of income"},
+        {"id": "c", "text": "Monthly streaming subscriptions"},
+        {"id": "d", "text": "Buying investments when prices drop"}
+      ],
+      "correct_option_id": "b",
+      "explanation": "The CFPB describes emergency savings as money for unplanned bills or payments that are not part of your routine monthly spending — a fender bender, a medical bill, a broken appliance or a loss of income.",
+      "source_ids": ["cfpb-emergency-fund-guide"]
+    },
+    {
+      "id": "bq-saving-timeline",
+      "version": "1",
+      "domain": "saving",
+      "concept_id": "savings_goal_timeline",
+      "difficulty": 1,
+      "points": 1,
+      "kind": "math",
+      "prompt": "You save $150 every month toward a $1,200 goal, starting from $0. How many months until you reach it?",
+      "options": [
+        {"id": "a", "text": "6 months"},
+        {"id": "b", "text": "8 months"},
+        {"id": "c", "text": "10 months"},
+        {"id": "d", "text": "12 months"}
+      ],
+      "correct_option_id": "b",
+      "math_check": {"op": "ceil_divide", "args": [1200, 150], "expected": 8},
+      "explanation": "Months = goal ÷ monthly saving. $1,200 ÷ $150 = 8 months. Setting a specific goal and a consistent contribution makes the timeline predictable.",
+      "source_ids": ["cfpb-emergency-fund-guide"]
+    },
+    {
+      "id": "bq-interest-apr",
+      "version": "1",
+      "domain": "interest",
+      "concept_id": "credit_apr",
+      "difficulty": 2,
+      "points": 1,
+      "kind": "math",
+      "prompt": "A $1,000 credit card balance has a 24% APR. Using the simple estimate APR ÷ 12 per month, about how much interest is added in one month if you make no payment?",
+      "options": [
+        {"id": "a", "text": "$2.40"},
+        {"id": "b", "text": "$20"},
+        {"id": "c", "text": "$24"},
+        {"id": "d", "text": "$240"}
+      ],
+      "correct_option_id": "b",
+      "math_check": {"op": "monthly_interest", "args": [1000, 24], "expected": 20},
+      "explanation": "APR is a yearly rate. 24% ÷ 12 = 2% per month, and 2% of $1,000 = $20. Picking $240 applies the full yearly rate to a single month.",
+      "source_ids": ["cfpb-apr-44"]
+    },
+    {
+      "id": "bq-interest-compound",
+      "version": "1",
+      "domain": "interest",
+      "concept_id": "compound_interest",
+      "difficulty": 2,
+      "points": 1,
+      "kind": "math",
+      "prompt": "You deposit $1,000 in a savings account earning 5% interest, compounded once per year. With no deposits or withdrawals, how much is in the account after 2 years?",
+      "options": [
+        {"id": "a", "text": "$1,050.00"},
+        {"id": "b", "text": "$1,100.00"},
+        {"id": "c", "text": "$1,102.50"},
+        {"id": "d", "text": "$1,200.00"}
+      ],
+      "correct_option_id": "c",
+      "math_check": {"op": "compound", "args": [1000, 5, 2], "expected": 1102.5},
+      "explanation": "Year 1: $1,000 × 1.05 = $1,050. Year 2 earns interest on $1,050: × 1.05 = $1,102.50. $1,100 is simple interest — it forgets that interest also earns interest.",
+      "source_ids": ["investor-compound-interest", "investor-compound-calculator"]
+    }
+  ]
+}

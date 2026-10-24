@@ -38,7 +38,7 @@ export interface AdvisorAdapter {
   getPlan(kind: AdvisorMoment, inputs: AdvisorPlanInputs): Promise<AdvisorPlan>;
 }
 /** Branch-only finance.ts uses integer USD cents; the local demo uses USD. */
-export interface FutureDebtAdapter {
+export interface DebtEngineAdapter {
   calculate(input: { balanceCents: number; aprPercent: number; monthlyPaymentCents: number; maxMonths?: number }): Promise<{
     status: "paid_off" | "payment_too_low" | "horizon_exceeded";
     monthsToPayoff: number | null; totalInterestCents: number; remainingCents: number;

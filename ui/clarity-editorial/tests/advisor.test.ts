@@ -100,7 +100,7 @@ test("merged local status and async adapter do not enable unavailable HTTP capab
   const status = branchIntegrationStatus.find((item) => item.id === "proactive-advisor");
   assert.equal(status?.status, "available-local");
   assert.equal(status?.branch, "main");
-  assert.equal(branchIntegrationStatus.find((item) => item.id === "deterministic-calculations")?.status, "waiting-on-branch");
+  assert.equal(branchIntegrationStatus.find((item) => item.id === "deterministic-calculations")?.status, "available-local");
   assert.deepEqual(await advisorAdapter.getSignals(), getAdvisorSignals());
   assert.deepEqual(await advisorAdapter.getPlan("new-job", planInputs), createAdvisorPlan("new-job", planInputs));
   assert.ok(Object.values(backendService.capabilities).every((capability) => capability === false));

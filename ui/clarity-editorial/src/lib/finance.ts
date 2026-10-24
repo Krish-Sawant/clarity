@@ -1,4 +1,5 @@
 import type { Horizon, Shock, SimulationInputs } from "./types";
+import { calculateDebt } from "../../../../finance.ts";
 
 const formatter = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", minimumFractionDigits: 0, maximumFractionDigits: 2 });
 export const currency = (value: number): string => formatter.format(value);
@@ -49,19 +50,11 @@ export function simulatePaths(inputs: SimulationInputs, shock: Shock, horizon: H
 
 export type DebtPayoffResult = { months: number | null; interest: number; payoff: boolean };
 
-/** Fixed APR, monthly interest rounded to cents, then a month-end payment. */
+/** Lesson-facing USD wrapper around the shared, merged integer-cent engine. */
 export function debtPayoff(balance: number, apr: number, payment: number): DebtPayoffResult {
-  let remaining = cents(balance, "Balance");
+  const balanceCents = cents(balance, "Balance");
   const monthlyPayment = cents(payment, "Payment");
   if (!Number.isFinite(apr) || apr < 0 || apr > 100) throw new RangeError("APR must be between 0 and 100 percent.");
-  if (remaining === 0) return { months: 0, interest: 0, payoff: true };
-  let interest = 0;
-  for (let month = 1; month <= 1200; month += 1) {
-    const monthInterest = Math.round(remaining * apr / 100 / 12);
-    if (monthlyPayment <= monthInterest) return { months: null, interest: interest / 100, payoff: false };
-    remaining = Math.max(0, remaining + monthInterest - monthlyPayment);
-    interest += monthInterest;
-    if (remaining === 0) return { months: month, interest: interest / 100, payoff: true };
-  }
-  return { months: null, interest: interest / 100, payoff: false };
+  const result = calculateDebt({ balanceCents, aprPercent: apr, monthlyPaymentCents: monthlyPayment });
+  return { months: result.monthsToPayoff, interest: result.totalInterestCents / 100, payoff: result.status === "paid_off" };
 }

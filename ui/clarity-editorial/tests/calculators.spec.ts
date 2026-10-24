@@ -1,0 +1,68 @@
+import { expect, test } from "@playwright/test";
+
+test("merged debt calculator recomputes exact payoffs, null comparisons and validated drafts", async ({ page }) => {
+  const errors: string[] = [];
+  page.on("pageerror", (error) => errors.push(error.message));
+  await page.goto("/calculators");
+  await expect(page.getByRole("tab", { name: "Debt payoff", exact: true })).toHaveAttribute("aria-selected", "true");
+  await expect(page.locator(".calculator-source")).toContainText("merged finance engine");
+  await page.getByRole("spinbutton", { name: "Debt balance (USD)", exact: true }).fill("1000");
+  await page.getByRole("spinbutton", { name: "Debt APR (%)", exact: true }).fill("0");
+  await page.getByRole("spinbutton", { name: "Regular monthly payment (USD)", exact: true }).fill("100");
+  const baseline = page.locator('.calculator-result[data-plan="baseline"]');
+  const accelerated = page.locator('.calculator-result[data-plan="accelerated"]');
+  await expect(baseline.getByRole("heading", { name: "10 months", exact: true })).toBeVisible();
+  await expect(accelerated.getByRole("heading", { name: "5 months", exact: true })).toBeVisible();
+  await expect(page.locator(".calculator-comparison")).toContainText("5 months sooner.");
+  await expect(page.locator(".calculator-comparison")).toContainText("$0 less interest");
+  await page.getByText("Current payment schedule", { exact: false }).click();
+  await expect(page.getByRole("row", { name: "1 $1,000 $0 $100 $900", exact: true })).toBeVisible();
+
+  const payment = page.getByRole("spinbutton", { name: "Regular monthly payment (USD)", exact: true });
+  await page.getByRole("spinbutton", { name: "Debt APR (%)", exact: true }).fill("12");
+  await payment.fill("10");
+  await expect(baseline).toContainText("Payment does not reduce principal");
+  await expect(baseline.getByRole("heading", { name: "Unavailable", exact: true })).toBeVisible();
+  await expect(page.locator(".calculator-comparison")).toContainText("A full comparison is unavailable");
+  await payment.fill("");
+  await expect(payment).toHaveAttribute("aria-invalid", "true");
+  await expect(page.getByRole("alert")).toContainText("Blank or invalid drafts do not produce a forecast");
+  await expect(baseline).toHaveCount(0);
+  await payment.fill("100");
+  await page.getByRole("spinbutton", { name: "Debt projection horizon (months)", exact: true }).fill("1");
+  await expect(baseline).toContainText("Projection ends before payoff");
+  await expect(page.locator(".calculator-comparison")).toContainText("A full comparison is unavailable");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  expect(errors).toEqual([]);
+});
+
+test("savings calculator keeps no-progress, partial and zero-month outcomes distinct", async ({ page }) => {
+  await page.goto("/calculators");
+  await page.getByRole("tab", { name: "Savings goal", exact: true }).click();
+  const current = page.getByRole("spinbutton", { name: "Current savings (USD)", exact: true });
+  const target = page.getByRole("spinbutton", { name: "Savings target (USD)", exact: true });
+  const contribution = page.getByRole("spinbutton", { name: "Monthly contribution (USD)", exact: true });
+  await current.fill("200");
+  await target.fill("1000");
+  await contribution.fill("100");
+  await page.getByRole("spinbutton", { name: "Savings APY (%)", exact: true }).fill("0");
+  const result = page.getByRole("region", { name: "Savings projection", exact: true });
+  await expect(result.getByRole("heading", { name: "8 months", exact: true })).toBeVisible();
+  await expect(result).toContainText("$1,000");
+  await page.getByText("Savings schedule", { exact: true }).click();
+  await expect(page.getByRole("row", { name: "1 $0 $100 $300", exact: true })).toBeVisible();
+  await contribution.fill("0");
+  await expect(result).toContainText("No progress under these assumptions");
+  await expect(result.getByRole("heading", { name: "Unavailable", exact: true })).toBeVisible();
+  await contribution.fill("1");
+  await page.getByRole("spinbutton", { name: "Savings projection horizon (months)", exact: true }).fill("2");
+  await expect(result).toContainText("Projection ends before the goal");
+  await expect(result).toContainText("$202");
+  await current.fill("1000");
+  await expect(result.getByRole("heading", { name: "0 months", exact: true })).toBeVisible();
+  await target.fill("0.001");
+  await expect(target).toHaveAttribute("aria-invalid", "true");
+  await expect(result).toHaveCount(0);
+  await expect(page.getByRole("alert")).toContainText("Calculation paused");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});

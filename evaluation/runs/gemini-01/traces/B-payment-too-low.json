@@ -1,0 +1,704 @@
+[
+  {
+    "request": {
+      "model": "gemini-3.5-flash-lite",
+      "instructions": "You are a financial education advisor working with synthetic USD data.\nExplain the customer's task clearly and state limitations. Do not invent sources, probabilities,\naffordability, or successful actions. No payment execution is available. The supported projection\nmodel has fixed APR and payments, monthly interest rounded to cents before a month-end payment,\nno fees or new borrowing, and a default 1200-month horizon. Time-varying payments are unsupported.\nMoney is integer cents; APR is a percentage (12 means 12%). Validate nonnegative integer money\nup to 1e12 cents, APR from 0 to 1000, and horizon from 1 to 1200. Cap final payment at amount owed.\nStatuses: paid_off, payment_too_low (fixed payment cannot reduce principal), horizon_exceeded,\ninvalid_input. A non-completed payoff duration is null, not zero. Already-paid debt takes zero\nmonths. Comparison savings are null unless both plans pay off.\nIf calculation tools are available, use them for supported numerical projections.\nReturn an answer for the customer plus facts containing only claims explicitly made in that answer.\nUse field names status, monthsToPayoff, totalInterestCents, totalPaymentsCents, remainingCents,\nmonthsSaved, interestSavedCents as applicable. Omit facts not asserted. Do not guess missing facts.\nFacts are self-reported claims, not a correctness assessment. Keep the explanation in plain language.",
+      "input": [
+        {
+          "role": "user",
+          "content": "{\"input\":{\"balanceCents\":100000,\"aprPercent\":12,\"monthlyPaymentCents\":1000},\"question\":\"When will this debt be paid off?\"}"
+        }
+      ],
+      "store": false,
+      "max_output_tokens": 4000,
+      "text": {
+        "format": {
+          "type": "json_schema",
+          "name": "evaluation_answer",
+          "strict": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "string"
+              },
+              "facts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "field": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": [
+                        "number",
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "answer",
+              "facts"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "tools": [
+        {
+          "type": "function",
+          "name": "calculateDebt",
+          "description": "Calculate a fixed-payment debt projection; validates inputs.",
+          "strict": true,
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "balanceCents": {
+                "type": "number"
+              },
+              "aprPercent": {
+                "type": "number"
+              },
+              "monthlyPaymentCents": {
+                "type": "number"
+              },
+              "maxMonths": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "balanceCents",
+              "aprPercent",
+              "monthlyPaymentCents",
+              "maxMonths"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "type": "function",
+          "name": "compareExtraPayment",
+          "description": "Compare fixed regular and extra monthly payments.",
+          "strict": true,
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "balanceCents": {
+                "type": "number"
+              },
+              "aprPercent": {
+                "type": "number"
+              },
+              "monthlyPaymentCents": {
+                "type": "number"
+              },
+              "maxMonths": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "extraPaymentCents": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "balanceCents",
+              "aprPercent",
+              "monthlyPaymentCents",
+              "maxMonths",
+              "extraPaymentCents"
+            ],
+            "additionalProperties": false
+          }
+        }
+      ],
+      "parallel_tool_calls": false
+    },
+    "response": {
+      "status": "completed",
+      "output": [
+        {
+          "type": "function_call",
+          "name": "calculateDebt",
+          "arguments": "{\"monthlyPaymentCents\":1000,\"balanceCents\":100000,\"maxMonths\":1200,\"aprPercent\":12}",
+          "call_id": "call_808534",
+          "geminiMessage": {
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "extra_content": {
+                  "google": {
+                    "thought_signature": "EmAKXgFpFH0TPDFhIFbUF5dqmJ2VA9Qv3YMjbfr/qXMBXpMnUUOOsqCHMrnFQ7Pvxvs9WyqXhuSd8GW1YFcJ7V3vS6ZDHQ2BCQ5cioxv/u5A0HypaxrjU9PRDaePYYzui2Q="
+                  }
+                },
+                "function": {
+                  "arguments": "{\"monthlyPaymentCents\":1000,\"balanceCents\":100000,\"maxMonths\":1200,\"aprPercent\":12}",
+                  "name": "calculateDebt"
+                },
+                "id": "call_808534",
+                "type": "function"
+              }
+            ]
+          }
+        }
+      ],
+      "raw": {
+        "choices": [
+          {
+            "finish_reason": "tool_calls",
+            "index": 0,
+            "message": {
+              "role": "assistant",
+              "tool_calls": [
+                {
+                  "extra_content": {
+                    "google": {
+                      "thought_signature": "EmAKXgFpFH0TPDFhIFbUF5dqmJ2VA9Qv3YMjbfr/qXMBXpMnUUOOsqCHMrnFQ7Pvxvs9WyqXhuSd8GW1YFcJ7V3vS6ZDHQ2BCQ5cioxv/u5A0HypaxrjU9PRDaePYYzui2Q="
+                    }
+                  },
+                  "function": {
+                    "arguments": "{\"monthlyPaymentCents\":1000,\"balanceCents\":100000,\"maxMonths\":1200,\"aprPercent\":12}",
+                    "name": "calculateDebt"
+                  },
+                  "id": "call_808534",
+                  "type": "function"
+                }
+              ]
+            }
+          }
+        ],
+        "created": 1792873525,
+        "id": "NBTdasHXNM-2uMYPl7Sl6AY",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 44,
+          "prompt_tokens": 578,
+          "total_tokens": 622
+        }
+      },
+      "providerRequest": {
+        "model": "gemini-3.5-flash-lite",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a financial education advisor working with synthetic USD data.\nExplain the customer's task clearly and state limitations. Do not invent sources, probabilities,\naffordability, or successful actions. No payment execution is available. The supported projection\nmodel has fixed APR and payments, monthly interest rounded to cents before a month-end payment,\nno fees or new borrowing, and a default 1200-month horizon. Time-varying payments are unsupported.\nMoney is integer cents; APR is a percentage (12 means 12%). Validate nonnegative integer money\nup to 1e12 cents, APR from 0 to 1000, and horizon from 1 to 1200. Cap final payment at amount owed.\nStatuses: paid_off, payment_too_low (fixed payment cannot reduce principal), horizon_exceeded,\ninvalid_input. A non-completed payoff duration is null, not zero. Already-paid debt takes zero\nmonths. Comparison savings are null unless both plans pay off.\nIf calculation tools are available, use them for supported numerical projections.\nReturn an answer for the customer plus facts containing only claims explicitly made in that answer.\nUse field names status, monthsToPayoff, totalInterestCents, totalPaymentsCents, remainingCents,\nmonthsSaved, interestSavedCents as applicable. Omit facts not asserted. Do not guess missing facts.\nFacts are self-reported claims, not a correctness assessment. Keep the explanation in plain language."
+          },
+          {
+            "role": "user",
+            "content": "{\"input\":{\"balanceCents\":100000,\"aprPercent\":12,\"monthlyPaymentCents\":1000},\"question\":\"When will this debt be paid off?\"}"
+          }
+        ],
+        "max_tokens": 4000,
+        "response_format": {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "evaluation_answer",
+            "strict": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "answer": {
+                  "type": "string"
+                },
+                "facts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "field": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "number",
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "field",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "answer",
+                "facts"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "calculateDebt",
+              "description": "Calculate a fixed-payment debt projection; validates inputs.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "balanceCents": {
+                    "type": "number"
+                  },
+                  "aprPercent": {
+                    "type": "number"
+                  },
+                  "monthlyPaymentCents": {
+                    "type": "number"
+                  },
+                  "maxMonths": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "balanceCents",
+                  "aprPercent",
+                  "monthlyPaymentCents",
+                  "maxMonths"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "compareExtraPayment",
+              "description": "Compare fixed regular and extra monthly payments.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "balanceCents": {
+                    "type": "number"
+                  },
+                  "aprPercent": {
+                    "type": "number"
+                  },
+                  "monthlyPaymentCents": {
+                    "type": "number"
+                  },
+                  "maxMonths": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "extraPaymentCents": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "balanceCents",
+                  "aprPercent",
+                  "monthlyPaymentCents",
+                  "maxMonths",
+                  "extraPaymentCents"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto"
+      }
+    }
+  },
+  {
+    "tool": "calculateDebt",
+    "callId": "call_808534",
+    "output": {
+      "status": "payment_too_low",
+      "monthsToPayoff": null,
+      "totalInterestCents": 0,
+      "totalPaymentsCents": 0,
+      "remainingCents": 100000,
+      "schedule": [],
+      "assumptions": [
+        "Monthly estimate: interest = opening balance × APR / 12, rounded to the nearest cent.",
+        "Fixed APR and payment; payment occurs after monthly interest; final payment is capped at amount owed.",
+        "No new charges, fees, promotional periods, or missed payments. Actual issuer daily-interest methods can differ."
+      ],
+      "scheduleTruncated": false
+    }
+  },
+  {
+    "request": {
+      "model": "gemini-3.5-flash-lite",
+      "instructions": "You are a financial education advisor working with synthetic USD data.\nExplain the customer's task clearly and state limitations. Do not invent sources, probabilities,\naffordability, or successful actions. No payment execution is available. The supported projection\nmodel has fixed APR and payments, monthly interest rounded to cents before a month-end payment,\nno fees or new borrowing, and a default 1200-month horizon. Time-varying payments are unsupported.\nMoney is integer cents; APR is a percentage (12 means 12%). Validate nonnegative integer money\nup to 1e12 cents, APR from 0 to 1000, and horizon from 1 to 1200. Cap final payment at amount owed.\nStatuses: paid_off, payment_too_low (fixed payment cannot reduce principal), horizon_exceeded,\ninvalid_input. A non-completed payoff duration is null, not zero. Already-paid debt takes zero\nmonths. Comparison savings are null unless both plans pay off.\nIf calculation tools are available, use them for supported numerical projections.\nReturn an answer for the customer plus facts containing only claims explicitly made in that answer.\nUse field names status, monthsToPayoff, totalInterestCents, totalPaymentsCents, remainingCents,\nmonthsSaved, interestSavedCents as applicable. Omit facts not asserted. Do not guess missing facts.\nFacts are self-reported claims, not a correctness assessment. Keep the explanation in plain language.",
+      "input": [
+        {
+          "role": "user",
+          "content": "{\"input\":{\"balanceCents\":100000,\"aprPercent\":12,\"monthlyPaymentCents\":1000},\"question\":\"When will this debt be paid off?\"}"
+        },
+        {
+          "type": "function_call",
+          "name": "calculateDebt",
+          "arguments": "{\"monthlyPaymentCents\":1000,\"balanceCents\":100000,\"maxMonths\":1200,\"aprPercent\":12}",
+          "call_id": "call_808534",
+          "geminiMessage": {
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "extra_content": {
+                  "google": {
+                    "thought_signature": "EmAKXgFpFH0TPDFhIFbUF5dqmJ2VA9Qv3YMjbfr/qXMBXpMnUUOOsqCHMrnFQ7Pvxvs9WyqXhuSd8GW1YFcJ7V3vS6ZDHQ2BCQ5cioxv/u5A0HypaxrjU9PRDaePYYzui2Q="
+                  }
+                },
+                "function": {
+                  "arguments": "{\"monthlyPaymentCents\":1000,\"balanceCents\":100000,\"maxMonths\":1200,\"aprPercent\":12}",
+                  "name": "calculateDebt"
+                },
+                "id": "call_808534",
+                "type": "function"
+              }
+            ]
+          }
+        },
+        {
+          "type": "function_call_output",
+          "call_id": "call_808534",
+          "output": "{\"status\":\"payment_too_low\",\"monthsToPayoff\":null,\"totalInterestCents\":0,\"totalPaymentsCents\":0,\"remainingCents\":100000,\"schedule\":[],\"assumptions\":[\"Monthly estimate: interest = opening balance × APR / 12, rounded to the nearest cent.\",\"Fixed APR and payment; payment occurs after monthly interest; final payment is capped at amount owed.\",\"No new charges, fees, promotional periods, or missed payments. Actual issuer daily-interest methods can differ.\"],\"scheduleTruncated\":false}"
+        }
+      ],
+      "store": false,
+      "max_output_tokens": 4000,
+      "text": {
+        "format": {
+          "type": "json_schema",
+          "name": "evaluation_answer",
+          "strict": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "string"
+              },
+              "facts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "field": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": [
+                        "number",
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "answer",
+              "facts"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "tools": [
+        {
+          "type": "function",
+          "name": "calculateDebt",
+          "description": "Calculate a fixed-payment debt projection; validates inputs.",
+          "strict": true,
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "balanceCents": {
+                "type": "number"
+              },
+              "aprPercent": {
+                "type": "number"
+              },
+              "monthlyPaymentCents": {
+                "type": "number"
+              },
+              "maxMonths": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "balanceCents",
+              "aprPercent",
+              "monthlyPaymentCents",
+              "maxMonths"
+            ],
+            "additionalProperties": false
+          }
+        },
+        {
+          "type": "function",
+          "name": "compareExtraPayment",
+          "description": "Compare fixed regular and extra monthly payments.",
+          "strict": true,
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "balanceCents": {
+                "type": "number"
+              },
+              "aprPercent": {
+                "type": "number"
+              },
+              "monthlyPaymentCents": {
+                "type": "number"
+              },
+              "maxMonths": {
+                "type": [
+                  "integer",
+                  "null"
+                ]
+              },
+              "extraPaymentCents": {
+                "type": "number"
+              }
+            },
+            "required": [
+              "balanceCents",
+              "aprPercent",
+              "monthlyPaymentCents",
+              "maxMonths",
+              "extraPaymentCents"
+            ],
+            "additionalProperties": false
+          }
+        }
+      ],
+      "parallel_tool_calls": false
+    },
+    "response": {
+      "status": "completed",
+      "output": [
+        {
+          "type": "message",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "{\n  \"answer\": \"Your fixed payment of $10.00 is too low to reduce the principal on your $1,000.00 balance at a 12% APR, so the debt cannot be paid off under this plan. We can only project fixed-payment debt based on the supported model using monthly interest rounded to cents before month-end payment, with no fees or new borrowing, and we do not execute payments.\",\n  \"facts\": [\n    {\n      \"field\": \"status\",\n      \"value\": \"payment_too_low\"\n    },\n    {\n      \"field\": \"monthsToPayoff\",\n      \"value\": null\n    },\n    {\n      \"field\": \"totalInterestCents\",\n      \"value\": 0\n    },\n    {\n      \"field\": \"totalPaymentsCents\",\n      \"value\": 0\n    },\n    {\n      \"field\": \"remainingCents\",\n      \"value\": 100000\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ],
+      "raw": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "{\n  \"answer\": \"Your fixed payment of $10.00 is too low to reduce the principal on your $1,000.00 balance at a 12% APR, so the debt cannot be paid off under this plan. We can only project fixed-payment debt based on the supported model using monthly interest rounded to cents before month-end payment, with no fees or new borrowing, and we do not execute payments.\",\n  \"facts\": [\n    {\n      \"field\": \"status\",\n      \"value\": \"payment_too_low\"\n    },\n    {\n      \"field\": \"monthsToPayoff\",\n      \"value\": null\n    },\n    {\n      \"field\": \"totalInterestCents\",\n      \"value\": 0\n    },\n    {\n      \"field\": \"totalPaymentsCents\",\n      \"value\": 0\n    },\n    {\n      \"field\": \"remainingCents\",\n      \"value\": 100000\n    }\n  ]\n}",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TFmW/iYzC1pVULYzjNY/HYTnfnBRXyU3dF17qL+vJlLXOyy2p91ZQq1GPyX9KWkBZ1AX+CHlp5JSAmjyzkcBNgYG1S5qsk3i2QwJJOQLkmiWsLvB0o6/Dzzk="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792873526,
+        "id": "NRTdauCzJeHiytMPsIKu6AE",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 230,
+          "prompt_tokens": 751,
+          "total_tokens": 981
+        }
+      },
+      "providerRequest": {
+        "model": "gemini-3.5-flash-lite",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a financial education advisor working with synthetic USD data.\nExplain the customer's task clearly and state limitations. Do not invent sources, probabilities,\naffordability, or successful actions. No payment execution is available. The supported projection\nmodel has fixed APR and payments, monthly interest rounded to cents before a month-end payment,\nno fees or new borrowing, and a default 1200-month horizon. Time-varying payments are unsupported.\nMoney is integer cents; APR is a percentage (12 means 12%). Validate nonnegative integer money\nup to 1e12 cents, APR from 0 to 1000, and horizon from 1 to 1200. Cap final payment at amount owed.\nStatuses: paid_off, payment_too_low (fixed payment cannot reduce principal), horizon_exceeded,\ninvalid_input. A non-completed payoff duration is null, not zero. Already-paid debt takes zero\nmonths. Comparison savings are null unless both plans pay off.\nIf calculation tools are available, use them for supported numerical projections.\nReturn an answer for the customer plus facts containing only claims explicitly made in that answer.\nUse field names status, monthsToPayoff, totalInterestCents, totalPaymentsCents, remainingCents,\nmonthsSaved, interestSavedCents as applicable. Omit facts not asserted. Do not guess missing facts.\nFacts are self-reported claims, not a correctness assessment. Keep the explanation in plain language."
+          },
+          {
+            "role": "user",
+            "content": "{\"input\":{\"balanceCents\":100000,\"aprPercent\":12,\"monthlyPaymentCents\":1000},\"question\":\"When will this debt be paid off?\"}"
+          },
+          {
+            "role": "assistant",
+            "tool_calls": [
+              {
+                "extra_content": {
+                  "google": {
+                    "thought_signature": "EmAKXgFpFH0TPDFhIFbUF5dqmJ2VA9Qv3YMjbfr/qXMBXpMnUUOOsqCHMrnFQ7Pvxvs9WyqXhuSd8GW1YFcJ7V3vS6ZDHQ2BCQ5cioxv/u5A0HypaxrjU9PRDaePYYzui2Q="
+                  }
+                },
+                "function": {
+                  "arguments": "{\"monthlyPaymentCents\":1000,\"balanceCents\":100000,\"maxMonths\":1200,\"aprPercent\":12}",
+                  "name": "calculateDebt"
+                },
+                "id": "call_808534",
+                "type": "function"
+              }
+            ]
+          },
+          {
+            "role": "tool",
+            "tool_call_id": "call_808534",
+            "content": "{\"status\":\"payment_too_low\",\"monthsToPayoff\":null,\"totalInterestCents\":0,\"totalPaymentsCents\":0,\"remainingCents\":100000,\"schedule\":[],\"assumptions\":[\"Monthly estimate: interest = opening balance × APR / 12, rounded to the nearest cent.\",\"Fixed APR and payment; payment occurs after monthly interest; final payment is capped at amount owed.\",\"No new charges, fees, promotional periods, or missed payments. Actual issuer daily-interest methods can differ.\"],\"scheduleTruncated\":false}"
+          }
+        ],
+        "max_tokens": 4000,
+        "response_format": {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "evaluation_answer",
+            "strict": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "answer": {
+                  "type": "string"
+                },
+                "facts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "field": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "number",
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "field",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "answer",
+                "facts"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "tools": [
+          {
+            "type": "function",
+            "function": {
+              "name": "calculateDebt",
+              "description": "Calculate a fixed-payment debt projection; validates inputs.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "balanceCents": {
+                    "type": "number"
+                  },
+                  "aprPercent": {
+                    "type": "number"
+                  },
+                  "monthlyPaymentCents": {
+                    "type": "number"
+                  },
+                  "maxMonths": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  }
+                },
+                "required": [
+                  "balanceCents",
+                  "aprPercent",
+                  "monthlyPaymentCents",
+                  "maxMonths"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          {
+            "type": "function",
+            "function": {
+              "name": "compareExtraPayment",
+              "description": "Compare fixed regular and extra monthly payments.",
+              "strict": true,
+              "parameters": {
+                "type": "object",
+                "properties": {
+                  "balanceCents": {
+                    "type": "number"
+                  },
+                  "aprPercent": {
+                    "type": "number"
+                  },
+                  "monthlyPaymentCents": {
+                    "type": "number"
+                  },
+                  "maxMonths": {
+                    "type": [
+                      "integer",
+                      "null"
+                    ]
+                  },
+                  "extraPaymentCents": {
+                    "type": "number"
+                  }
+                },
+                "required": [
+                  "balanceCents",
+                  "aprPercent",
+                  "monthlyPaymentCents",
+                  "maxMonths",
+                  "extraPaymentCents"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        ],
+        "tool_choice": "auto"
+      }
+    }
+  }
+]

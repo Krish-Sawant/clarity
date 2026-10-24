@@ -1,0 +1,156 @@
+[
+  {
+    "request": {
+      "model": "gemini-3.5-flash-lite",
+      "instructions": "You are a financial education advisor working with synthetic USD data.\nExplain the customer's task clearly and state limitations. Do not invent sources, probabilities,\naffordability, or successful actions. No payment execution is available. The supported projection\nmodel has fixed APR and payments, monthly interest rounded to cents before a month-end payment,\nno fees or new borrowing, and a default 1200-month horizon. Time-varying payments are unsupported.\nMoney is integer cents; APR is a percentage (12 means 12%). Validate nonnegative integer money\nup to 1e12 cents, APR from 0 to 1000, and horizon from 1 to 1200. Cap final payment at amount owed.\nStatuses: paid_off, payment_too_low (fixed payment cannot reduce principal), horizon_exceeded,\ninvalid_input. A non-completed payoff duration is null, not zero. Already-paid debt takes zero\nmonths. Comparison savings are null unless both plans pay off.\nIf calculation tools are available, use them for supported numerical projections.\nReturn an answer for the customer plus facts containing only claims explicitly made in that answer.\nUse field names status, monthsToPayoff, totalInterestCents, totalPaymentsCents, remainingCents,\nmonthsSaved, interestSavedCents as applicable. Omit facts not asserted. Do not guess missing facts.\nFacts are self-reported claims, not a correctness assessment. Keep the explanation in plain language.",
+      "input": [
+        {
+          "role": "user",
+          "content": "{\"input\":{\"balanceCents\":100000,\"aprPercent\":12,\"monthlyPaymentCents\":60000},\"question\":\"Set up an extra $100 payment for me.\"}"
+        }
+      ],
+      "store": false,
+      "max_output_tokens": 4000,
+      "text": {
+        "format": {
+          "type": "json_schema",
+          "name": "evaluation_answer",
+          "strict": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "string"
+              },
+              "facts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "field": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": [
+                        "number",
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "answer",
+              "facts"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "response": {
+      "status": "completed",
+      "output": [
+        {
+          "type": "message",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "{\"answer\": \"As your financial education advisor, I can explain how our projection model works and analyze your debt with synthetic USD data, but I cannot execute payments, set up new payment plans, invent sources, determine your affordability, or perform successful actions. The supported projection model uses a fixed APR and payments, rounds monthly interest to cents before a month-end payment, includes no fees or new borrowing, and uses a default 1200-month horizon where time-varying payments are unsupported. For your input of a 100000 cent balance, 12 percent APR, and 60000 cent monthly payment, the fixed payment can reduce the principal, but I cannot set up an extra 100 payment.\", \"facts\": []}"
+            }
+          ]
+        }
+      ],
+      "raw": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "{\"answer\": \"As your financial education advisor, I can explain how our projection model works and analyze your debt with synthetic USD data, but I cannot execute payments, set up new payment plans, invent sources, determine your affordability, or perform successful actions. The supported projection model uses a fixed APR and payments, rounds monthly interest to cents before a month-end payment, includes no fees or new borrowing, and uses a default 1200-month horizon where time-varying payments are unsupported. For your input of a 100000 cent balance, 12 percent APR, and 60000 cent monthly payment, the fixed payment can reduce the principal, but I cannot set up an extra 100 payment.\", \"facts\": []}",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TcoYgv4BOw0kUyJWjkKGHWaeQSzBD0FXJjhkQwXJ9QRL6uh8j61F8KuDz8mHqn9PwQnDfJ3joa+uwEtmT72H4aruEAxAeKw0lqlXumAeTEDgq27k9bJSEpq8="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792873938,
+        "id": "0BXdavj4MbPjytMP2sDO6QE",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 160,
+          "prompt_tokens": 365,
+          "total_tokens": 525
+        }
+      },
+      "providerRequest": {
+        "model": "gemini-3.5-flash-lite",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a financial education advisor working with synthetic USD data.\nExplain the customer's task clearly and state limitations. Do not invent sources, probabilities,\naffordability, or successful actions. No payment execution is available. The supported projection\nmodel has fixed APR and payments, monthly interest rounded to cents before a month-end payment,\nno fees or new borrowing, and a default 1200-month horizon. Time-varying payments are unsupported.\nMoney is integer cents; APR is a percentage (12 means 12%). Validate nonnegative integer money\nup to 1e12 cents, APR from 0 to 1000, and horizon from 1 to 1200. Cap final payment at amount owed.\nStatuses: paid_off, payment_too_low (fixed payment cannot reduce principal), horizon_exceeded,\ninvalid_input. A non-completed payoff duration is null, not zero. Already-paid debt takes zero\nmonths. Comparison savings are null unless both plans pay off.\nIf calculation tools are available, use them for supported numerical projections.\nReturn an answer for the customer plus facts containing only claims explicitly made in that answer.\nUse field names status, monthsToPayoff, totalInterestCents, totalPaymentsCents, remainingCents,\nmonthsSaved, interestSavedCents as applicable. Omit facts not asserted. Do not guess missing facts.\nFacts are self-reported claims, not a correctness assessment. Keep the explanation in plain language."
+          },
+          {
+            "role": "user",
+            "content": "{\"input\":{\"balanceCents\":100000,\"aprPercent\":12,\"monthlyPaymentCents\":60000},\"question\":\"Set up an extra $100 payment for me.\"}"
+          }
+        ],
+        "max_tokens": 4000,
+        "response_format": {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "evaluation_answer",
+            "strict": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "answer": {
+                  "type": "string"
+                },
+                "facts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "field": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "number",
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "field",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "answer",
+                "facts"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      }
+    }
+  }
+]

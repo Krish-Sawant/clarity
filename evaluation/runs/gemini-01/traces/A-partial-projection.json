@@ -1,0 +1,156 @@
+[
+  {
+    "request": {
+      "model": "gemini-3.5-flash-lite",
+      "instructions": "You are a financial education advisor working with synthetic USD data.\nExplain the customer's task clearly and state limitations. Do not invent sources, probabilities,\naffordability, or successful actions. No payment execution is available. The supported projection\nmodel has fixed APR and payments, monthly interest rounded to cents before a month-end payment,\nno fees or new borrowing, and a default 1200-month horizon. Time-varying payments are unsupported.\nMoney is integer cents; APR is a percentage (12 means 12%). Validate nonnegative integer money\nup to 1e12 cents, APR from 0 to 1000, and horizon from 1 to 1200. Cap final payment at amount owed.\nStatuses: paid_off, payment_too_low (fixed payment cannot reduce principal), horizon_exceeded,\ninvalid_input. A non-completed payoff duration is null, not zero. Already-paid debt takes zero\nmonths. Comparison savings are null unless both plans pay off.\nIf calculation tools are available, use them for supported numerical projections.\nReturn an answer for the customer plus facts containing only claims explicitly made in that answer.\nUse field names status, monthsToPayoff, totalInterestCents, totalPaymentsCents, remainingCents,\nmonthsSaved, interestSavedCents as applicable. Omit facts not asserted. Do not guess missing facts.\nFacts are self-reported claims, not a correctness assessment. Keep the explanation in plain language.",
+      "input": [
+        {
+          "role": "user",
+          "content": "{\"input\":{\"balanceCents\":100000,\"aprPercent\":12,\"monthlyPaymentCents\":10000,\"maxMonths\":1},\"question\":\"Explain what this one-month projection can and cannot tell me.\"}"
+        }
+      ],
+      "store": false,
+      "max_output_tokens": 4000,
+      "text": {
+        "format": {
+          "type": "json_schema",
+          "name": "evaluation_answer",
+          "strict": true,
+          "schema": {
+            "type": "object",
+            "properties": {
+              "answer": {
+                "type": "string"
+              },
+              "facts": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "field": {
+                      "type": "string"
+                    },
+                    "value": {
+                      "type": [
+                        "number",
+                        "string",
+                        "null"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "field",
+                    "value"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            },
+            "required": [
+              "answer",
+              "facts"
+            ],
+            "additionalProperties": false
+          }
+        }
+      }
+    },
+    "response": {
+      "status": "completed",
+      "output": [
+        {
+          "type": "message",
+          "content": [
+            {
+              "type": "output_text",
+              "text": "{\n  \"answer\": \"This one-month projection uses a fixed APR and monthly payment to calculate your balance after one month, but it cannot show a full payoff because the horizon is limited to one month. No payment execution is available.\",\n  \"facts\": [\n    {\n      \"field\": \"balanceCents\",\n      \"value\": 100000\n    },\n    {\n      \"field\": \"aprPercent\",\n      \"value\": 12\n    },\n    {\n      \"field\": \"monthlyPaymentCents\",\n      \"value\": 10000\n    },\n    {\n      \"field\": \"maxMonths\",\n      \"value\": 1\n    }\n  ]\n}"
+            }
+          ]
+        }
+      ],
+      "raw": {
+        "choices": [
+          {
+            "finish_reason": "stop",
+            "index": 0,
+            "message": {
+              "content": "{\n  \"answer\": \"This one-month projection uses a fixed APR and monthly payment to calculate your balance after one month, but it cannot show a full payoff because the horizon is limited to one month. No payment execution is available.\",\n  \"facts\": [\n    {\n      \"field\": \"balanceCents\",\n      \"value\": 100000\n    },\n    {\n      \"field\": \"aprPercent\",\n      \"value\": 12\n    },\n    {\n      \"field\": \"monthlyPaymentCents\",\n      \"value\": 10000\n    },\n    {\n      \"field\": \"maxMonths\",\n      \"value\": 1\n    }\n  ]\n}",
+              "extra_content": {
+                "google": {
+                  "thought_signature": "EmAKXgFpFH0TixnWAsIWXHPo0c3mpGGfWL6HU5DBiYyZrfp5655WNKp5P2ECFOJmoDkuJJFBqEM8BEz45hjY0Rr9S/eTzZ6bRXjr2QJllOKch+GQ2oYVmROXQvBVwisQhKI="
+                }
+              },
+              "role": "assistant"
+            }
+          }
+        ],
+        "created": 1792873529,
+        "id": "OBTdarq4Ns-2uMYPl7Sl6AY",
+        "model": "gemini-3.5-flash-lite",
+        "object": "chat.completion",
+        "usage": {
+          "completion_tokens": 161,
+          "prompt_tokens": 371,
+          "total_tokens": 532
+        }
+      },
+      "providerRequest": {
+        "model": "gemini-3.5-flash-lite",
+        "messages": [
+          {
+            "role": "system",
+            "content": "You are a financial education advisor working with synthetic USD data.\nExplain the customer's task clearly and state limitations. Do not invent sources, probabilities,\naffordability, or successful actions. No payment execution is available. The supported projection\nmodel has fixed APR and payments, monthly interest rounded to cents before a month-end payment,\nno fees or new borrowing, and a default 1200-month horizon. Time-varying payments are unsupported.\nMoney is integer cents; APR is a percentage (12 means 12%). Validate nonnegative integer money\nup to 1e12 cents, APR from 0 to 1000, and horizon from 1 to 1200. Cap final payment at amount owed.\nStatuses: paid_off, payment_too_low (fixed payment cannot reduce principal), horizon_exceeded,\ninvalid_input. A non-completed payoff duration is null, not zero. Already-paid debt takes zero\nmonths. Comparison savings are null unless both plans pay off.\nIf calculation tools are available, use them for supported numerical projections.\nReturn an answer for the customer plus facts containing only claims explicitly made in that answer.\nUse field names status, monthsToPayoff, totalInterestCents, totalPaymentsCents, remainingCents,\nmonthsSaved, interestSavedCents as applicable. Omit facts not asserted. Do not guess missing facts.\nFacts are self-reported claims, not a correctness assessment. Keep the explanation in plain language."
+          },
+          {
+            "role": "user",
+            "content": "{\"input\":{\"balanceCents\":100000,\"aprPercent\":12,\"monthlyPaymentCents\":10000,\"maxMonths\":1},\"question\":\"Explain what this one-month projection can and cannot tell me.\"}"
+          }
+        ],
+        "max_tokens": 4000,
+        "response_format": {
+          "type": "json_schema",
+          "json_schema": {
+            "name": "evaluation_answer",
+            "strict": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "answer": {
+                  "type": "string"
+                },
+                "facts": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "field": {
+                        "type": "string"
+                      },
+                      "value": {
+                        "type": [
+                          "number",
+                          "string",
+                          "null"
+                        ]
+                      }
+                    },
+                    "required": [
+                      "field",
+                      "value"
+                    ],
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "required": [
+                "answer",
+                "facts"
+              ],
+              "additionalProperties": false
+            }
+          }
+        }
+      }
+    }
+  }
+]

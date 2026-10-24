@@ -1,0 +1,109 @@
+{
+  "runId": "2026-10-24T20:25:16.887Z-A",
+  "condition": "A",
+  "mode": "live",
+  "model": "gemini-3.5-flash-lite",
+  "provider": "gemini",
+  "modelSettings": "Gemini Chat Completions compatibility API; provider defaults; output token limit=4000; maxTurns=4",
+  "promptVersion": "clarity-ab-v1",
+  "appVersion": "sha256:4d8751b2c9031bb15c035d6dafc0db6912b104fbc4520c17a818c27455881dd3",
+  "startedAt": "2026-10-24T20:25:16.887Z",
+  "responses": [
+    {
+      "caseId": "debt-zero-rate",
+      "answer": "With a starting balance of 10000 cents, an APR of 0 percent, and a monthly payment of 3000 cents, the debt will be paid off in 4 months. The total interest paid is 0 cents, and the total payments amount to 10000 cents. The remaining balance after payoff is 0 cents.",
+      "facts": {
+        "monthsToPayoff": 4,
+        "totalInterestCents": 0,
+        "totalPaymentsCents": 10000,
+        "remainingCents": 0,
+        "status": "paid_off"
+      },
+      "elapsedMs": 1542,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "debt-interest",
+      "answer": "Your starting balance is 100000 cents with an APR of 12 percent and a fixed monthly payment of 60000 cents. Based on the supported projection model, the debt is paid off in 2 months with a total interest of 694 cents and total payments of 100694 cents, capping the final payment at the amount owed.",
+      "facts": {
+        "status": "paid_off",
+        "monthsToPayoff": 2,
+        "totalInterestCents": 694,
+        "totalPaymentsCents": 100694,
+        "remainingCents": 0
+      },
+      "elapsedMs": 1060,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "payment-too-low",
+      "answer": "Your task involves projecting how long it will take to pay off a debt of $1,000.00 with an APR of 12 percent and a monthly payment of $10.00, using the supported projection model that features fixed APR and payments, monthly interest rounded to cents before a month-end payment, no fees or new borrowing, and a default 1200-month horizon. Time-varying payments are unsupported. Money is measured in integer cents, APR is a percentage, and values are validated up to limits. No payment execution is available, and we do not invent sources, probabilities, affordability, or successful actions. Based on the rules, your fixed payment of $10.00 is too low to reduce the principal under these conditions, resulting in a status of payment_too_low.",
+      "facts": {
+        "status": "payment_too_low",
+        "monthsToPayoff": null,
+        "totalInterestCents": null,
+        "totalPaymentsCents": null,
+        "remainingCents": null
+      },
+      "elapsedMs": 1634,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "partial-projection",
+      "answer": "This one-month projection uses a fixed APR and monthly payment to calculate your balance after one month, but it cannot show a full payoff because the horizon is limited to one month. No payment execution is available.",
+      "facts": {
+        "balanceCents": 100000,
+        "aprPercent": 12,
+        "monthlyPaymentCents": 10000,
+        "maxMonths": 1
+      },
+      "elapsedMs": 998,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "already-paid",
+      "answer": "Your debt is already paid off, so it takes zero months to remain debt-free.",
+      "facts": {
+        "monthsToPayoff": 0
+      },
+      "elapsedMs": 1127,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    }
+  ],
+  "extractionMethod": "Model self-reported structured facts; human consistency review pending"
+}

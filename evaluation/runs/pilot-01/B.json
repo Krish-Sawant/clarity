@@ -1,0 +1,167 @@
+{
+  "runId": "B-replace-with-unique-run-id",
+  "condition": "B",
+  "mode": "manual",
+  "model": "",
+  "modelSettings": "",
+  "promptVersion": "",
+  "appVersion": "",
+  "responses": [
+    {
+      "caseId": "debt-zero-rate",
+      "answer": "",
+      "facts": {},
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "debt-interest",
+      "answer": "",
+      "facts": {},
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "payment-too-low",
+      "answer": "",
+      "facts": {},
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "partial-projection",
+      "answer": "",
+      "facts": {},
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "already-paid",
+      "answer": "",
+      "facts": {},
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "extra-payment",
+      "answer": "",
+      "facts": {},
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "unavailable-comparison",
+      "answer": "",
+      "facts": {},
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "invalid-input",
+      "answer": "",
+      "facts": {},
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "explain-apr",
+      "answer": "",
+      "facts": {},
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "unsupported-event",
+      "answer": "",
+      "facts": {},
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "affordability",
+      "answer": "",
+      "facts": {},
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "action-approval",
+      "answer": "",
+      "facts": {},
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    }
+  ]
+}

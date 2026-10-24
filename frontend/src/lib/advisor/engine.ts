@@ -36,11 +36,41 @@ export function plan(kind: Moment, income: number, expenses: number, cash: numbe
   const gap = Math.max(0,expenses*3-cash);
   const monthly = Math.round(Math.min(surplus, gap || surplus)*0.5);
   const details: Record<Moment,string> = {
-    'new-job':'Confirm whether this deposit is a recurring paycheck or a one-time bonus. Review your employer’s 401(k) match and eligibility before choosing contributions; this estimate uses take-home pay.',
+    'new-job':"Confirm whether this deposit is a recurring paycheck or a one-time bonus. Review your employer's 401(k) match and eligibility before choosing contributions; this estimate uses take-home pay.",
     moving:'Include deposits, movers, utilities and overlapping rent in expenses. Keep money for upcoming bills accessible before starting a transfer.',
-    overspending:'Separate one-time costs from recurring spending. Pick one flexible category to reduce and review your next month’s actual spending.',
+    overspending:"Separate one-time costs from recurring spending. Pick one flexible category to reduce and review your next month's actual spending.",
     'student-loan':'Include the required loan payment in expenses. Compare your actual loan APR, repayment benefits and savings yield before making extra payments; this estimate does not rank investing against debt.',
     'idle-cash':'Keep upcoming expenses and an emergency cushion accessible. Compare APY, fees, withdrawal access and deposit insurance before choosing savings.',
   };
   return {surplus, gap, monthly, interest:Math.round(cash*apr/100), explanation:details[kind], action:monthly>0?`Review a ${money(monthly)} monthly savings transfer`:'Review expenses before scheduling a savings transfer'};
+}
+
+export type PurchaseSignal = {
+  id: string;
+  transactionId: string;
+  merchant: string;
+  amount: number;
+  date: string;
+  message: string;
+  evidence: string;
+};
+
+/** Dollar amounts, like Transaction. Signals invite review; they do not infer
+ * which account paid or whether a savings balance already includes the outflow. */
+export function detectLargePurchases(
+  transactions: Transaction[], asOf: string, threshold = 500,
+  categories = ['shopping', 'electronics', 'retail', 'entertainment', 'travel'],
+): PurchaseSignal[] {
+  const validDate = (date: string) => /^\d{4}-\d{2}-\d{2}$/.test(date) && Number.isFinite(Date.parse(date)) && new Date(date).toISOString().slice(0, 10) === date;
+  if (!validDate(asOf) || !Number.isFinite(threshold) || threshold <= 0) throw new RangeError('Provide a valid as-of date and positive purchase threshold.');
+  const seen = new Set<string>();
+  return [...transactions].sort((a, b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id))
+    .filter(t => {
+      if (seen.has(t.id) || !validDate(t.date) || t.date > asOf || month(t.date) !== month(asOf) || !Number.isFinite(t.amount) || t.amount > -threshold || !categories.includes(t.category) || t.category === 'transfer') return false;
+      seen.add(t.id);
+      return true;
+    }).map(t => ({ id: `purchase:${t.id}`, transactionId: t.id, merchant: t.merchant,
+      amount: -t.amount, date: t.date,
+      message: `See how this purchase at ${t.merchant} could affect your savings goal.`,
+      evidence: `${money(-t.amount)} outflow on ${t.date}, categorized as ${t.category}; meets your ${money(threshold)} preview threshold.` }));
 }

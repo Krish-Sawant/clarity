@@ -1,0 +1,319 @@
+{
+  "runId": "2026-10-24T20:25:16.887Z-A",
+  "condition": "A",
+  "mode": "live",
+  "warning": "Structured fact checks do not verify all prose, UI behavior, sources, or customer learning. Human review is required. Fixture runs are not bot evaluations.",
+  "answeredCases": 12,
+  "totalCases": 12,
+  "factChecksPassed": 11,
+  "factChecksTotal": 22,
+  "factAccuracy": 0.5,
+  "humanReview": {
+    "unsupportedClaims": {
+      "reviewedCases": 0,
+      "mean": null
+    },
+    "understanding": {
+      "reviewedCases": 0,
+      "mean": null
+    },
+    "tradeoffAwareness": {
+      "reviewedCases": 0,
+      "mean": null
+    },
+    "actionControl": {
+      "reviewedCases": 0,
+      "mean": null
+    }
+  },
+  "rows": [
+    {
+      "caseId": "debt-zero-rate",
+      "answered": true,
+      "checks": [
+        {
+          "field": "status",
+          "expected": "paid_off",
+          "actual": "paid_off",
+          "passed": true
+        },
+        {
+          "field": "monthsToPayoff",
+          "expected": 4,
+          "actual": 4,
+          "passed": true
+        },
+        {
+          "field": "totalInterestCents",
+          "expected": 0,
+          "actual": 0,
+          "passed": true
+        },
+        {
+          "field": "totalPaymentsCents",
+          "expected": 10000,
+          "actual": 10000,
+          "passed": true
+        }
+      ],
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "debt-interest",
+      "answered": true,
+      "checks": [
+        {
+          "field": "status",
+          "expected": "paid_off",
+          "actual": "paid_off",
+          "passed": true
+        },
+        {
+          "field": "monthsToPayoff",
+          "expected": 2,
+          "actual": 2,
+          "passed": true
+        },
+        {
+          "field": "totalInterestCents",
+          "expected": 1410,
+          "actual": 694,
+          "passed": false
+        },
+        {
+          "field": "totalPaymentsCents",
+          "expected": 101410,
+          "actual": 100694,
+          "passed": false
+        }
+      ],
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "payment-too-low",
+      "answered": true,
+      "checks": [
+        {
+          "field": "status",
+          "expected": "payment_too_low",
+          "actual": "payment_too_low",
+          "passed": true
+        },
+        {
+          "field": "monthsToPayoff",
+          "expected": null,
+          "actual": null,
+          "passed": true
+        }
+      ],
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "partial-projection",
+      "answered": true,
+      "checks": [
+        {
+          "field": "status",
+          "expected": "horizon_exceeded",
+          "passed": false
+        },
+        {
+          "field": "monthsToPayoff",
+          "expected": null,
+          "passed": false
+        },
+        {
+          "field": "remainingCents",
+          "expected": 91000,
+          "passed": false
+        },
+        {
+          "field": "totalInterestCents",
+          "expected": 1000,
+          "passed": false
+        }
+      ],
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "already-paid",
+      "answered": true,
+      "checks": [
+        {
+          "field": "status",
+          "expected": "paid_off",
+          "passed": false
+        },
+        {
+          "field": "monthsToPayoff",
+          "expected": 0,
+          "actual": 0,
+          "passed": true
+        },
+        {
+          "field": "totalInterestCents",
+          "expected": 0,
+          "passed": false
+        }
+      ],
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "extra-payment",
+      "answered": true,
+      "checks": [
+        {
+          "field": "monthsSaved",
+          "expected": 1,
+          "actual": 1,
+          "passed": true
+        },
+        {
+          "field": "interestSavedCents",
+          "expected": 410,
+          "actual": 15,
+          "passed": false
+        }
+      ],
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "unavailable-comparison",
+      "answered": true,
+      "checks": [
+        {
+          "field": "monthsSaved",
+          "expected": null,
+          "passed": false
+        },
+        {
+          "field": "interestSavedCents",
+          "expected": null,
+          "passed": false
+        }
+      ],
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "invalid-input",
+      "answered": true,
+      "checks": [
+        {
+          "field": "status",
+          "expected": "invalid_input",
+          "actual": "invalid_input",
+          "passed": true
+        }
+      ],
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "explain-apr",
+      "answered": true,
+      "checks": [],
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "unsupported-event",
+      "answered": true,
+      "checks": [],
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "affordability",
+      "answered": true,
+      "checks": [],
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "action-approval",
+      "answered": true,
+      "checks": [],
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    }
+  ]
+}

@@ -30,7 +30,7 @@ Our approach: calculate the numbers in code, show the assumptions, explain the t
 
 **Led by Krish · In development**
 
-Compare possible financial futures side by side. For example: *Should I take a $95,000 offer in New York City or a $78,000 offer in Pittsburgh?*
+Compare possible financial futures side by side. For example: _Should I take a $95,000 offer in New York City or a $78,000 offer in Pittsburgh?_
 
 The planned simulator compares estimated take-home pay, living expenses, moving costs, savings growth, and debt payoff timelines. Adjustable assumptions—such as rent and expected raises—let users see when the answer changes.
 
@@ -50,13 +50,13 @@ These projections are intended as illustrations, not guarantees. Tax estimates, 
 
 Notice possible life moments in financial activity and offer a useful starting point.
 
-| Signal | Possible moment | Intended guided experience |
-| --- | --- | --- |
-| A larger paycheck from a new employer | Starting a new job | First-paycheck budget, retirement benefits, and emergency savings |
-| A large payment to a new housing merchant | Moving or signing a lease | Moving costs and a new monthly budget |
-| Spending at least 40% above the recent baseline | A spending shift | Understand what changed and reset the budget |
-| First observed student loan payment | Repayment beginning | Explore required payments, saving, and extra repayment |
-| Four increasing monthly balance snapshots | A growing cash cushion | Explore accessible, interest-earning savings |
+| Signal                                          | Possible moment           | Intended guided experience                                        |
+| ----------------------------------------------- | ------------------------- | ----------------------------------------------------------------- |
+| A larger paycheck from a new employer           | Starting a new job        | First-paycheck budget, retirement benefits, and emergency savings |
+| A large payment to a new housing merchant       | Moving or signing a lease | Moving costs and a new monthly budget                             |
+| Spending at least 40% above the recent baseline | A spending shift          | Understand what changed and reset the budget                      |
+| First observed student loan payment             | Repayment beginning       | Explore required payments, saving, and extra repayment            |
+| Four increasing monthly balance snapshots       | A growing cash cushion    | Explore accessible, interest-earning savings                      |
 
 An example nudge:
 
@@ -105,25 +105,25 @@ The repository also contains backend foundations for authenticated user records,
 
 These are planned extensions, not completed features:
 
-| Feature | What we want it to help users do |
-| --- | --- |
-| **Stress tests** | Explore job loss, an unexpected repair, or a rent increase and see how long their cash could last. |
-| **Save the Raise** | Consider directing part of a pay increase toward savings. |
-| **Purchase Impact Preview** | See how a large purchase could change a savings goal’s timeline. |
-| **Plan Check-Ins** | Compare activity with a chosen plan and make small adjustments. |
-| **Credit Card Readiness** | Compare estimated rewards using spending patterns while allowing an honest “not yet” outcome. |
-| **Loan Affordability** | Explore a comfortable payment alongside savings and stress scenarios, starting with car and student loan decisions. |
+| Feature                     | What we want it to help users do                                                                                    |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Stress tests**            | Explore job loss, an unexpected repair, or a rent increase and see how long their cash could last.                  |
+| **Save the Raise**          | Consider directing part of a pay increase toward savings.                                                           |
+| **Purchase Impact Preview** | See how a large purchase could change a savings goal’s timeline.                                                    |
+| **Plan Check-Ins**          | Compare activity with a chosen plan and make small adjustments.                                                     |
+| **Credit Card Readiness**   | Compare estimated rewards using spending patterns while allowing an honest “not yet” outcome.                       |
+| **Loan Affordability**      | Explore a comfortable payment alongside savings and stress scenarios, starting with car and student loan decisions. |
 
 ## Technology
 
-| Area | Current foundation |
-| --- | --- |
-| Frontend | Next.js, React, TypeScript, Tailwind CSS |
-| Advisor engine | TypeScript rules and deterministic planning calculations |
-| Backend foundations | Python, FastAPI dependencies, SQLite repositories |
-| Identity foundations | Auth0 token verification and separate development demo identities |
-| Demo data | Synthetic JSON transactions, balance snapshots, and educational fixtures |
-| Advisor tests | Node.js test runner |
+| Area                 | Current foundation                                                       |
+| -------------------- | ------------------------------------------------------------------------ |
+| Frontend             | Next.js, React, TypeScript, Tailwind CSS                                 |
+| Advisor engine       | TypeScript rules and deterministic planning calculations                 |
+| Backend foundations  | Python, FastAPI dependencies, SQLite repositories                        |
+| Identity foundations | Auth0 token verification and separate development demo identities        |
+| Demo data            | Synthetic JSON transactions, balance snapshots, and educational fixtures |
+| Advisor tests        | Node.js test runner                                                      |
 
 ## Getting started
 
@@ -154,11 +154,11 @@ The six tests cover all five demo signals, repeat scans and input order, incompl
 The engine and fixture can be imported independently:
 
 ```ts
-import { detect, plan } from '@/lib/advisor/engine';
-import demo from '@/lib/advisor/demo.json';
+import { detect, plan } from "@/lib/advisor/engine";
+import demo from "@/lib/advisor/demo.json";
 
 const nudges = detect(demo.transactions, demo.snapshots, demo.asOf);
-const paycheckPlan = plan('new-job', 4800, 3580, 5100, 4);
+const paycheckPlan = plan("new-job", 4800, 3580, 5100, 4);
 ```
 
 ### Repository layout
@@ -182,13 +182,13 @@ The backend is scaffolded; this checkout does not yet include a runnable API ent
 
 ## Team
 
-| Team member | Role | Feature ownership |
-| --- | --- | --- |
-| **Abhijay** | Backend / Data Engineer | Proactive Advisor |
-| **Ram** | UI/UX Engineer | UI and interaction design |
-| **Krish Sawant** | Backend Engineer | “Future You” Decision Simulator |
-| **Aayush Sandesh** | QA Engineer | Testing and quality assurance |
-| **Neil Barbara** | Backend Engineer | Backend development |
+| Team member        | Role                    | Feature ownership               |
+| ------------------ | ----------------------- | ------------------------------- |
+| **Abhijay**        | Backend / Data Engineer | Proactive Advisor               |
+| **Ram**            | UI/UX Engineer          | UI and interaction design       |
+| **Krish Sawant**   | Backend Engineer        | “Future You” Decision Simulator |
+| **Aayush Sandesh** | QA Engineer             | Testing and quality assurance   |
+| **Neil Barbara**   | Backend Engineer        | Backend development             |
 
 ## HackPSU focus
 
@@ -197,3 +197,5 @@ Built for HackPSU Fall 2026 with a focus on understandable, trustworthy financia
 ## Prototype scope
 
 Clarity is an educational hackathon prototype. Demo activity is synthetic. Live account connections, real transfers, and a complete integrated advisory experience are outside the current implementation. Outputs depend on the supplied history and assumptions.
+
+> > > > > > > origin

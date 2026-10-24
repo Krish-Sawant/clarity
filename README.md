@@ -3,6 +3,91 @@
 Pure TypeScript calculations plus a React component for an existing Next.js app.
 No LLM, external API, credentials, or extra runtime dependencies.
 
+## AI advisor experience
+
+The [evaluation harness](evaluation/README.md) provides 12 shared evaluation
+cases, independent calculation fixtures, response scoring for conditions A/B/C,
+human-review rubrics, and a participant-study template. Start with
+`node --experimental-strip-types evaluation/run.mjs engine`.
+
+See [the recorded evaluation results and frontend handoff](docs/EVALUATION_RESULTS.md)
+for both completed pilots: required-fact checks and AI-reviewed explanation
+quality, with source JSON mappings and presentation requirements.
+
+See [the advisor experience plan](docs/AI_ADVISOR_EXPERIENCE.md) for the customer
+journey, visual simulation requirements, connections to this calculation engine,
+educational references, and the first implementation milestone. This is a design
+and integration specification; chat, animated charts, Monte Carlo simulation,
+and banking actions are not implemented yet.
+
+## Hackathon experience: rehearse a money decision
+
+Clarity helps customers practice a decision, understand its consequences, and
+choose a next step. The signature experience is an interactive repayment
+timeline connected to an advisor: explore a plan, try a disruption, understand
+the tradeoff, and review a simulated action.
+
+The features below are planned. The existing calculation engine supports fixed
+payment comparisons; the full advisor experience still needs implementation.
+
+| Feature | Customer interaction | Implementation needed |
+| --- | --- | --- |
+| Two possible futures | Adjust an extra-payment slider and see current and proposed payoff curves side by side, with months and interest saved. | Use `compareExtraPayment` and its schedules; add animated charts and editable dollar input. |
+| Life happens cards | Apply a hypothetical event to a selected month and inspect the revised timeline. | Extend the deterministic engine to support explicit monthly payment changes and test the results. |
+| Explain this change | Tap a changed chart segment or result to learn what changed and why. | Ground the explanation in the selected scenario's calculation outputs and show evidence tags. |
+| Shared chart and chat selection | Select a month to discuss it, or ask a question that highlights the relevant chart section. | Share selected month, scenario revision, and relevant result fields between chart and advisor. |
+| Definitions in context | Tap a marked term or highlight a phrase to open a short explanation. | Add a sourced glossary, contextual explanations, and accessible popovers. |
+| Keep this plan | Save the chosen scenario for review and inspect a proposed next action. | Show amount, timing, destination, and assumptions; require explicit approval for a clearly labeled simulated action. |
+
+### Life happens: first disruption and future extensions
+
+Start with **Skip this month's extra payment**. The regular monthly payment
+continues; only the extra amount is removed for the selected month. This does
+not represent missing a required payment or model late fees or penalties.
+
+Later cards can reduce extra payments for three months or add a one-time payment.
+An unexpected-expense card must ask whether the expense reduces money available
+for repayment or adds new debt. Those require different calculation behavior.
+
+Represent events as explicit scenario inputs and calculate the revised schedule
+in code. The current fixed-payment engine cannot model these events accurately
+by averaging payments or changing chart points. The advisor explains results
+returned by the extended engine; it does not calculate the forecast itself.
+
+These are customer-controlled hypothetical events, with no claimed probability.
+Prioritize this interaction ahead of Monte Carlo for the first demo. Monte Carlo
+remains a later feature requiring a justified uncertainty model, as described
+in the advisor experience plan.
+
+### Demo sequence
+
+1. **Here is your current path:** load clearly labeled synthetic data and show
+   the baseline balance, payment, interest, and estimated payoff time.
+2. **What if you paid a little more?** Adjust the extra-payment control; animate
+   the proposed curve and update the calculated savings.
+3. **Could you keep this up?** Select a month and skip its extra payment using
+   a Life happens card. Allow the event to be removed or reset.
+4. **Here is what that changes:** compare the revised outcome with the original
+   proposal and baseline. Explain the selected change with calculation evidence.
+5. **Keep this plan:** review the scenario and explicitly approve a simulated
+   next action. Do not imply a real transfer or payment has occurred.
+
+### Feature acceptance requirements
+
+- Chart, summary, and chat use the same scenario revision and calculated values.
+- A disruption creates a distinct scenario so the customer can compare and undo it.
+- The extended engine verifies event timing, balance conservation, final payment
+  capping, and events after payoff before disruption forecasts are displayed.
+- Selecting a month exposes its exact schedule values; an explanation references
+  those values rather than inventing amounts or outcomes.
+- Evidence distinguishes synthetic inputs, calculated projections, and sourced
+  educational explanations. Affordability is not inferred from payoff results.
+- Animations respect reduced-motion settings; controls support keyboards, and
+  charts have readable values or a table alternative.
+- All existing status and null-handling rules below also apply to revised plans.
+- Changing a selected scenario invalidates its previous action preview and
+  requires a fresh review before approval.
+
 ## Files and responsibilities
 
 | File | Responsibility |

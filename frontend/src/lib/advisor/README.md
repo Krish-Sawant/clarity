@@ -1,5 +1,10 @@
 # Proactive Advisor
 
+## Purchase Impact Preview
+
+See [Purchase Impact Preview](PURCHASE_IMPACT.md) for the large-purchase detector,
+shared-simulator calculation contract, and interactive `/purchase-impact` demo.
+
 **Clarity · Core Feature 2 · Built by Abhijay**
 
 A reusable engine that detects possible life moments in financial activity and produces timely nudges with transparent planning calculations.

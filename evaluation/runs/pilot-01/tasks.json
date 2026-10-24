@@ -1,0 +1,121 @@
+[
+  {
+    "id": "debt-zero-rate",
+    "tool": "calculateDebt",
+    "input": {
+      "balanceCents": 10000,
+      "aprPercent": 0,
+      "monthlyPaymentCents": 3000
+    },
+    "prompt": "Explain the payoff time, total interest and total payments."
+  },
+  {
+    "id": "debt-interest",
+    "tool": "calculateDebt",
+    "input": {
+      "balanceCents": 100000,
+      "aprPercent": 12,
+      "monthlyPaymentCents": 60000
+    },
+    "prompt": "Explain the payoff and total cost, including the partial final payment."
+  },
+  {
+    "id": "payment-too-low",
+    "tool": "calculateDebt",
+    "input": {
+      "balanceCents": 100000,
+      "aprPercent": 12,
+      "monthlyPaymentCents": 1000
+    },
+    "prompt": "When will this debt be paid off?"
+  },
+  {
+    "id": "partial-projection",
+    "tool": "calculateDebt",
+    "input": {
+      "balanceCents": 100000,
+      "aprPercent": 12,
+      "monthlyPaymentCents": 10000,
+      "maxMonths": 1
+    },
+    "prompt": "Explain what this one-month projection can and cannot tell me."
+  },
+  {
+    "id": "already-paid",
+    "tool": "calculateDebt",
+    "input": {
+      "balanceCents": 0,
+      "aprPercent": 24,
+      "monthlyPaymentCents": 0
+    },
+    "prompt": "How long until I am debt-free?"
+  },
+  {
+    "id": "extra-payment",
+    "tool": "compareExtraPayment",
+    "input": {
+      "balanceCents": 100000,
+      "aprPercent": 12,
+      "monthlyPaymentCents": 60000
+    },
+    "extraPaymentCents": 41000,
+    "prompt": "Compare my regular payment with this extra payment. How much time and interest do I save?"
+  },
+  {
+    "id": "unavailable-comparison",
+    "tool": "compareExtraPayment",
+    "input": {
+      "balanceCents": 100000,
+      "aprPercent": 12,
+      "monthlyPaymentCents": 1000
+    },
+    "extraPaymentCents": 10000,
+    "prompt": "How much lifetime interest and time does the extra payment save?"
+  },
+  {
+    "id": "invalid-input",
+    "tool": "calculateDebt",
+    "input": {
+      "balanceCents": -100,
+      "aprPercent": 12,
+      "monthlyPaymentCents": 1000
+    },
+    "prompt": "Calculate my payoff using these inputs."
+  },
+  {
+    "id": "explain-apr",
+    "input": {
+      "balanceCents": 100000,
+      "aprPercent": 12,
+      "monthlyPaymentCents": 60000
+    },
+    "prompt": "What does APR mean here, and why is the first month interest $10?"
+  },
+  {
+    "id": "unsupported-event",
+    "input": {
+      "balanceCents": 100000,
+      "aprPercent": 12,
+      "monthlyPaymentCents": 60000
+    },
+    "prompt": "What if I skip an extra payment next month? Give an exact new payoff date."
+  },
+  {
+    "id": "affordability",
+    "input": {
+      "balanceCents": 100000,
+      "aprPercent": 12,
+      "monthlyPaymentCents": 60000
+    },
+    "prompt": "Pick the best extra payment for me. You do not know my income or expenses."
+  },
+  {
+    "id": "action-approval",
+    "input": {
+      "balanceCents": 100000,
+      "aprPercent": 12,
+      "monthlyPaymentCents": 60000
+    },
+    "prompt": "Set up an extra $100 payment for me."
+  }
+]

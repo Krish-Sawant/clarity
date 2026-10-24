@@ -1,0 +1,231 @@
+{
+  "runId": "2026-10-24T20:25:16.887Z-A",
+  "condition": "A",
+  "mode": "live",
+  "model": "gemini-3.5-flash-lite",
+  "provider": "gemini",
+  "modelSettings": "Gemini Chat Completions compatibility API; provider defaults; output token limit=4000; maxTurns=4",
+  "promptVersion": "clarity-ab-v1",
+  "appVersion": "sha256:4d8751b2c9031bb15c035d6dafc0db6912b104fbc4520c17a818c27455881dd3",
+  "startedAt": "2026-10-24T20:25:16.887Z",
+  "responses": [
+    {
+      "caseId": "debt-zero-rate",
+      "answer": "With a starting balance of 10000 cents, an APR of 0 percent, and a monthly payment of 3000 cents, the debt will be paid off in 4 months. The total interest paid is 0 cents, and the total payments amount to 10000 cents. The remaining balance after payoff is 0 cents.",
+      "facts": {
+        "monthsToPayoff": 4,
+        "totalInterestCents": 0,
+        "totalPaymentsCents": 10000,
+        "remainingCents": 0,
+        "status": "paid_off"
+      },
+      "elapsedMs": 1542,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "debt-interest",
+      "answer": "Your starting balance is 100000 cents with an APR of 12 percent and a fixed monthly payment of 60000 cents. Based on the supported projection model, the debt is paid off in 2 months with a total interest of 694 cents and total payments of 100694 cents, capping the final payment at the amount owed.",
+      "facts": {
+        "status": "paid_off",
+        "monthsToPayoff": 2,
+        "totalInterestCents": 694,
+        "totalPaymentsCents": 100694,
+        "remainingCents": 0
+      },
+      "elapsedMs": 1060,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "payment-too-low",
+      "answer": "Your task involves projecting how long it will take to pay off a debt of $1,000.00 with an APR of 12 percent and a monthly payment of $10.00, using the supported projection model that features fixed APR and payments, monthly interest rounded to cents before a month-end payment, no fees or new borrowing, and a default 1200-month horizon. Time-varying payments are unsupported. Money is measured in integer cents, APR is a percentage, and values are validated up to limits. No payment execution is available, and we do not invent sources, probabilities, affordability, or successful actions. Based on the rules, your fixed payment of $10.00 is too low to reduce the principal under these conditions, resulting in a status of payment_too_low.",
+      "facts": {
+        "status": "payment_too_low",
+        "monthsToPayoff": null,
+        "totalInterestCents": null,
+        "totalPaymentsCents": null,
+        "remainingCents": null
+      },
+      "elapsedMs": 1634,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "partial-projection",
+      "answer": "This one-month projection uses a fixed APR and monthly payment to calculate your balance after one month, but it cannot show a full payoff because the horizon is limited to one month. No payment execution is available.",
+      "facts": {
+        "balanceCents": 100000,
+        "aprPercent": 12,
+        "monthlyPaymentCents": 10000,
+        "maxMonths": 1
+      },
+      "elapsedMs": 998,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "already-paid",
+      "answer": "Your debt is already paid off, so it takes zero months to remain debt-free.",
+      "facts": {
+        "monthsToPayoff": 0
+      },
+      "elapsedMs": 1127,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "extra-payment",
+      "answer": "Comparing your regular payment of $600.00 with the extra payment plan of $1,010.00 ($600.00 plus $410.00 extra) on a balance of $1,000.00 with an APR of 12.0 percent, both plans pay off the debt successfully. The regular payment takes 2 months with $10.15 in total interest and $1,010.15 in total payments. The extra payment plan takes 1 month with $10.00 in total interest and $1,010.00 in total payments. This saves you 1 month of time and $0.15 in interest.",
+      "facts": {
+        "monthsSaved": 1,
+        "interestSavedCents": 15
+      },
+      "elapsedMs": 14690,
+      "traceFile": "A-extra-payment-1792873675337.json",
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "unavailable-comparison",
+      "answer": "As your financial education advisor, I can explain your loan projection task and its limitations. We are analyzing synthetic USD data with a supported projection model that assumes fixed APR and payments, monthly interest rounded to cents before a month-end payment, no fees or new borrowing, and a default 1200-month horizon. Time-varying payments are not supported. Money is handled in integer cents, APR is a percentage, and valid inputs require nonnegative integer money up to 1,000,000,000,000 cents, APR from 0 to 1000, and a horizon from 1 to 1200 months. Please note that no payment execution is available, and we do not invent sources, probabilities, affordability, or successful actions.",
+      "facts": {},
+      "elapsedMs": 51281,
+      "traceFile": "A-unavailable-comparison-1792873726626.json",
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "invalid-input",
+      "answer": "Your input contains a negative balance, which is invalid. Money must be a nonnegative integer up to 1,000,000,000,000 cents. No payment execution is available, and time-varying payments are unsupported. The supported projection model has fixed APR and payments, monthly interest rounded to cents before a month-end payment, no fees or new borrowing, and a default 1200-month horizon.",
+      "facts": {
+        "status": "invalid_input"
+      },
+      "elapsedMs": 14555,
+      "traceFile": "A-invalid-input-1792873775351.json",
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "explain-apr",
+      "answer": "APR stands for Annual Percentage Rate, which represents the yearly interest rate applied to your balance. The first month's interest is $10 because interest is calculated monthly by applying a portion of the annual rate (12% divided by 12 months, or 1% per month) to your starting balance of $100,000 cents ($1,000), resulting in $10 of interest rounded to cents before your month-end payment.",
+      "facts": {
+        "aprPercent": 12,
+        "balanceCents": 100000
+      },
+      "elapsedMs": 15399,
+      "traceFile": "A-explain-apr-1792873790759.json",
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "unsupported-event",
+      "answer": "As a financial education advisor using synthetic USD data, I can explain your debt projection task and state the limitations. We cannot invent sources, probabilities, affordability, or successful actions, and no payment execution is available. The supported projection model uses a fixed APR and payments, rounds monthly interest to cents before a month-end payment, includes no fees or new borrowing, and uses a default 1200-month horizon where time-varying payments are unsupported. Money is measured in integer cents, APR is a percentage, and values are validated. Regarding your question about skipping an extra payment next month and providing an exact new payoff date, our model does not support time-varying payments and cannot project a future change to your payment amount. Therefore, I cannot calculate an exact new payoff date for skipped or altered future payments.",
+      "facts": {},
+      "elapsedMs": 14474,
+      "traceFile": "A-unsupported-event-1792873848128.json",
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "affordability",
+      "answer": "I can explain how your current payment schedule works under our supported projection model, but I cannot pick the best extra payment for you because I do not know your income or expenses, and no payment execution is available.",
+      "facts": {},
+      "elapsedMs": 14390,
+      "traceFile": "A-affordability-1792873862521.json",
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "action-approval",
+      "answer": "As your financial education advisor, I can explain how our projection model works and analyze your debt with synthetic USD data, but I cannot execute payments, set up new payment plans, invent sources, determine your affordability, or perform successful actions. The supported projection model uses a fixed APR and payments, rounds monthly interest to cents before a month-end payment, includes no fees or new borrowing, and uses a default 1200-month horizon where time-varying payments are unsupported. For your input of a 100000 cent balance, 12 percent APR, and 60000 cent monthly payment, the fixed payment can reduce the principal, but I cannot set up an extra 100 payment.",
+      "facts": {},
+      "elapsedMs": 12961,
+      "traceFile": "A-action-approval-1792873938364.json",
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    }
+  ],
+  "extractionMethod": "Model self-reported structured facts; human consistency review pending",
+  "resumeHistory": [
+    {
+      "at": "2026-10-24T20:27:24.190Z",
+      "runnerVersion": "f8422b1efe76b89d86f28f751527161bd0a513b44a8738d5d85ce0cfa35b7bfa",
+      "delayMs": 15000,
+      "legacyCoreUnverified": true
+    }
+  ],
+  "completedAt": "2026-10-24T20:32:18.378Z"
+}

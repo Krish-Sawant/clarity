@@ -1,0 +1,232 @@
+{
+  "instructions": "You are a financial education advisor working with synthetic USD data.\nExplain the customer's task clearly and state limitations. Do not invent sources, probabilities,\naffordability, or successful actions. No payment execution is available. The supported projection\nmodel has fixed APR and payments, monthly interest rounded to cents before a month-end payment,\nno fees or new borrowing, and a default 1200-month horizon. Time-varying payments are unsupported.\nMoney is integer cents; APR is a percentage (12 means 12%). Validate nonnegative integer money\nup to 1e12 cents, APR from 0 to 1000, and horizon from 1 to 1200. Cap final payment at amount owed.\nStatuses: paid_off, payment_too_low (fixed payment cannot reduce principal), horizon_exceeded,\ninvalid_input. A non-completed payoff duration is null, not zero. Already-paid debt takes zero\nmonths. Comparison savings are null unless both plans pay off.\nIf calculation tools are available, use them for supported numerical projections.\nReturn an answer for the customer plus facts containing only claims explicitly made in that answer.\nUse field names status, monthsToPayoff, totalInterestCents, totalPaymentsCents, remainingCents,\nmonthsSaved, interestSavedCents as applicable. Omit facts not asserted. Do not guess missing facts.\nFacts are self-reported claims, not a correctness assessment. Keep the explanation in plain language.",
+  "outputFormat": {
+    "type": "json_schema",
+    "name": "evaluation_answer",
+    "strict": true,
+    "schema": {
+      "type": "object",
+      "properties": {
+        "answer": {
+          "type": "string"
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "field": {
+                "type": "string"
+              },
+              "value": {
+                "type": [
+                  "number",
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "field",
+              "value"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "answer",
+        "facts"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "toolDefinitions": [
+    {
+      "type": "function",
+      "name": "calculateDebt",
+      "description": "Calculate a fixed-payment debt projection; validates inputs.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "balanceCents": {
+            "type": "number"
+          },
+          "aprPercent": {
+            "type": "number"
+          },
+          "monthlyPaymentCents": {
+            "type": "number"
+          },
+          "maxMonths": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          }
+        },
+        "required": [
+          "balanceCents",
+          "aprPercent",
+          "monthlyPaymentCents",
+          "maxMonths"
+        ],
+        "additionalProperties": false
+      }
+    },
+    {
+      "type": "function",
+      "name": "compareExtraPayment",
+      "description": "Compare fixed regular and extra monthly payments.",
+      "strict": true,
+      "parameters": {
+        "type": "object",
+        "properties": {
+          "balanceCents": {
+            "type": "number"
+          },
+          "aprPercent": {
+            "type": "number"
+          },
+          "monthlyPaymentCents": {
+            "type": "number"
+          },
+          "maxMonths": {
+            "type": [
+              "integer",
+              "null"
+            ]
+          },
+          "extraPaymentCents": {
+            "type": "number"
+          }
+        },
+        "required": [
+          "balanceCents",
+          "aprPercent",
+          "monthlyPaymentCents",
+          "maxMonths",
+          "extraPaymentCents"
+        ],
+        "additionalProperties": false
+      }
+    }
+  ],
+  "startedAt": "2026-10-24T20:25:16.887Z",
+  "version": "f8422b1efe76b89d86f28f751527161bd0a513b44a8738d5d85ce0cfa35b7bfa",
+  "coreVersion": "3a4b1a55940dcf1c8c34c36230f50b9612c5807a9f5f12ae29eee10fc74cfdf4",
+  "tasks": [
+    {
+      "id": "debt-zero-rate",
+      "input": {
+        "balanceCents": 10000,
+        "aprPercent": 0,
+        "monthlyPaymentCents": 3000
+      },
+      "prompt": "Explain the payoff time, total interest and total payments."
+    },
+    {
+      "id": "debt-interest",
+      "input": {
+        "balanceCents": 100000,
+        "aprPercent": 12,
+        "monthlyPaymentCents": 60000
+      },
+      "prompt": "Explain the payoff and total cost, including the partial final payment."
+    },
+    {
+      "id": "payment-too-low",
+      "input": {
+        "balanceCents": 100000,
+        "aprPercent": 12,
+        "monthlyPaymentCents": 1000
+      },
+      "prompt": "When will this debt be paid off?"
+    },
+    {
+      "id": "partial-projection",
+      "input": {
+        "balanceCents": 100000,
+        "aprPercent": 12,
+        "monthlyPaymentCents": 10000,
+        "maxMonths": 1
+      },
+      "prompt": "Explain what this one-month projection can and cannot tell me."
+    },
+    {
+      "id": "already-paid",
+      "input": {
+        "balanceCents": 0,
+        "aprPercent": 24,
+        "monthlyPaymentCents": 0
+      },
+      "prompt": "How long until I am debt-free?"
+    },
+    {
+      "id": "extra-payment",
+      "input": {
+        "balanceCents": 100000,
+        "aprPercent": 12,
+        "monthlyPaymentCents": 60000
+      },
+      "extraPaymentCents": 41000,
+      "prompt": "Compare my regular payment with this extra payment. How much time and interest do I save?"
+    },
+    {
+      "id": "unavailable-comparison",
+      "input": {
+        "balanceCents": 100000,
+        "aprPercent": 12,
+        "monthlyPaymentCents": 1000
+      },
+      "extraPaymentCents": 10000,
+      "prompt": "How much lifetime interest and time does the extra payment save?"
+    },
+    {
+      "id": "invalid-input",
+      "input": {
+        "balanceCents": -100,
+        "aprPercent": 12,
+        "monthlyPaymentCents": 1000
+      },
+      "prompt": "Calculate my payoff using these inputs."
+    },
+    {
+      "id": "explain-apr",
+      "input": {
+        "balanceCents": 100000,
+        "aprPercent": 12,
+        "monthlyPaymentCents": 60000
+      },
+      "prompt": "What does APR mean here, and why is the first month interest $10?"
+    },
+    {
+      "id": "unsupported-event",
+      "input": {
+        "balanceCents": 100000,
+        "aprPercent": 12,
+        "monthlyPaymentCents": 60000
+      },
+      "prompt": "What if I skip an extra payment next month? Give an exact new payoff date."
+    },
+    {
+      "id": "affordability",
+      "input": {
+        "balanceCents": 100000,
+        "aprPercent": 12,
+        "monthlyPaymentCents": 60000
+      },
+      "prompt": "Pick the best extra payment for me. You do not know my income or expenses."
+    },
+    {
+      "id": "action-approval",
+      "input": {
+        "balanceCents": 100000,
+        "aprPercent": 12,
+        "monthlyPaymentCents": 60000
+      },
+      "prompt": "Set up an extra $100 payment for me."
+    }
+  ]
+}

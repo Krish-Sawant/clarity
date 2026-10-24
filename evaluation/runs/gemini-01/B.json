@@ -1,0 +1,263 @@
+{
+  "runId": "2026-10-24T20:25:16.887Z-B",
+  "condition": "B",
+  "mode": "live",
+  "model": "gemini-3.5-flash-lite",
+  "provider": "gemini",
+  "modelSettings": "Gemini Chat Completions compatibility API; provider defaults; output token limit=4000; maxTurns=4",
+  "promptVersion": "clarity-ab-v1",
+  "appVersion": "sha256:4d8751b2c9031bb15c035d6dafc0db6912b104fbc4520c17a818c27455881dd3",
+  "startedAt": "2026-10-24T20:25:16.887Z",
+  "responses": [
+    {
+      "caseId": "debt-zero-rate",
+      "answer": "Your debt will be paid off in 4 months with total interest of 0 cents and total payments of 10,000 cents. Note that the supported projection model uses fixed APR and payments, monthly interest rounded to cents before a month-end payment, no fees or new borrowing, and a default 1200-month horizon. No payment execution is available.",
+      "facts": {
+        "status": "paid_off",
+        "monthsToPayoff": 4,
+        "totalInterestCents": 0,
+        "totalPaymentsCents": 10000
+      },
+      "elapsedMs": 2005,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "debt-interest",
+      "answer": "Your debt will be paid off in 2 months. The total interest paid will be 14.10 dollars, and the total payments made will be 1014.10 dollars, including a partial final payment of 414.10 dollars in the second month. There is no payment execution available, and this projection assumes a fixed APR and monthly payments with monthly interest rounded to cents.",
+      "facts": {
+        "status": "paid_off",
+        "monthsToPayoff": 2,
+        "totalInterestCents": 1410,
+        "totalPaymentsCents": 101410,
+        "remainingCents": 0
+      },
+      "elapsedMs": 1680,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "payment-too-low",
+      "answer": "Your fixed payment of $10.00 is too low to reduce the principal on your $1,000.00 balance at a 12% APR, so the debt cannot be paid off under this plan. We can only project fixed-payment debt based on the supported model using monthly interest rounded to cents before month-end payment, with no fees or new borrowing, and we do not execute payments.",
+      "facts": {
+        "status": "payment_too_low",
+        "monthsToPayoff": null,
+        "totalInterestCents": 0,
+        "totalPaymentsCents": 0,
+        "remainingCents": 100000
+      },
+      "elapsedMs": 2002,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "partial-projection",
+      "answer": "This one-month projection tells you that with a starting balance of 1,000.00 dollars, an annual percentage rate of 12 percent, and a monthly payment of 100.00 dollars, the status after one month is horizon exceeded, with 910.00 dollars remaining, total interest of 10.00 dollars, and total payments of 100.00 dollars. Because the horizon is limited to one month, it cannot tell you the total months to payoff, total interest, or total payments required to fully pay off the debt. No payment execution is available, and time-varying payments are unsupported. Money is calculated in integer cents, monthly interest is rounded to cents before a month-end payment, and there are no fees or new borrowing.",
+      "facts": {
+        "status": "horizon_exceeded",
+        "monthsToPayoff": null,
+        "totalInterestCents": 1000,
+        "totalPaymentsCents": 10000,
+        "remainingCents": 91000
+      },
+      "elapsedMs": 2027,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "already-paid",
+      "answer": "As your current balance is zero, your debt is already paid off, taking zero months.",
+      "facts": {
+        "status": "paid_off",
+        "monthsToPayoff": 0
+      },
+      "elapsedMs": 1553,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "extra-payment",
+      "answer": "Comparing your regular monthly payment of $600.00 with the accelerated plan including your extra payment of $410.00, your regular payment pays off the debt in 2 months with a total interest of $14.10 and total payments of $1,014.10. The accelerated plan pays off the debt in 1 month with a total interest of $10.00 and total payments of $1,010.00. By adding the extra payment, you save 1 month and $4.10 in interest. Please note that our supported projection model assumes a fixed APR and payments, monthly interest rounded to cents before a month-end payment, no fees or new borrowing, and a default 1200-month horizon. Time-varying payments are unsupported, no payment execution is available, and actual issuer daily-interest methods can differ.",
+      "facts": {
+        "monthsToPayoff": 2,
+        "totalInterestCents": 1410,
+        "totalPaymentsCents": 101410,
+        "monthsSaved": 1,
+        "interestSavedCents": 410
+      },
+      "elapsedMs": 16435,
+      "traceFile": "B-extra-payment-1792873660638.json",
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "unavailable-comparison",
+      "answer": "Your baseline regular monthly payment of $10.00 is too low to reduce the principal at a 12% APR, resulting in a payment_too_low status where interest outpaces the payment. Because the baseline plan does not pay off, comparison savings for months and interest cannot be calculated. However, with an accelerated plan adding an extra $100.00 per month (totaling $110.00 monthly), the debt is paid off in 10 months with a total interest of $53.78 and total payments of $1,053.78.",
+      "facts": {
+        "baseline_status": "payment_too_low",
+        "accelerated_status": "paid_off",
+        "monthsToPayoff": 10,
+        "totalInterestCents": 5378,
+        "totalPaymentsCents": 105378,
+        "remainingCents": 0,
+        "monthsSaved": null,
+        "interestSavedCents": null
+      },
+      "elapsedMs": 18172,
+      "traceFile": "B-unavailable-comparison-1792873744804.json",
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "invalid-input",
+      "answer": "Your input contains a negative balance of -100 cents, which is invalid. Money amounts must be nonnegative integers up to 1,000,000,000,000 cents. No payment execution is available, and time-varying payments are unsupported. The supported projection model uses a fixed APR and payments, rounds monthly interest to cents before a month-end payment, has no fees or new borrowing, and uses a default 1200-month horizon. The status of this calculation is invalid_input.",
+      "facts": {
+        "status": "invalid_input"
+      },
+      "elapsedMs": 15976,
+      "traceFile": "B-invalid-input-1792873760788.json",
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "explain-apr",
+      "answer": "APR stands for Annual Percentage Rate, which represents the yearly interest rate charged on your debt. In this case, with a 12 percent APR on a balance of 1,000,000 cents (or $10,000), the monthly interest rate is 1 percent (12 percent divided by 12 months). Applying that 1 percent monthly rate to your starting balance of $1,000 results in $10 of interest for the first month. Please note that no payment execution is available, money must be represented as integer cents, APR can range from 0 to 1000, time-varying payments are unsupported, and the projection model uses fixed APR and payments with monthly interest rounded to cents before a month-end payment.",
+      "facts": {
+        "aprPercent": 12,
+        "balanceCents": 100000,
+        "monthlyPaymentCents": 60000
+      },
+      "elapsedMs": 15576,
+      "traceFile": "B-explain-apr-1792873806343.json",
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "unsupported-event",
+      "answer": "As a financial education advisor, I can explain your debt projection based on the provided details and limitations. No payment execution is available, and time-varying payments or skipping payments are unsupported in our projection model, which assumes fixed APR and payments with a monthly interest calculation rounded to cents before a month-end payment, up to a default 1200-month horizon. Money is tracked in integer cents and APR is a percentage. Based on your current balance of 100,000 cents, an APR of 12 percent, and a monthly payment of 60,000 cents, the projection shows a status of paid_off, taking 2 months to pay off with total interest of 1,410 cents and total payments of 101,410 cents.",
+      "facts": {
+        "status": "paid_off",
+        "monthsToPayoff": 2,
+        "totalInterestCents": 1410,
+        "totalPaymentsCents": 101410
+      },
+      "elapsedMs": 27295,
+      "traceFile": "B-unsupported-event-1792873833643.json",
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "affordability",
+      "answer": "As a financial education advisor, I can explain how debt projections work and run calculations using our supported projection model, but I do not know your income or expenses and cannot determine affordability, recommend a specific extra payment, or execute payments. The supported projection model uses a fixed APR and fixed monthly payments, calculates monthly interest rounded to cents before a month-end payment, includes no fees or new borrowing, and uses a default 1200-month horizon. Time-varying payments are unsupported, money is in integer cents, APR is a percentage, and valid inputs require nonnegative integers up to 1e12 cents, an APR from 0 to 1000, and a horizon from 1 to 1200. For your current balance of 1,000 dollars at 12 percent APR with a monthly payment of 600 dollars, the status is paid off, taking 2 months, with 14.10 dollars in total interest and 1,014.10 dollars in total payments.",
+      "facts": {
+        "status": "paid_off",
+        "monthsToPayoff": 2,
+        "totalInterestCents": 1410,
+        "totalPaymentsCents": 101410,
+        "remainingCents": 0
+      },
+      "elapsedMs": 30649,
+      "traceFile": "B-affordability-1792873893175.json",
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "action-approval",
+      "answer": "I cannot execute payments or update your account. However, based on our supported projection model using fixed APR and payments with monthly interest rounded to cents, comparing your regular $600.00 monthly payment to an accelerated plan with an extra $100.00 payment shows that both plans pay off in 2 months. The baseline plan results in a total of $1,014.10 paid including $14.10 in interest, while the accelerated plan results in a total of $1,013.10 paid including $13.10 in interest. This saves 0 months and $1.00 in interest.",
+      "facts": {
+        "monthsToPayoff": 2,
+        "totalInterestCents": 1310,
+        "totalPaymentsCents": 101310,
+        "remainingCents": 0,
+        "monthsSaved": 0,
+        "interestSavedCents": 100
+      },
+      "elapsedMs": 32208,
+      "traceFile": "B-action-approval-1792873925394.json",
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    }
+  ],
+  "extractionMethod": "Model self-reported structured facts; human consistency review pending",
+  "resumeHistory": [
+    {
+      "at": "2026-10-24T20:27:24.190Z",
+      "runnerVersion": "f8422b1efe76b89d86f28f751527161bd0a513b44a8738d5d85ce0cfa35b7bfa",
+      "delayMs": 15000,
+      "legacyCoreUnverified": true
+    }
+  ],
+  "completedAt": "2026-10-24T20:32:18.378Z"
+}

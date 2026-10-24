@@ -1,0 +1,125 @@
+{
+  "runId": "2026-10-24T20:25:16.887Z-B",
+  "condition": "B",
+  "mode": "live",
+  "model": "gemini-3.5-flash-lite",
+  "provider": "gemini",
+  "modelSettings": "Gemini Chat Completions compatibility API; provider defaults; output token limit=4000; maxTurns=4",
+  "promptVersion": "clarity-ab-v1",
+  "appVersion": "sha256:4d8751b2c9031bb15c035d6dafc0db6912b104fbc4520c17a818c27455881dd3",
+  "startedAt": "2026-10-24T20:25:16.887Z",
+  "responses": [
+    {
+      "caseId": "debt-zero-rate",
+      "answer": "Your debt will be paid off in 4 months with total interest of 0 cents and total payments of 10,000 cents. Note that the supported projection model uses fixed APR and payments, monthly interest rounded to cents before a month-end payment, no fees or new borrowing, and a default 1200-month horizon. No payment execution is available.",
+      "facts": {
+        "status": "paid_off",
+        "monthsToPayoff": 4,
+        "totalInterestCents": 0,
+        "totalPaymentsCents": 10000
+      },
+      "elapsedMs": 2005,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "debt-interest",
+      "answer": "Your debt will be paid off in 2 months. The total interest paid will be 14.10 dollars, and the total payments made will be 1014.10 dollars, including a partial final payment of 414.10 dollars in the second month. There is no payment execution available, and this projection assumes a fixed APR and monthly payments with monthly interest rounded to cents.",
+      "facts": {
+        "status": "paid_off",
+        "monthsToPayoff": 2,
+        "totalInterestCents": 1410,
+        "totalPaymentsCents": 101410,
+        "remainingCents": 0
+      },
+      "elapsedMs": 1680,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "payment-too-low",
+      "answer": "Your fixed payment of $10.00 is too low to reduce the principal on your $1,000.00 balance at a 12% APR, so the debt cannot be paid off under this plan. We can only project fixed-payment debt based on the supported model using monthly interest rounded to cents before month-end payment, with no fees or new borrowing, and we do not execute payments.",
+      "facts": {
+        "status": "payment_too_low",
+        "monthsToPayoff": null,
+        "totalInterestCents": 0,
+        "totalPaymentsCents": 0,
+        "remainingCents": 100000
+      },
+      "elapsedMs": 2002,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "partial-projection",
+      "answer": "This one-month projection tells you that with a starting balance of 1,000.00 dollars, an annual percentage rate of 12 percent, and a monthly payment of 100.00 dollars, the status after one month is horizon exceeded, with 910.00 dollars remaining, total interest of 10.00 dollars, and total payments of 100.00 dollars. Because the horizon is limited to one month, it cannot tell you the total months to payoff, total interest, or total payments required to fully pay off the debt. No payment execution is available, and time-varying payments are unsupported. Money is calculated in integer cents, monthly interest is rounded to cents before a month-end payment, and there are no fees or new borrowing.",
+      "facts": {
+        "status": "horizon_exceeded",
+        "monthsToPayoff": null,
+        "totalInterestCents": 1000,
+        "totalPaymentsCents": 10000,
+        "remainingCents": 91000
+      },
+      "elapsedMs": 2027,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "already-paid",
+      "answer": "As your current balance is zero, your debt is already paid off, taking zero months.",
+      "facts": {
+        "status": "paid_off",
+        "monthsToPayoff": 0
+      },
+      "elapsedMs": 1553,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    },
+    {
+      "caseId": "extra-payment",
+      "answer": "",
+      "facts": {},
+      "error": "Gemini HTTP 429; check model compatibility, key and quota. No automatic retries.",
+      "elapsedMs": 900,
+      "review": {
+        "reviewer": "",
+        "notes": "",
+        "unsupportedClaims": null,
+        "understanding": null,
+        "tradeoffAwareness": null,
+        "actionControl": null
+      }
+    }
+  ],
+  "extractionMethod": "Model self-reported structured facts; human consistency review pending"
+}

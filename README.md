@@ -66,7 +66,7 @@ The current engine returns stable signal IDs, nudge copy, supporting evidence, a
 
 **Still to integrate:** the production UI, shared conversation flow, background scanning, notification delivery, and persistent user actions. The temporary preview UI has been removed. No real transfers occur.
 
-[Read the advisor integration guide](frontend/src/lib/advisor/README.md).
+The advisor implementation currently lives on [`feature/proactive-advisor`](https://github.com/Krish-Sawant/clarity/tree/feature/proactive-advisor). [Read its integration guide](https://github.com/Krish-Sawant/clarity/blob/feature/proactive-advisor/frontend/src/lib/advisor/README.md).
 
 ## Personalized learning journey
 
@@ -141,9 +141,11 @@ Open **http://localhost:3000**. The frontend currently contains the starter page
 
 ### Verify the advisor engine
 
-From `frontend`:
+Until the advisor feature is merged, use its branch to run the implementation. From the repository root:
 
 ```sh
+git switch feature/proactive-advisor
+cd frontend
 node --test tests/advisor.test.mjs
 ```
 
@@ -160,6 +162,8 @@ const paycheckPlan = plan('new-job', 4800, 3580, 5100, 4);
 ```
 
 ### Repository layout
+
+The advisor library and tests shown below are currently on the feature branch.
 
 ```text
 clarity/

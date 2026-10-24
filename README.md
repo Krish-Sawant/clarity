@@ -6,9 +6,9 @@
 
 Clarity helps people understand their finances and make smarter money decisions with personalized, proactive guidance.
 
-**Built for HackPSU · Hackathon prototype · Synthetic financial data**
+**HackPSU Fall 2026 · October 24–25 · Penn State · Synthetic financial data**
 
-[Our idea](#why-clarity) · [Core features](#core-features) · [Roadmap](#roadmap) · [Getting started](#getting-started) · [Team](#team)
+[Our idea](#why-clarity) · [Core features](#core-features) · [Learning journey](#personalized-learning-journey) · [Roadmap](#roadmap) · [Getting started](#getting-started) · [Team](#team)
 
 </div>
 
@@ -18,7 +18,9 @@ Clarity helps people understand their finances and make smarter money decisions 
 
 A bigger salary does not always mean more money left over. A new job, a move, or a first loan payment can change your finances before you have a plan.
 
-We’re building Clarity to make those trade-offs easier to understand. It brings together two experiences: explore how a decision could shape your future, and get timely guidance when your financial activity suggests something has changed.
+We’re building Clarity to make those trade-offs easier to understand. It combines personalized financial learning, side-by-side decision simulations, and timely guidance when financial activity suggests something has changed.
+
+Our goal is financial confidence: give users information they understand, help them see their options, and make their next step actionable.
 
 Our approach: calculate the numbers in code, show the assumptions, explain the trade-offs, and help the user choose a practical next step.
 
@@ -65,6 +67,19 @@ The current engine returns stable signal IDs, nudge copy, supporting evidence, a
 **Still to integrate:** the production UI, shared conversation flow, background scanning, notification delivery, and persistent user actions. The temporary preview UI has been removed. No real transfers occur.
 
 [Read the advisor integration guide](frontend/src/lib/advisor/README.md).
+
+## Personalized learning journey
+
+**Planned experience · Assessment, lesson, and progress-tracking foundations in the backend**
+
+Financial guidance should meet people at their current level of understanding. Our intended learning loop is:
+
+1. **Assess** — Start with a short quiz and financial-habits screening to understand what the user knows and where they need support.
+2. **Learn** — Offer relevant explanations and exercises based on that starting point.
+3. **Apply** — Connect learning to a financial decision or a detected life moment.
+4. **Check progress** — Reassess understanding and habits against the initial screening, then adjust the learning plan.
+
+We plan to tailor guidance across savings, budgeting, retirement, investing, and taxes, with topic-specific advisor styles and explanations suited to the user’s financial literacy. These broader topic experiences are planned; the repository currently includes assessment and educational-content fixtures and persistence foundations, rather than a complete learning UI.
 
 ## How we’re building it
 
@@ -163,8 +178,17 @@ The backend is scaffolded; this checkout does not yet include a runnable API ent
 
 ## Team
 
-- **Krish** — “Future You” Decision Simulator
-- **Abhijay** — Proactive Advisor
+| Team member | Role | Feature ownership |
+| --- | --- | --- |
+| **Abhijay** | Backend / Data Engineer | Proactive Advisor |
+| **Ram** | UI/UX Engineer | UI and interaction design |
+| **Krish Sawant** | Backend Engineer | “Future You” Decision Simulator |
+| **Aayush Sandesh** | QA Engineer | Testing and quality assurance |
+| **Neil Barbara** | Backend Engineer | Backend development |
+
+## HackPSU focus
+
+Built for HackPSU Fall 2026 with a focus on understandable, trustworthy financial decisions—the problem highlighted in the FNB Financial Confidence challenge. Our demo priorities are transparent calculations, user-reviewed choices, and a reproducible synthetic dataset. Competition entries and additional sponsor integrations are team decisions still to be confirmed.
 
 ## Prototype scope
 

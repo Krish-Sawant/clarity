@@ -34,3 +34,30 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# Python
+**/.venv/
+**/__pycache__/
+*.pyc
+**/.pytest_cache/
+
+# Node / Next.js
+**/node_modules/
+**/.next/
+**/dist/
+
+# Secrets
+.env
+.env.*
+**/.env
+**/.env.*
+!.env.example
+!**/.env.example
+
+# Local databases
+*.db
+*.sqlite3
+*.duckdb
+
+# macOS
+.DS_Store

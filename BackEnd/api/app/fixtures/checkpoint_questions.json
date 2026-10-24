@@ -1,0 +1,172 @@
+{
+  "bank_version": "2026.10.24-c1",
+  "stage": "checkpoint",
+  "review_note": "Each item pairs_with exactly one baseline item: same concept_id, difficulty and points; different prompt, numbers and correct-answer text.",
+  "questions": [
+    {
+      "id": "cq-budget-surplus",
+      "version": "1",
+      "pairs_with": "bq-budget-surplus",
+      "domain": "budget",
+      "concept_id": "cash_flow_surplus",
+      "difficulty": 1,
+      "points": 1,
+      "kind": "math",
+      "prompt": "Sam brings home $4,200 a month. Rent, food, transportation and other bills add up to $3,350. What is left each month before saving or extra spending?",
+      "options": [
+        {"id": "a", "text": "$950"},
+        {"id": "b", "text": "$750"},
+        {"id": "c", "text": "$7,550"},
+        {"id": "d", "text": "$850"}
+      ],
+      "correct_option_id": "d",
+      "math_check": {"op": "subtract", "args": [4200, 3350], "expected": 850},
+      "explanation": "Cash flow = take-home pay − expenses. $4,200 − $3,350 = $850.",
+      "source_ids": ["cfpb-budgeting-blog", "fdic-money-smart"]
+    },
+    {
+      "id": "cq-budget-variable",
+      "version": "1",
+      "pairs_with": "bq-budget-fixed",
+      "domain": "budget",
+      "concept_id": "fixed_vs_variable",
+      "difficulty": 1,
+      "points": 1,
+      "kind": "concept",
+      "prompt": "Which of these expenses is most likely to change from month to month (a VARIABLE expense)?",
+      "options": [
+        {"id": "a", "text": "A car loan payment set by your loan contract"},
+        {"id": "b", "text": "Restaurant and takeout spending"},
+        {"id": "c", "text": "Rent under a lease"},
+        {"id": "d", "text": "A flat-rate $15 phone plan"}
+      ],
+      "correct_option_id": "b",
+      "explanation": "Dining out depends on your choices each month, so it varies. Loan payments, lease rent and flat-rate plans are set amounts — fixed expenses.",
+      "source_ids": ["cfpb-budgeting-blog", "cfpb-ymyg"]
+    },
+    {
+      "id": "cq-credit-utilization",
+      "version": "1",
+      "pairs_with": "bq-credit-utilization",
+      "domain": "credit",
+      "concept_id": "credit_utilization",
+      "difficulty": 2,
+      "points": 1,
+      "kind": "math",
+      "prompt": "A credit card has a $4,000 limit and an $800 balance. What is the credit utilization rate on this card?",
+      "options": [
+        {"id": "a", "text": "5%"},
+        {"id": "b", "text": "20%"},
+        {"id": "c", "text": "32%"},
+        {"id": "d", "text": "80%"}
+      ],
+      "correct_option_id": "b",
+      "math_check": {"op": "percent", "args": [800, 4000], "expected": 20},
+      "explanation": "Utilization = balance ÷ limit. $800 ÷ $4,000 = 0.20 = 20%.",
+      "source_ids": ["cfpb-credit-score-318"]
+    },
+    {
+      "id": "cq-credit-minimum",
+      "version": "1",
+      "pairs_with": "bq-credit-minimum",
+      "domain": "credit",
+      "concept_id": "minimum_payment",
+      "difficulty": 2,
+      "points": 1,
+      "kind": "scenario",
+      "prompt": "Alex and Sam each owe $1,500 on cards with a 20% APR and make no new charges. Alex pays $200 every month; Sam pays only a $40 minimum every month. Which is true?",
+      "options": [
+        {"id": "a", "text": "They pay the same total interest"},
+        {"id": "b", "text": "Sam finishes paying first"},
+        {"id": "c", "text": "Sam takes longer and pays more total interest"},
+        {"id": "d", "text": "Alex pays more total interest because the payments are bigger"}
+      ],
+      "correct_option_id": "c",
+      "explanation": "Interest is charged on the remaining balance. Sam's smaller payment keeps the balance high for longer, so Sam pays interest for many more months and pays more in total.",
+      "source_ids": ["cfpb-apr-44", "cfpb-credit-cards"]
+    },
+    {
+      "id": "cq-saving-emergency",
+      "version": "1",
+      "pairs_with": "bq-saving-emergency",
+      "domain": "saving",
+      "concept_id": "emergency_buffer",
+      "difficulty": 1,
+      "points": 1,
+      "kind": "scenario",
+      "prompt": "Which of these is the best fit for money in an emergency fund?",
+      "options": [
+        {"id": "a", "text": "Concert tickets that are on sale"},
+        {"id": "b", "text": "Your regular rent, which you already budget for"},
+        {"id": "c", "text": "A sudden $900 car repair you need to get to work"},
+        {"id": "d", "text": "A new phone because a new model came out"}
+      ],
+      "correct_option_id": "c",
+      "explanation": "Emergency savings are for unplanned costs that are not part of your routine monthly spending. Rent is routine, and sales or new models are wants, not emergencies.",
+      "source_ids": ["cfpb-emergency-fund-guide"]
+    },
+    {
+      "id": "cq-saving-timeline",
+      "version": "1",
+      "pairs_with": "bq-saving-timeline",
+      "domain": "saving",
+      "concept_id": "savings_goal_timeline",
+      "difficulty": 1,
+      "points": 1,
+      "kind": "math",
+      "prompt": "You put away $250 every month toward a $2,250 goal, starting from $0. How many months will it take?",
+      "options": [
+        {"id": "a", "text": "7 months"},
+        {"id": "b", "text": "8 months"},
+        {"id": "c", "text": "9 months"},
+        {"id": "d", "text": "11 months"}
+      ],
+      "correct_option_id": "c",
+      "math_check": {"op": "ceil_divide", "args": [2250, 250], "expected": 9},
+      "explanation": "Months = goal ÷ monthly saving. $2,250 ÷ $250 = 9 months.",
+      "source_ids": ["cfpb-emergency-fund-guide"]
+    },
+    {
+      "id": "cq-interest-apr",
+      "version": "1",
+      "pairs_with": "bq-interest-apr",
+      "domain": "interest",
+      "concept_id": "credit_apr",
+      "difficulty": 2,
+      "points": 1,
+      "kind": "math",
+      "prompt": "A $2,000 credit card balance has an 18% APR. Using APR ÷ 12 as the monthly rate, about how much interest is added in one month with no payment?",
+      "options": [
+        {"id": "a", "text": "$3.60"},
+        {"id": "b", "text": "$18"},
+        {"id": "c", "text": "$30"},
+        {"id": "d", "text": "$360"}
+      ],
+      "correct_option_id": "c",
+      "math_check": {"op": "monthly_interest", "args": [2000, 18], "expected": 30},
+      "explanation": "18% ÷ 12 = 1.5% per month. 1.5% of $2,000 = $30. $360 is a full year of interest.",
+      "source_ids": ["cfpb-apr-44"]
+    },
+    {
+      "id": "cq-interest-compound",
+      "version": "1",
+      "pairs_with": "bq-interest-compound",
+      "domain": "interest",
+      "concept_id": "compound_interest",
+      "difficulty": 2,
+      "points": 1,
+      "kind": "math",
+      "prompt": "You put $2,000 in an account earning 3% interest, compounded once a year. With no deposits or withdrawals, how much is there after 2 years?",
+      "options": [
+        {"id": "a", "text": "$2,060.00"},
+        {"id": "b", "text": "$2,120.00"},
+        {"id": "c", "text": "$2,121.80"},
+        {"id": "d", "text": "$2,180.00"}
+      ],
+      "correct_option_id": "c",
+      "math_check": {"op": "compound", "args": [2000, 3, 2], "expected": 2121.8},
+      "explanation": "Year 1: $2,000 × 1.03 = $2,060. Year 2: $2,060 × 1.03 = $2,121.80. $2,120 is simple interest — it skips interest earned on interest.",
+      "source_ids": ["investor-compound-interest", "investor-compound-calculator"]
+    }
+  ]
+}

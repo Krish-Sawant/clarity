@@ -1,0 +1,257 @@
+{
+  "content_version": "2026.10.24-l1",
+  "lessons": [
+    {
+      "id": "budget-surplus",
+      "version": "1",
+      "domain": "budget",
+      "concept_ids": ["cash_flow_surplus", "fixed_vs_variable"],
+      "title": "Find your monthly surplus",
+      "minutes": 2,
+      "hook": "Before you can save for anything, you need to know one number: what is left after the bills each month?",
+      "concept": {
+        "term": "Cash-flow surplus",
+        "definition": "Your surplus is take-home pay minus all monthly expenses. Fixed expenses (like lease rent) stay the same each month; variable expenses (like groceries and dining out) change with your choices — so they are usually where a budget can flex.",
+        "source_id": "cfpb-budgeting-blog"
+      },
+      "facts": [
+        {"id": "f-budget-1", "text": "A budget compares the money coming in with the money going out so you can plan where it goes.", "source_id": "cfpb-budgeting-blog"},
+        {"id": "f-budget-2", "text": "Fixed expenses are the same amount each period (for example rent under a lease); variable expenses change from period to period (for example groceries or gas).", "source_id": "cfpb-ymyg"},
+        {"id": "f-budget-3", "text": "FDIC Money Smart offers free lessons on tracking income and expenses and building a spending plan.", "source_id": "fdic-money-smart"}
+      ],
+      "worked_example": {
+        "title": "Jordan's month",
+        "steps": [
+          {"label": "Take-home pay", "expression": "after taxes & deductions", "value": 3600},
+          {"label": "Fixed: rent + phone + car payment", "expression": "1,300 + 50 + 300", "value": -1650},
+          {"label": "Variable: groceries + gas + dining", "expression": "450 + 150 + 300", "value": -900},
+          {"label": "Other bills", "expression": "utilities, insurance", "value": -300},
+          {"label": "Monthly surplus", "expression": "3,600 − 2,850", "value": 750}
+        ],
+        "assumptions": ["Synthetic example numbers.", "Take-home pay is already after taxes.", "No irregular expenses this month."]
+      },
+      "exercise": {
+        "type": "budget_allocator",
+        "prompt": "Move the sliders. Can you free up $300 more for goals by changing only VARIABLE spending?",
+        "params": {"income": 3600, "fixed": 1650, "variable": 900, "other": 300, "goals": 0, "variable_min": 300, "variable_max": 1500, "goals_max": 1200}
+      },
+      "reflection": {
+        "prompt": "Jordan wants $200 more per month for savings without moving apartments. Which change is the most realistic first step?",
+        "options": [
+          {"id": "a", "text": "Cut dining out from $300 to $100"},
+          {"id": "b", "text": "Skip next month's rent payment"},
+          {"id": "c", "text": "Stop paying the car loan"},
+          {"id": "d", "text": "Count the savings as an expense twice"}
+        ],
+        "correct_option_id": "a",
+        "explanation": "Dining out is a variable expense Jordan controls. Skipping rent or loan payments creates late fees and bigger problems."
+      },
+      "simulator_preset": {"focus": "budget", "monthly_take_home": 3600, "starting_cash": 1500, "housing": 1300, "transportation": 300, "other_expenses": 1250, "preset_shock": "rent_hike"},
+      "source_ids": ["cfpb-budgeting-blog", "cfpb-ymyg", "fdic-money-smart"],
+      "offline_tutor": {
+        "another_way": "Think of your paycheck as a pizza with a fixed number of slices. Fixed bills like rent take the same slices every month. Variable spending like food and fun can take more or fewer slices depending on your choices. Whatever slices are left over are your surplus — the part you can point at a goal.",
+        "example": "Riley takes home $2,800. Fixed bills are $1,400 and variable spending is $1,000, leaving $400. If Riley trims takeout by $150, the surplus becomes $550 without changing any fixed bill."
+      }
+    },
+    {
+      "id": "credit-card-minimums",
+      "version": "1",
+      "domain": "credit",
+      "concept_ids": ["credit_utilization", "minimum_payment"],
+      "title": "Utilization and the minimum-payment trap",
+      "minutes": 2,
+      "hook": "Two people owe the same $1,500. One is done in under a year; the other is still paying years later. The only difference is the monthly payment.",
+      "concept": {
+        "term": "Credit utilization & minimum payments",
+        "definition": "Utilization is your balance divided by your credit limit. Interest is charged on the balance you carry, so paying only the minimum keeps the balance — and the interest — around much longer.",
+        "source_id": "cfpb-credit-score-318"
+      },
+      "facts": [
+        {"id": "f-credit-1", "text": "Credit scoring models look at how close you are to being maxed out; experts advise keeping your use of credit at no more than 30 percent of your total credit limit.", "source_id": "cfpb-credit-score-318"},
+        {"id": "f-credit-2", "text": "Paying off the balance in full each month helps get the best scores and keeps interest costs as low as possible.", "source_id": "cfpb-credit-score-318"},
+        {"id": "f-credit-3", "text": "On most cards, you can avoid paying interest on purchases if you pay your balance in full each month by the due date.", "source_id": "cfpb-apr-44"}
+      ],
+      "worked_example": {
+        "title": "Utilization in one line",
+        "steps": [
+          {"label": "Balance", "expression": "what you owe", "value": 600},
+          {"label": "Credit limit", "expression": "card maximum", "value": 2000},
+          {"label": "Utilization", "expression": "600 ÷ 2,000 = 0.30", "value": 30, "unit": "%"}
+        ],
+        "assumptions": ["One card.", "Utilization shown as a percent of the limit."]
+      },
+      "exercise": {
+        "type": "min_payment_payoff",
+        "prompt": "Drag the monthly payment. Watch payoff time and total interest on a $1,500 balance at a fixed 22% APR.",
+        "params": {"balance": 1500, "apr_pct": 22, "payment": 40, "payment_min": 30, "payment_max": 400}
+      },
+      "reflection": {
+        "prompt": "Your card has a $3,000 limit. Which balance keeps utilization at or below 30%?",
+        "options": [
+          {"id": "a", "text": "$1,500"},
+          {"id": "b", "text": "$1,200"},
+          {"id": "c", "text": "$900"},
+          {"id": "d", "text": "$2,400"}
+        ],
+        "correct_option_id": "c",
+        "explanation": "30% of $3,000 is $900. Any balance at or below $900 keeps utilization at or under 30%."
+      },
+      "simulator_preset": {"focus": "apr", "monthly_take_home": 3200, "starting_cash": 1200, "housing": 1250, "transportation": 280, "other_expenses": 1100, "credit_card": {"balance": 1500, "apr_pct": 22, "monthly_payment": 40}, "preset_shock": "surprise_expense"},
+      "source_ids": ["cfpb-credit-score-318", "cfpb-apr-44", "cfpb-credit-cards"],
+      "offline_tutor": {
+        "another_way": "Picture the balance as a bucket that leaks interest back in every month. A small payment barely lowers the water, so the leak keeps refilling it. A bigger payment drains the bucket fast, and the leak has less water to work with.",
+        "example": "At 22% APR, $1,500 paid at $40 a month takes years and costs well over $1,000 in interest. Paying $150 a month clears it in about a year with far less interest. Try both values in the slider to see the exact numbers."
+      }
+    },
+    {
+      "id": "emergency-buffer",
+      "version": "1",
+      "domain": "saving",
+      "concept_ids": ["emergency_buffer", "savings_goal_timeline"],
+      "title": "Plan for an unexpected $3,000 bill",
+      "minutes": 2,
+      "hook": "A $3,000 car repair lands in month two. Does it become a minor setback or a credit-card balance that follows you for a year?",
+      "concept": {
+        "term": "Emergency buffer",
+        "definition": "Emergency savings cover unplanned costs that are not part of routine monthly spending — a car repair, a medical bill, a lost paycheck. Even a small buffer helps you recover faster without borrowing.",
+        "source_id": "cfpb-emergency-fund-guide"
+      },
+      "facts": [
+        {"id": "f-save-1", "text": "Emergency savings can be used for large or small unplanned bills or payments that are not part of your routine monthly expenses.", "source_id": "cfpb-emergency-fund-guide"},
+        {"id": "f-save-2", "text": "The amount you need depends on your situation; thinking about past unexpected expenses can help you set a goal.", "source_id": "cfpb-emergency-fund-guide"},
+        {"id": "f-save-3", "text": "Setting up automatic recurring transfers is often one of the easiest ways to save consistently.", "source_id": "cfpb-emergency-fund-guide"}
+      ],
+      "worked_example": {
+        "title": "Same shock, three starting buffers",
+        "steps": [
+          {"label": "Buffer A", "expression": "$500 − $3,000", "value": -2500},
+          {"label": "Buffer B", "expression": "$1,500 − $3,000", "value": -1500},
+          {"label": "Buffer C", "expression": "$4,000 − $3,000", "value": 1000}
+        ],
+        "assumptions": ["One-time $3,000 expense.", "A negative result means the gap must be borrowed or delayed.", "Ignores interest on any borrowing."]
+      },
+      "exercise": {
+        "type": "emergency_shock",
+        "prompt": "Choose a monthly saving amount and see how fast each buffer could cover a $3,000 surprise.",
+        "params": {"shock": 3000, "buffers": [500, 1500, 4000], "monthly_saving": 150, "saving_min": 25, "saving_max": 600}
+      },
+      "reflection": {
+        "prompt": "You have $600 saved and add $200 a month. How many months until you can cover a $3,000 surprise in full?",
+        "options": [
+          {"id": "a", "text": "10 months"},
+          {"id": "b", "text": "12 months"},
+          {"id": "c", "text": "15 months"},
+          {"id": "d", "text": "18 months"}
+        ],
+        "correct_option_id": "b",
+        "explanation": "You need $3,000 − $600 = $2,400 more. $2,400 ÷ $200 = 12 months."
+      },
+      "simulator_preset": {"focus": "emergency", "monthly_take_home": 3400, "starting_cash": 1500, "housing": 1300, "transportation": 320, "other_expenses": 1350, "preset_shock": "surprise_expense"},
+      "source_ids": ["cfpb-emergency-fund-guide"],
+      "offline_tutor": {
+        "another_way": "An emergency fund is like a spare tire. You hope not to use it, but when a surprise flat happens you can keep driving instead of calling a tow truck — in money terms, instead of putting the bill on a high-interest card.",
+        "example": "Casey saves $100 a month. After 10 months Casey has $1,000. A $700 vet bill arrives: Casey pays it in cash and still has $300 left, instead of carrying a $700 card balance."
+      }
+    },
+    {
+      "id": "apr-basics",
+      "version": "1",
+      "domain": "interest",
+      "concept_ids": ["credit_apr", "compound_interest"],
+      "title": "What APR really costs",
+      "minutes": 2,
+      "hook": "18% or 29% APR sounds like a small difference on paper. On a real balance paid over time, it is real money.",
+      "concept": {
+        "term": "APR & compounding",
+        "definition": "APR is the yearly price of borrowing. Dividing by 12 gives a rough monthly rate. Compounding means interest is added to the balance, so later interest is charged on earlier interest — working against you on debt and for you on savings.",
+        "source_id": "cfpb-apr-44"
+      },
+      "facts": [
+        {"id": "f-apr-1", "text": "A credit card's interest rate is the price you pay for borrowing money; for credit cards it is typically stated as a yearly rate called the annual percentage rate (APR).", "source_id": "cfpb-apr-44"},
+        {"id": "f-apr-2", "text": "Compound interest is interest earned on both the original amount and on interest previously earned.", "source_id": "investor-compound-interest"},
+        {"id": "f-apr-3", "text": "Investor.gov provides a free compound interest calculator to explore how money can grow over time.", "source_id": "investor-compound-calculator"}
+      ],
+      "worked_example": {
+        "title": "One month of interest on $1,000",
+        "steps": [
+          {"label": "APR", "expression": "yearly rate", "value": 24, "unit": "%"},
+          {"label": "Monthly rate", "expression": "24% ÷ 12", "value": 2, "unit": "%"},
+          {"label": "Interest this month", "expression": "$1,000 × 2%", "value": 20}
+        ],
+        "assumptions": ["Simple monthly estimate (APR ÷ 12).", "Real cards often compute interest daily, so actual charges can differ slightly."]
+      },
+      "exercise": {
+        "type": "apr_compare",
+        "prompt": "Compare two APRs on the same balance and the same fixed monthly payment.",
+        "params": {"balance": 2500, "apr_low": 18, "apr_high": 29, "payment": 120, "payment_min": 80, "payment_max": 500}
+      },
+      "reflection": {
+        "prompt": "Card A charges 15% APR and Card B charges 27% APR. You carry the same balance on each and pay the same amount each month. Which is true?",
+        "options": [
+          {"id": "a", "text": "Both cost the same in interest"},
+          {"id": "b", "text": "Card B costs more in interest and takes longer to pay off"},
+          {"id": "c", "text": "Card A costs more because the rate is lower"},
+          {"id": "d", "text": "APR only matters if you miss a payment"}
+        ],
+        "correct_option_id": "b",
+        "explanation": "A higher APR adds more interest each month, so less of each payment reduces the balance — it costs more and takes longer."
+      },
+      "simulator_preset": {"focus": "apr", "monthly_take_home": 3300, "starting_cash": 1800, "housing": 1250, "transportation": 300, "other_expenses": 1150, "credit_card": {"balance": 2500, "apr_pct": 29, "monthly_payment": 120}, "preset_shock": "income_loss"},
+      "source_ids": ["cfpb-apr-44", "investor-compound-interest", "investor-compound-calculator"],
+      "offline_tutor": {
+        "another_way": "APR is the yearly rent you pay to borrow money. Divide it by 12 for a rough monthly rent. If you don't pay the balance down, next month's rent is charged on a slightly bigger balance — that snowball is compounding.",
+        "example": "On a $2,000 balance, 18% APR is about $30 of interest a month; 27% APR is about $45. Over a year of slow payments, that $15 monthly gap adds up to well over $150."
+      }
+    },
+    {
+      "id": "whatif-advanced",
+      "version": "1",
+      "domain": "advanced",
+      "concept_ids": ["cash_flow_surplus", "emergency_buffer"],
+      "title": "Stress-test a plan with combined shocks",
+      "minutes": 2,
+      "hook": "You aced the knowledge check. Now see how surplus, buffer and fixed costs interact when two things go wrong at once.",
+      "concept": {
+        "term": "Resilience = surplus + buffer",
+        "definition": "A monthly surplus rebuilds savings over time; a buffer absorbs shocks right now. Higher fixed costs shrink both. Testing combined shocks shows which lever matters most for a given plan.",
+        "source_id": "cfpb-emergency-fund-guide"
+      },
+      "facts": [
+        {"id": "f-adv-1", "text": "Emergency savings can be used for large or small unplanned bills or payments that are not part of your routine monthly expenses.", "source_id": "cfpb-emergency-fund-guide"},
+        {"id": "f-adv-2", "text": "A budget compares the money coming in with the money going out so you can plan where it goes.", "source_id": "cfpb-budgeting-blog"}
+      ],
+      "worked_example": {
+        "title": "Two shocks, one plan",
+        "steps": [
+          {"label": "Monthly surplus", "expression": "3,600 − 2,850", "value": 750},
+          {"label": "Starting buffer", "expression": "cash on hand", "value": 2000},
+          {"label": "Shock: $3,000 bill in month 2", "expression": "one-time", "value": -3000},
+          {"label": "Cash after month 2", "expression": "2,000 + 750×2 − 3,000", "value": 500}
+        ],
+        "assumptions": ["Synthetic numbers.", "Surplus stays constant except during shocks."]
+      },
+      "exercise": {
+        "type": "emergency_shock",
+        "prompt": "Adjust monthly saving and compare how fast each buffer covers the shock.",
+        "params": {"shock": 3000, "buffers": [1000, 2000, 5000], "monthly_saving": 300, "saving_min": 50, "saving_max": 900}
+      },
+      "reflection": {
+        "prompt": "Which change improves BOTH your monthly surplus and your ability to absorb a shock over time?",
+        "options": [
+          {"id": "a", "text": "Lowering a fixed cost such as rent or a car payment"},
+          {"id": "b", "text": "Moving savings into a checking account"},
+          {"id": "c", "text": "Raising your credit limit"},
+          {"id": "d", "text": "Paying only card minimums"}
+        ],
+        "correct_option_id": "a",
+        "explanation": "A lower fixed cost raises the surplus every month, which also rebuilds the buffer faster."
+      },
+      "simulator_preset": {"focus": "emergency", "monthly_take_home": 3600, "starting_cash": 2000, "housing": 1300, "transportation": 300, "other_expenses": 1250, "preset_shock": "combined"},
+      "source_ids": ["cfpb-emergency-fund-guide", "cfpb-budgeting-blog"],
+      "offline_tutor": {
+        "another_way": "Your surplus is the faucet refilling a tank; your buffer is the water already in it. A shock is a sudden drain. A bigger tank helps today; a stronger faucet helps you recover.",
+        "example": "With $2,000 saved and $750 surplus, a $3,000 bill in month 2 leaves $500. Add a month of lost income and the plan goes negative — showing why buffer size matters."
+      }
+    }
+  ]
+}

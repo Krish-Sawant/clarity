@@ -1,0 +1,7 @@
+{
+  "label": "SYNTHETIC DEMO PERSONA — not a real person, not real financial data",
+  "display_name": "Jordan (synthetic)",
+  "goals": ["credit", "saving"],
+  "habits": {"review_budget": "sometimes", "pays_in_full": "sometimes", "has_emergency_savings": "working_on_it", "top_goal": "build_savings"},
+  "finances": {"monthly_take_home": 3600, "starting_cash": 1500, "housing": 1300, "transportation": 300, "other_expenses": 1250}
+}

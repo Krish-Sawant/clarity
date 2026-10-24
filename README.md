@@ -1,262 +1,201 @@
-# Clarity deterministic calculations and frontend requirements
+<div align="center">
 
-Pure TypeScript calculations plus a React component for an existing Next.js app.
-No LLM, external API, credentials, or extra runtime dependencies.
+# Clarity
 
-## AI advisor experience
+### A clearer path to your next money decision.
 
-The [evaluation harness](evaluation/README.md) provides 12 shared evaluation
-cases, independent calculation fixtures, response scoring for conditions A/B/C,
-human-review rubrics, and a participant-study template. Start with
-`node --experimental-strip-types evaluation/run.mjs engine`.
+Clarity helps people understand their finances and make smarter money decisions with personalized, proactive guidance.
 
-See [the recorded evaluation results and frontend handoff](docs/EVALUATION_RESULTS.md)
-for both completed pilots: required-fact checks and AI-reviewed explanation
-quality, with source JSON mappings and presentation requirements.
+**HackPSU Fall 2026 · October 24–25 · Penn State · Synthetic financial data**
 
-See [the advisor experience plan](docs/AI_ADVISOR_EXPERIENCE.md) for the customer
-journey, visual simulation requirements, connections to this calculation engine,
-educational references, and the first implementation milestone. This is a design
-and integration specification; chat, animated charts, Monte Carlo simulation,
-and banking actions are not implemented yet.
+[Our idea](#why-clarity) · [Core features](#core-features) · [Learning journey](#personalized-learning-journey) · [Roadmap](#roadmap) · [Getting started](#getting-started) · [Team](#team)
 
-## Hackathon experience: rehearse a money decision
+</div>
 
-Clarity helps customers practice a decision, understand its consequences, and
-choose a next step. The signature experience is an interactive repayment
-timeline connected to an advisor: explore a plan, try a disruption, understand
-the tradeoff, and review a simulated action.
+---
 
-The features below are planned. The existing calculation engine supports fixed
-payment comparisons; the full advisor experience still needs implementation.
+## Why Clarity?
 
-| Feature | Customer interaction | Implementation needed |
-| --- | --- | --- |
-| Two possible futures | Adjust an extra-payment slider and see current and proposed payoff curves side by side, with months and interest saved. | Use `compareExtraPayment` and its schedules; add animated charts and editable dollar input. |
-| Life happens cards | Apply a hypothetical event to a selected month and inspect the revised timeline. | Extend the deterministic engine to support explicit monthly payment changes and test the results. |
-| Explain this change | Tap a changed chart segment or result to learn what changed and why. | Ground the explanation in the selected scenario's calculation outputs and show evidence tags. |
-| Shared chart and chat selection | Select a month to discuss it, or ask a question that highlights the relevant chart section. | Share selected month, scenario revision, and relevant result fields between chart and advisor. |
-| Definitions in context | Tap a marked term or highlight a phrase to open a short explanation. | Add a sourced glossary, contextual explanations, and accessible popovers. |
-| Keep this plan | Save the chosen scenario for review and inspect a proposed next action. | Show amount, timing, destination, and assumptions; require explicit approval for a clearly labeled simulated action. |
+A bigger salary does not always mean more money left over. A new job, a move, or a first loan payment can change your finances before you have a plan.
 
-### Life happens: first disruption and future extensions
+We’re building Clarity to make those trade-offs easier to understand. It combines personalized financial learning, side-by-side decision simulations, and timely guidance when financial activity suggests something has changed.
 
-Start with **Skip this month's extra payment**. The regular monthly payment
-continues; only the extra amount is removed for the selected month. This does
-not represent missing a required payment or model late fees or penalties.
+Our goal is financial confidence: give users information they understand, help them see their options, and make their next step actionable.
 
-Later cards can reduce extra payments for three months or add a one-time payment.
-An unexpected-expense card must ask whether the expense reduces money available
-for repayment or adds new debt. Those require different calculation behavior.
+Our approach: calculate the numbers in code, show the assumptions, explain the trade-offs, and help the user choose a practical next step.
 
-Represent events as explicit scenario inputs and calculate the revised schedule
-in code. The current fixed-payment engine cannot model these events accurately
-by averaging payments or changing chart points. The advisor explains results
-returned by the extended engine; it does not calculate the forecast itself.
+## Core features
 
-These are customer-controlled hypothetical events, with no claimed probability.
-Prioritize this interaction ahead of Monte Carlo for the first demo. Monte Carlo
-remains a later feature requiring a justified uncertainty model, as described
-in the advisor experience plan.
+### 1. “Future You” Decision Simulator
 
-### Demo sequence
+**Led by Krish · In development**
 
-1. **Here is your current path:** load clearly labeled synthetic data and show
-   the baseline balance, payment, interest, and estimated payoff time.
-2. **What if you paid a little more?** Adjust the extra-payment control; animate
-   the proposed curve and update the calculated savings.
-3. **Could you keep this up?** Select a month and skip its extra payment using
-   a Life happens card. Allow the event to be removed or reset.
-4. **Here is what that changes:** compare the revised outcome with the original
-   proposal and baseline. Explain the selected change with calculation evidence.
-5. **Keep this plan:** review the scenario and explicitly approve a simulated
-   next action. Do not imply a real transfer or payment has occurred.
+Compare possible financial futures side by side. For example: _Should I take a $95,000 offer in New York City or a $78,000 offer in Pittsburgh?_
 
-### Feature acceptance requirements
+The planned simulator compares estimated take-home pay, living expenses, moving costs, savings growth, and debt payoff timelines. Adjustable assumptions—such as rent and expected raises—let users see when the answer changes.
 
-- Chart, summary, and chat use the same scenario revision and calculated values.
-- A disruption creates a distinct scenario so the customer can compare and undo it.
-- The extended engine verifies event timing, balance conservation, final payment
-  capping, and events after payoff before disruption forecasts are displayed.
-- Selecting a month exposes its exact schedule values; an explanation references
-  those values rather than inventing amounts or outcomes.
-- Evidence distinguishes synthetic inputs, calculated projections, and sourced
-  educational explanations. Affordability is not inferred from payoff results.
-- Animations respect reduced-motion settings; controls support keyboards, and
-  charts have readable values or a table alternative.
-- All existing status and null-handling rules below also apply to revised plans.
-- Changing a selected scenario invalidates its previous action preview and
-  requires a fresh review before approval.
+The intended flow:
 
-## Files and responsibilities
+1. Enter two options and their assumptions.
+2. Compare projected outcomes across time.
+3. Adjust sliders to explore the trade-offs.
+4. Read a future-self explanation grounded in computed results.
+5. Turn a chosen path into a budget, savings target, and debt payoff plan.
 
-| File | Responsibility |
-| --- | --- |
-| `finance.ts` | Shared calculation functions, validation, schedules, and assumptions. |
-| `finance.test.mjs` | Automated calculation tests. |
-| `FinanceDemo.tsx` | Example React extra-payment slider using synthetic inputs. |
-| `README.md` | Frontend integration contract and required result handling. |
+These projections are intended as illustrations, not guarantees. Tax estimates, cost data, charts, and AI explanations require implementation and integration.
 
-## Calculations provided
+### 2. Proactive Advisor
 
-### Debt payoff: `calculateDebt(input)`
+**Led by Abhijay · Detection and planning engine implemented**
 
-For each month, calculate `Math.round(openingCents * aprPercent / 100 / 12)`
-interest, then subtract the fixed payment. Cap the final payment at the balance
-plus interest. Return the payoff time, interest, payments, remaining balance,
-monthly schedule, status, and assumptions.
+Notice possible life moments in financial activity and offer a useful starting point.
 
-### Extra-payment comparison: `compareExtraPayment(input, extraPaymentCents)`
+| Signal                                          | Possible moment           | Intended guided experience                                        |
+| ----------------------------------------------- | ------------------------- | ----------------------------------------------------------------- |
+| A larger paycheck from a new employer           | Starting a new job        | First-paycheck budget, retirement benefits, and emergency savings |
+| A large payment to a new housing merchant       | Moving or signing a lease | Moving costs and a new monthly budget                             |
+| Spending at least 40% above the recent baseline | A spending shift          | Understand what changed and reset the budget                      |
+| First observed student loan payment             | Repayment beginning       | Explore required payments, saving, and extra repayment            |
+| Four increasing monthly balance snapshots       | A growing cash cushion    | Explore accessible, interest-earning savings                      |
 
-Run debt payoff for the regular payment and for the regular payment plus the
-extra monthly amount. Return `baseline`, `accelerated`, `monthsSaved`, and
-`interestSavedCents`. Both savings fields are null unless both scenarios pay off.
+An example nudge:
 
-### Savings goal: `calculateSavings(input)`
+> “Looks like you may have started a new job. Want to plan your first paycheck? Takes 3 minutes.”
 
-Convert APY to an equivalent monthly rate: `(1 + apyPercent / 100) ** (1 / 12) - 1`.
-The implementation uses `expm1` and `log1p` for numerical precision. Each month,
-round interest on the opening balance to cents, then add the monthly contribution.
-The final contribution is not capped at the target, so the final balance may exceed it.
+The current engine returns stable signal IDs, nudge copy, supporting evidence, and amounts. Its planner calculates monthly surplus, an illustrative emergency savings gap, and a possible savings action from editable inputs. Signals are clues for the user to confirm, not established facts about their life.
 
-## Frontend input requirements
+**Still to integrate:** the production UI, shared conversation flow, background scanning, notification delivery, and persistent user actions. The temporary preview UI has been removed. No real transfers occur.
 
-Call the exported functions for results; keep calculation logic in `finance.ts`.
-Label every amount in USD and distinguish annual APR from annual APY.
+The advisor implementation currently lives on [`feature/proactive-advisor`](https://github.com/Krish-Sawant/clarity/tree/feature/proactive-advisor). [Read its integration guide](https://github.com/Krish-Sawant/clarity/blob/feature/proactive-advisor/frontend/src/lib/advisor/README.md).
 
-| Screen | UI field | Function argument | Required/default |
-| --- | --- | --- | --- |
-| Debt/comparison | Current debt balance | `balanceCents` | Required |
-| Debt/comparison | Annual APR (%) | `aprPercent` | Required |
-| Debt/comparison | Regular monthly payment | `monthlyPaymentCents` | Required |
-| Comparison | Extra monthly payment | Second argument `extraPaymentCents` | Required; UI may initialize to 0 |
-| Savings | Current savings | `currentCents` | Required |
-| Savings | Savings target | `targetCents` | Required |
-| Savings | Monthly contribution | `monthlyContributionCents` | Required |
-| Savings | Annual APY (%) | `apyPercent` | Optional; defaults to 0 |
-| Both | Projection limit in months | `maxMonths` | Optional; defaults to 1200 |
+## Personalized learning journey
 
-- Accept dollar amounts with at most two decimal places; validate them before
-  converting to integer cents. For a validated numeric amount use
-  `Math.round(dollars * 100)`. For example, $150.25 becomes `15025`.
-- Pass percentage values directly: 24% APR is `24`, not `0.24`.
-- Do not convert a blank required input to zero. Show a field error for blank,
-  nonnumeric, nonfinite, negative, or over-limit input.
-- Money arguments must be safe integers from 0 through `1_000_000_000_000` cents.
-  For comparison, regular plus extra payment must also stay within this limit.
-- Rates must be finite numbers from 0 through 1000; `maxMonths` must be an integer
-  from 1 through 1200. These are engine limits, not suggested financial values.
-- Catch `RangeError` and show a readable validation/calculation error. Clear or
-  mark stale results when inputs are invalid so old results do not look current.
+**Planned experience · Assessment, lesson, and progress-tracking foundations in the backend**
 
-## Frontend output requirements
+Financial guidance should meet people at their current level of understanding. Our intended learning loop is:
 
-Format money using `Intl.NumberFormat` with USD after dividing cents by 100.
-Show durations in months, and check status before displaying payoff or goal claims.
+1. **Assess** — Start with a short quiz and financial-habits screening to understand what the user knows and where they need support.
+2. **Learn** — Offer relevant explanations and exercises based on that starting point.
+3. **Apply** — Connect learning to a financial decision or a detected life moment.
+4. **Check progress** — Reassess understanding and habits against the initial screening, then adjust the learning plan.
 
-| Result | Fields to display |
-| --- | --- |
-| Debt | `monthsToPayoff`, `totalInterestCents`, `totalPaymentsCents`, `remainingCents` |
-| Comparison | Baseline and accelerated debt results side by side, then `monthsSaved` and `interestSavedCents` when available |
-| Savings | `monthsToGoal`, `finalBalanceCents`, `totalContributionsCents`, `totalInterestCents` |
+We plan to tailor guidance across savings, budgeting, retirement, investing, and taxes, with topic-specific advisor styles and explanations suited to the user’s financial literacy. These broader topic experiences are planned; the repository currently includes assessment and educational-content fixtures and persistence foundations, rather than a complete learning UI.
 
-| Function/status | Required UI behavior |
-| --- | --- |
-| Debt: `paid_off` | Show payoff duration and full projected totals. Zero months means already paid off. |
-| Debt: `payment_too_low` | Explain that the payment does not reduce the balance and needs increasing. Do not claim a payoff date. |
-| Debt: `horizon_exceeded` | Explain that payoff was not reached within `maxMonths`; label totals as partial projections. |
-| Savings: `goal_reached` | Show duration and totals. Zero months means the goal is already met. |
-| Savings: `no_progress` | Explain that contributions and rounded interest do not increase the balance. |
-| Savings: `horizon_exceeded` | Explain that the goal was not reached within `maxMonths`; label totals as partial projections. |
+## How we’re building it
 
-- A null duration or savings value means unavailable. Display an explanatory
-  message or dash; do not substitute zero. A real numeric zero is a valid result.
-- If only the accelerated scenario pays off, show that scenario's payoff result,
-  but leave comparison savings unavailable.
-- Debt `schedule` rows contain `month`, `openingCents`, `interestCents`,
-  `paymentCents`, and `closingCents`. Savings rows contain `month`,
-  `interestCents`, `contributionCents`, and `closingCents`.
-- Use returned schedules for charts or tables. Rows begin at month 1; add an
-  explicit month-0 opening balance if a chart needs one. Empty schedules are valid.
-- Display returned `assumptions` with results, for example in an expandable panel.
-  Label projections as estimates and distinguish synthetic examples from user data.
-- Associate labels and field errors with inputs. Make sliders keyboard accessible
-  and announce updated summaries with an appropriate live region.
-
-## Frontend acceptance checklist
-
-- [ ] Debt and savings forms pass validated inputs using the units above.
-- [ ] Editing a valid input recalculates the relevant result.
-- [ ] Debt and extra-payment results show the required totals and durations.
-- [ ] Savings results show goal time, balance, contributions, and interest.
-- [ ] Every status above has a visible state; null values never become zero.
-- [ ] Already paid debt and already met goals display zero months correctly.
-- [ ] Invalid inputs show errors without crashing or leaving misleading results.
-- [ ] Assumptions and estimate wording are visible with the results.
-- [ ] Any chart uses the returned schedule rather than a separate formula.
-
-The current demo only implements the extra-payment slider. Its balance ($5,000),
-APR (24%), and regular payment ($150) are hardcoded; its extra payment starts at
-$100. Replace those constants with validated form inputs for the full interface.
-The demo's null-to-zero savings fallback is safe only for its fixed payable
-profile; use the status and null handling above when generalizing it.
-Debt input forms, savings UI, and charts still need to be implemented by the
-frontend team. Multi-debt allocation, avalanche/snowball comparisons, budget
-affordability checks, and payment execution are outside the current engine.
-
-## Connect to Next.js
-
-Copy `finance.ts` and `FinanceDemo.tsx` into the same directory, for example
-`src/components/finance/`. Import the demo in your App Router page:
-
-```tsx
-import FinanceDemo from '@/components/finance/FinanceDemo';
-export default function Page() { return <FinanceDemo />; }
+```text
+Synthetic transactions + balance snapshots
+                    ↓
+          Rule-based detection
+                    ↓
+       Nudge + supporting evidence
+                    ↓
+     Confirm the moment with the user
+                    ↓
+   Calculations + explained assumptions
+                    ↓
+       User-reviewed next step
 ```
 
-Adapt the alias/path to your app. The calculation module can also be imported
-by a server route. Validation throws RangeError; catch it in an API route and
-return a 400 response instead of exposing a server error.
+This is the intended end-to-end experience. Detection and planning are reusable modules; the connected experience is still under development.
 
-## Run the calculation tests
+The repository also contains backend foundations for authenticated user records, financial assessments, learning plans, educational lessons, and demo action proposals.
 
-Node 22.13 or newer:
+## Roadmap
+
+These are planned extensions, not completed features:
+
+| Feature                     | What we want it to help users do                                                                                    |
+| --------------------------- | ------------------------------------------------------------------------------------------------------------------- |
+| **Stress tests**            | Explore job loss, an unexpected repair, or a rent increase and see how long their cash could last.                  |
+| **Save the Raise**          | Consider directing part of a pay increase toward savings.                                                           |
+| **Purchase Impact Preview** | See how a large purchase could change a savings goal’s timeline.                                                    |
+| **Plan Check-Ins**          | Compare activity with a chosen plan and make small adjustments.                                                     |
+| **Credit Card Readiness**   | Compare estimated rewards using spending patterns while allowing an honest “not yet” outcome.                       |
+| **Loan Affordability**      | Explore a comfortable payment alongside savings and stress scenarios, starting with car and student loan decisions. |
+
+## Technology
+
+| Area                 | Current foundation                                                       |
+| -------------------- | ------------------------------------------------------------------------ |
+| Frontend             | Next.js, React, TypeScript, Tailwind CSS                                 |
+| Advisor engine       | TypeScript rules and deterministic planning calculations                 |
+| Backend foundations  | Python, FastAPI dependencies, SQLite repositories                        |
+| Identity foundations | Auth0 token verification and separate development demo identities        |
+| Demo data            | Synthetic JSON transactions, balance snapshots, and educational fixtures |
+| Advisor tests        | Node.js test runner                                                      |
+
+## Getting started
+
+### Frontend
+
+With Node.js and npm installed:
 
 ```sh
-node --experimental-strip-types --test finance.test.mjs
+cd frontend
+npm ci
+npm run dev
 ```
 
-The demo component requires your existing React/Next.js project. Its slider uses
-synthetic data and only calculates estimates; it does not initiate payments.
+Open **http://localhost:3000**. The frontend currently contains the starter page; this command does not launch a complete advisor experience.
 
-## Contract for teammates
+### Verify the advisor engine
 
-- All money is integer USD cents: $5,000 = 500000.
-- Rates are percentages: 24 means 24%, not 0.24.
-- Debt uses APR/12 monthly interest with cent rounding, then a month-end payment.
-- Savings converts APY to an equivalent monthly rate; deposits occur at month end.
-- Default horizon is 1200 months. A null payoff/goal time means no completed
-  projection, not zero months. Check status before displaying a result.
-- Interest/months saved are null unless both debt scenarios reach payoff.
-- Show assumptions with results. These are planning estimates, not issuer statements.
-- Money inputs are capped at 1e12 cents, rates at 1000%, horizons at 1200 months;
-  these are technical limits, not product terms or suitability judgments.
-- A too-low payment returns immediately; totals/schedule only cover simulated months.
+Until the advisor feature is merged, use its branch to run the implementation. From the repository root:
 
-## Verification basis and limits
+```sh
+git switch feature/proactive-advisor
+cd frontend
+node --test tests/advisor.test.mjs
+```
 
-Hand-computed test cases verify monthly interest, partial final payments,
-cash conservation, zero rates, APY conversion, unreachable outcomes, and invalid inputs.
-Credit cards often use daily/average daily balances, so matching a real card
-requires issuer terms, statement dates, transactions, payment timing, and APR buckets.
-Savings uses monthly rounding rather than any specific bank's daily accrual method.
-Rates are fixed inputs, not current FNB rates. No fees, taxes, changing minimum
-payments, rate changes, promotional APRs, or new borrowing are modeled.
+The six tests cover all five demo signals, repeat scans and input order, incomplete histories, repeat employers and loan payments, the spending threshold, balance dips, and planning input validation.
 
-CFPB references:
-- https://www.consumerfinance.gov/ask-cfpb/how-does-my-credit-card-company-calculate-the-amount-of-interest-i-owe-en-51/
-- https://www.consumerfinance.gov/ask-cfpb/what-is-a-daily-periodic-rate-on-a-credit-card-en-46/
+The engine and fixture can be imported independently:
 
-Next extension: multiple debts with fixed total payment budget, explicit minimum
-payment rules, and rollover when a debt is paid. Agree that input contract with
-your team before adding avalanche/snowball comparison.
+```ts
+import { detect, plan } from "@/lib/advisor/engine";
+import demo from "@/lib/advisor/demo.json";
+
+const nudges = detect(demo.transactions, demo.snapshots, demo.asOf);
+const paycheckPlan = plan("new-job", 4800, 3580, 5100, 4);
+```
+
+### Repository layout
+
+The advisor library and tests shown below are currently on the feature branch.
+
+```text
+clarity/
+├── BackEnd/api/app/
+│   ├── auth/                    # Identity and access foundations
+│   ├── fixtures/                # Synthetic persona and learning content
+│   └── repositories/            # User-owned application records
+├── frontend/
+│   ├── src/app/                 # Next.js app
+│   ├── src/lib/advisor/         # Detection, planner, demo data, integration guide
+│   └── tests/advisor.test.mjs   # Advisor engine tests
+└── README.md
+```
+
+The backend is scaffolded; this checkout does not yet include a runnable API entry point or a backend installation manifest.
+
+## Team
+
+| Team member        | Role                    | Feature ownership               |
+| ------------------ | ----------------------- | ------------------------------- |
+| **Abhijay**        | Backend / Data Engineer | Proactive Advisor               |
+| **Ram**            | UI/UX Engineer          | UI and interaction design       |
+| **Krish Sawant**   | Backend Engineer        | “Future You” Decision Simulator |
+| **Aayush Sandesh** | QA Engineer             | Testing and quality assurance   |
+| **Neil Barbara**   | Backend Engineer        | Backend development             |
+
+## HackPSU focus
+
+Built for HackPSU Fall 2026 with a focus on understandable, trustworthy financial decisions—the problem highlighted in the FNB Financial Confidence challenge. Our demo priorities are transparent calculations, user-reviewed choices, and a reproducible synthetic dataset. Competition entries and additional sponsor integrations are team decisions still to be confirmed.
+
+## Prototype scope
+
+Clarity is an educational hackathon prototype. Demo activity is synthetic. Live account connections, real transfers, and a complete integrated advisory experience are outside the current implementation. Outputs depend on the supplied history and assumptions.
+
+> > > > > > > origin

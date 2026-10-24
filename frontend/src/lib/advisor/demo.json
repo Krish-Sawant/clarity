@@ -1,0 +1,199 @@
+{
+  "label": "Synthetic demo data",
+  "asOf": "2026-10-24",
+  "transactions": [
+    {
+      "id": "6-1",
+      "date": "2026-06-01",
+      "amount": 3600,
+      "merchant": "Oldtown Studio",
+      "category": "payroll"
+    },
+    {
+      "id": "6-3",
+      "date": "2026-06-03",
+      "amount": -1000,
+      "merchant": "Oak Apartments",
+      "category": "housing"
+    },
+    {
+      "id": "6-10",
+      "date": "2026-06-10",
+      "amount": -450,
+      "merchant": "Neighborhood Market",
+      "category": "groceries"
+    },
+    {
+      "id": "6-14",
+      "date": "2026-06-14",
+      "amount": -250,
+      "merchant": "Metro & utilities",
+      "category": "bills"
+    },
+    {
+      "id": "6-20",
+      "date": "2026-06-20",
+      "amount": -300,
+      "merchant": "Local shops",
+      "category": "shopping"
+    },
+    {
+      "id": "7-1",
+      "date": "2026-07-01",
+      "amount": 3600,
+      "merchant": "Oldtown Studio",
+      "category": "payroll"
+    },
+    {
+      "id": "7-3",
+      "date": "2026-07-03",
+      "amount": -1000,
+      "merchant": "Oak Apartments",
+      "category": "housing"
+    },
+    {
+      "id": "7-10",
+      "date": "2026-07-10",
+      "amount": -450,
+      "merchant": "Neighborhood Market",
+      "category": "groceries"
+    },
+    {
+      "id": "7-14",
+      "date": "2026-07-14",
+      "amount": -250,
+      "merchant": "Metro & utilities",
+      "category": "bills"
+    },
+    {
+      "id": "7-20",
+      "date": "2026-07-20",
+      "amount": -300,
+      "merchant": "Local shops",
+      "category": "shopping"
+    },
+    {
+      "id": "8-1",
+      "date": "2026-08-01",
+      "amount": 3600,
+      "merchant": "Oldtown Studio",
+      "category": "payroll"
+    },
+    {
+      "id": "8-3",
+      "date": "2026-08-03",
+      "amount": -1000,
+      "merchant": "Oak Apartments",
+      "category": "housing"
+    },
+    {
+      "id": "8-10",
+      "date": "2026-08-10",
+      "amount": -450,
+      "merchant": "Neighborhood Market",
+      "category": "groceries"
+    },
+    {
+      "id": "8-14",
+      "date": "2026-08-14",
+      "amount": -250,
+      "merchant": "Metro & utilities",
+      "category": "bills"
+    },
+    {
+      "id": "8-20",
+      "date": "2026-08-20",
+      "amount": -300,
+      "merchant": "Local shops",
+      "category": "shopping"
+    },
+    {
+      "id": "9-1",
+      "date": "2026-09-01",
+      "amount": 3600,
+      "merchant": "Oldtown Studio",
+      "category": "payroll"
+    },
+    {
+      "id": "9-3",
+      "date": "2026-09-03",
+      "amount": -1000,
+      "merchant": "Oak Apartments",
+      "category": "housing"
+    },
+    {
+      "id": "9-10",
+      "date": "2026-09-10",
+      "amount": -450,
+      "merchant": "Neighborhood Market",
+      "category": "groceries"
+    },
+    {
+      "id": "9-14",
+      "date": "2026-09-14",
+      "amount": -250,
+      "merchant": "Metro & utilities",
+      "category": "bills"
+    },
+    {
+      "id": "9-20",
+      "date": "2026-09-20",
+      "amount": -300,
+      "merchant": "Local shops",
+      "category": "shopping"
+    },
+    {
+      "id": "new-pay",
+      "date": "2026-10-15",
+      "amount": 4800,
+      "merchant": "Northstar Labs",
+      "category": "payroll"
+    },
+    {
+      "id": "lease",
+      "date": "2026-10-16",
+      "amount": -2200,
+      "merchant": "River Property Management",
+      "category": "housing"
+    },
+    {
+      "id": "loan",
+      "date": "2026-10-18",
+      "amount": -280,
+      "merchant": "Student Loan Servicer",
+      "category": "student_loan"
+    },
+    {
+      "id": "moving",
+      "date": "2026-10-20",
+      "amount": -700,
+      "merchant": "City Movers",
+      "category": "moving"
+    },
+    {
+      "id": "food",
+      "date": "2026-10-22",
+      "amount": -400,
+      "merchant": "Neighborhood Market",
+      "category": "groceries"
+    }
+  ],
+  "snapshots": [
+    {
+      "date": "2026-07-24",
+      "balance": 2200
+    },
+    {
+      "date": "2026-08-24",
+      "balance": 3100
+    },
+    {
+      "date": "2026-09-24",
+      "balance": 4300
+    },
+    {
+      "date": "2026-10-24",
+      "balance": 5100
+    }
+  ]
+}

@@ -1,0 +1,46 @@
+export type Transaction = { id: string; date: string; amount: number; merchant: string; category: string };
+export type Snapshot = { date: string; balance: number };
+export type Moment = 'new-job' | 'moving' | 'overspending' | 'student-loan' | 'idle-cash';
+export type Nudge = { id: string; kind: Moment; title: string; message: string; evidence: string; amount: number };
+const month = (date: string) => date.slice(0, 7);
+const money = (n: number) => n.toLocaleString('en-US', {style:'currency', currency:'USD', maximumFractionDigits:0});
+/** Positive amounts are income; negative amounts are outflows. Current month is compared with full prior monthly totals, so an early alert requires already crossing the threshold. */
+export function detect(transactions: Transaction[], snapshots: Snapshot[], asOf: string): Nudge[] {
+  const rows = transactions.filter(t => t.date <= asOf).sort((a,b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
+  const current = month(asOf);
+  const recent = rows.filter(t => month(t.date) === current);
+  const before = rows.filter(t => month(t.date) < current);
+  const results: Nudge[] = [];
+  const add = (kind: Moment, t: Transaction, title: string, message: string, evidence: string) => results.push({id:`${kind}:${t.id}`, kind,title,message,evidence,amount:Math.abs(t.amount)});
+  const pay = before.filter(t => t.category === 'payroll' && t.amount > 0);
+  const lastPay = pay.at(-1);
+  const newPay = recent.find(t => t.category === 'payroll' && t.amount > (lastPay?.amount ?? Infinity) && !pay.some(p => p.merchant.toLowerCase() === t.merchant.toLowerCase()));
+  if (newPay && lastPay) add('new-job',newPay,'A new chapter?','Looks like you may have started a new job. Want to plan your first paycheck? Takes 3 minutes.',`${newPay.merchant} paid ${money(newPay.amount)}, compared with ${money(lastPay.amount)} from ${lastPay.merchant}.`);
+  const rent = recent.find(t => t.category === 'housing' && t.amount <= -1500 && !before.some(p => p.category === 'housing' && p.merchant === t.merchant));
+  if(rent) add('moving',rent,'Making a move?','A new housing payment showed up. Let’s check your moving costs and monthly budget.',`${money(-rent.amount)} paid to ${rent.merchant}; no earlier payments to this housing merchant.`);
+  const totals = new Map<string, number>();
+  for(const t of before) if(t.amount < 0 && t.category !== 'transfer') totals.set(month(t.date),(totals.get(month(t.date)) ?? 0)-t.amount);
+  const baseline = [...totals.entries()].sort().slice(-3);
+  const avg = baseline.reduce((sum,[,n]) => sum+n,0)/baseline.length;
+  const spent = recent.filter(t => t.amount < 0 && t.category !== 'transfer').reduce((s,t) => s-t.amount,0);
+  if(baseline.length === 3 && spent >= avg*1.4 && avg > 0) results.push({id:`overspending:${current}`,kind:'overspending',title:'Your spending shifted',message:'Spending is above your usual level. See what changed and make a quick reset.',evidence:`${money(spent)} so far versus a ${money(avg)} average across the previous 3 active months (${Math.round((spent/avg-1)*100)}% higher).`,amount:Math.round(spent-avg)});
+  const loan = recent.find(t => t.category === 'student_loan' && t.amount < 0);
+  if(loan && !before.some(t => t.category === 'student_loan' && t.amount < 0)) add('student-loan',loan,'Repayment looks underway','Your first student loan payment appeared. Let’s weigh loan payments against saving.',`${money(-loan.amount)} paid to ${loan.merchant}; no earlier student loan payments in this history.`);
+  const balances = [...new Map(snapshots.filter(s=>s.date<=asOf).sort((a,b)=>a.date.localeCompare(b.date)).map(s=>[month(s.date),s])).values()].slice(-4);
+  if(balances.length === 4 && balances.every((s,i)=>!i || s.balance > balances[i-1].balance)) results.push({id:`idle-cash:${balances.at(-1)!.date}`,kind:'idle-cash',title:'Your cushion is growing',message:'Your balance has grown for several months. Explore an interest-earning savings account.',evidence:`Four monthly balances rose from ${money(balances[0].balance)} to ${money(balances[3].balance)}. Confirm upcoming bills before moving cash.`,amount:balances[3].balance});
+  return results;
+}
+export function plan(kind: Moment, income: number, expenses: number, cash: number, apr: number) {
+  if (![income,expenses,cash,apr].every(Number.isFinite) || Math.min(income,expenses,cash,apr)<0 || apr>100) throw new Error('Enter valid non-negative numbers; rate must be 0–100.');
+  const surplus = Math.max(0,income-expenses);
+  const gap = Math.max(0,expenses*3-cash);
+  const monthly = Math.round(Math.min(surplus, gap || surplus)*0.5);
+  const details: Record<Moment,string> = {
+    'new-job':'Confirm whether this deposit is a recurring paycheck or a one-time bonus. Review your employer’s 401(k) match and eligibility before choosing contributions; this estimate uses take-home pay.',
+    moving:'Include deposits, movers, utilities and overlapping rent in expenses. Keep money for upcoming bills accessible before starting a transfer.',
+    overspending:'Separate one-time costs from recurring spending. Pick one flexible category to reduce and review your next month’s actual spending.',
+    'student-loan':'Include the required loan payment in expenses. Compare your actual loan APR, repayment benefits and savings yield before making extra payments; this estimate does not rank investing against debt.',
+    'idle-cash':'Keep upcoming expenses and an emergency cushion accessible. Compare APY, fees, withdrawal access and deposit insurance before choosing savings.',
+  };
+  return {surplus, gap, monthly, interest:Math.round(cash*apr/100), explanation:details[kind], action:monthly>0?`Review a ${money(monthly)} monthly savings transfer`:'Review expenses before scheduling a savings transfer'};
+}

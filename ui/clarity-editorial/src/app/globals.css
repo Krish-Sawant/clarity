@@ -1018,3 +1018,13 @@ details[open] > summary > svg { transform: rotate(45deg); }
 .auth-card p { margin: 24px 0; line-height: 1.6; }
 .auth-card .header-cta { display: inline-flex; padding: 16px 22px; }
 .auth-card small { display: block; margin-top: 32px; line-height: 1.6; }
+
+/* Future Lab keeps scenario controls and resilience results in one workspace. */
+.future-lab-view [hidden] { display: none !important; }
+.future-lab-view .shock-options { grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); }
+.future-lab-view .shock-section { margin-bottom: 32px; scroll-margin-top: 24px; }
+.future-lab-view .shock-section .tool-controls { margin-top: 20px; }
+.future-lab-view .lab-chart-panel .tool-message { margin-top: 24px; }
+@media (max-width: 600px) {
+  .future-lab-view .shock-options { grid-template-columns: 1fr; }
+}

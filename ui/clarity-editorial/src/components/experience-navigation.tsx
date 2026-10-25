@@ -4,7 +4,7 @@ import Link from "next/link";
 // a section name for the page-level groups, a tab name for the in-page tab groups.
 const links = {
   lab: [
-    { href: "/future-lab", id: "future-lab", label: "Paths & stress test" },
+    { href: "/future-lab", id: "future-lab", label: "Explore your tomorrow" },
     { href: "/decisions", id: "decisions", label: "Future Decisions" },
     { href: "/calculators", id: "calculators", label: "Debt & savings" },
   ],

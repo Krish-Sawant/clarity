@@ -2,7 +2,9 @@
   "name": "clarity-editorial",
   "version": "0.1.0",
   "private": true,
-  "engines": { "node": ">=22" },
+  "engines": {
+    "node": ">=22"
+  },
   "scripts": {
     "dev": "next dev --hostname 127.0.0.1 --port 3001",
     "build": "next build",
@@ -13,6 +15,7 @@
     "test:browser": "playwright test"
   },
   "dependencies": {
+    "@auth0/nextjs-auth0": "^4.33.0",
     "next": "^16.0.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"

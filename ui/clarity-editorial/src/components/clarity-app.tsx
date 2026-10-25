@@ -1,9 +1,10 @@
 "use client";
+/* eslint-disable @next/next/no-html-link-for-pages -- Auth0 logout requires full document navigation. */
 
 import Link from "next/link";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { Section } from "../lib/types";
-import { useDemo } from "../state/demo-store";
+import { useDemo, DEMO_STORAGE_KEY } from "../state/demo-store";
 import { useDesign } from "../state/design-store";
 import { OverviewView } from "../views/overview";
 import { AssessmentView } from "../views/assessment";
@@ -52,7 +53,7 @@ export function ClarityApp({ section, evidence }: { section: Section; evidence?:
 
   return <div className={`clarity-app palette-${design.palette}`} style={style} data-hydrated={hydrated}>
     <a className="skip-link" href="#main-content">Skip to content</a>
-    <div className="edition-bar"><span>A CLEARER RELATIONSHIP WITH MONEY.</span><span>INDEPENDENT THINKING / EDITION 02</span><span className="mode-indicator"><span /> LOCAL DEMO</span></div>
+    <div className="edition-bar"><span>A CLEARER RELATIONSHIP WITH MONEY.</span><Link href="/account">AUTH0 ACCOUNT / SYNTHETIC DATA</Link><a href="/auth/logout" onClick={() => { try { window.sessionStorage.removeItem(DEMO_STORAGE_KEY); } catch { /* Storage may be unavailable. */ } }}>Log out ↗</a></div>
     <header className="site-header"><div className="header-main"><Link href="/" className="brand" aria-label="Clarity home"><Brand /></Link><span className="brand-description">A little knowledge.<br />A different future.</span><div className="header-actions"><button className="icon-button design-trigger" aria-label="Design settings" onClick={() => setDesignOpen(true)}><Icon name="sliders" size={19} /><span>Design studio</span></button><Link href={state.baseline.completed ? "/learn" : "/discover"} className="header-cta">Your next chapter <Icon name="arrow-up-right" size={17} /></Link><button ref={menuButton} className="icon-button menu-toggle" aria-label={menuOpen ? "Close navigation" : "Open navigation"} aria-expanded={menuOpen} aria-controls="primary-navigation" onClick={() => setMenuOpen(!menuOpen)}><Icon name={menuOpen ? "close" : "menu"} size={23} /></button></div></div><nav id="primary-navigation" className={`primary-navigation ${menuOpen ? "is-open" : ""}`} aria-label="Main navigation">{navigation.map((item) => <Link key={item.section} href={item.href} className={activeSection === item.section ? "is-active" : ""} aria-current={activeSection === item.section ? "page" : undefined} onClick={() => setMenuOpen(false)}>{item.number && <span className="nav-number">{item.number}</span>}{item.label}{activeSection === item.section && <span className="nav-active-dot" />}</Link>)}<span className="nav-end">UNDERSTAND. THEN DECIDE.<Icon name="plus" size={13} /></span></nav></header>
     <div className="experience-mode"><span><span className="tiny-dot" /> {state.sampleJourney ? "SYNTHETIC SAMPLE JOURNEY" : "YOUR LOCAL EXPLORATION"}</span><Link href="/approach#connections-title">Sample data. Transparent methods.<Icon name="arrow-up-right" size={12} /></Link></div>
     {!storageAvailable && <p className="storage-notice" role="status">Browser storage is unavailable. Your demo works for this visit; progress may be lost on refresh.</p>}

@@ -1,7 +1,7 @@
 "use client";
 
-import { useId, useMemo, useState, type KeyboardEvent, type PointerEvent } from "react";
-import { decisionTableRows, getDecisionResult, type Block, type ChartMetric, type DecisionResult, type Session, type TableRowKey } from "../api/decisions";
+import { useId, useState, type KeyboardEvent, type PointerEvent } from "react";
+import { decisionTableRows, type Block, type ChartMetric, type DecisionResult, type TableRowKey } from "../api/decisions";
 import { currency } from "../lib/finance";
 
 export const decisionMetricLabels: Record<ChartMetric, string> = { netWorth: "Net worth", cash: "Cash", debt: "Debt" };
@@ -97,20 +97,14 @@ export function DecisionSummary({ result, metric = "netWorth" }: { result: Decis
   return <div className="decision-summary">{[result.comparison.a, result.comparison.b].map((projection, index) => <article className="decision-summary-card" key={index}><p className="eyebrow">{index === 0 ? "A / SOLID LINE" : "B / DASHED LINE"}</p><h3>{projection.label}</h3><span>{decisionMetricLabels[metric]} after {result.snapshot.years} {result.snapshot.years === 1 ? "year" : "years"}</span><strong>{currency(projection.points[result.months][metric])}</strong><small>{projection.shortfallMonth === null ? "No cash shortfall in this projection" : `Cash shortfall starts in month ${projection.shortfallMonth}`}</small></article>)}</div>;
 }
 
-export function DecisionBlock({ block, interactive, onChoose, onLoadSnapshot, showLabel = true }: { block: Block; interactive: boolean; onChoose: (choice: string) => void; onLoadSnapshot: (snapshot: Session) => void; showLabel?: boolean }) {
-  const archived = useMemo(() => {
-    if (!("snapshot" in block)) return null;
-    try { return { result: getDecisionResult(block.snapshot), error: "" }; }
-    catch (error) { return { result: null, error: error instanceof Error ? error.message : "This saved comparison is unavailable." }; }
-  }, [block]);
+export type LiveView = "summary" | "chart" | "budget" | "table";
+const viewLabels: Record<Exclude<LiveView, "chart">, string> = { summary: "Comparison summary", budget: "Monthly budget breakdown", table: "Comparison table" };
+
+/** Charts live only in the comparison below the chat; a chart block in the chat is a link to its view there. */
+export function DecisionBlock({ block, interactive, onChoose, onShowView }: { block: Block; interactive: boolean; onChoose: (choice: string) => void; onShowView: (view: LiveView, metric?: ChartMetric) => void }) {
   if (block.type === "question") return <div className="decision-block decision-block--question"><p>{block.text}</p><div className="decision-question-choices">{block.choices.map((choice, index) => <button className="button button--secondary" type="button" key={index} disabled={!interactive} onClick={() => onChoose(choice)}>{choice}</button>)}</div>{!interactive && <p className="field-hint">An earlier question in this conversation.</p>}</div>;
   if (block.type === "message") return <div className="decision-block decision-block--message"><p className="eyebrow">FROM THE CALCULATED RESULTS</p>{block.lines.map((line, index) => <p key={index}>{line}</p>)}</div>;
-  if (!archived?.result) return <p className="form-error" role="alert">{archived?.error ?? "This comparison could not be displayed."}</p>;
-  const result = archived.result;
-  return <div className={`decision-block decision-block--${block.type}`}>{showLabel && <div className="decision-snapshot-label"><span className="tag">FROZEN COMPARISON</span><span>{result.scenario.title} · {result.snapshot.years} years</span></div>}
-    {block.type === "chart" && <DecisionChart result={result} metric={block.metric} title={block.title} />}
-    {block.type === "table" && <DecisionTable result={result} rows={block.rows} caption="Values at the time of this reply" />}
-    {block.type === "breakdown" && <DecisionBreakdown result={result} />}
-    {block.type === "playground" && <><DecisionSummary result={result} /><p>These values capture the assumptions at this point in the conversation. Later edits leave this comparison intact.</p><button className="button button--secondary" type="button" onClick={() => onLoadSnapshot({ scenarioId: result.snapshot.scenarioId, values: { ...result.snapshot.values }, years: result.snapshot.years })}>Edit this comparison above</button></>}
-  </div>;
+  const view: LiveView = block.type === "chart" ? "chart" : block.type === "breakdown" ? "budget" : block.type === "playground" ? "summary" : "table";
+  const label = block.type === "chart" ? `${block.title ?? decisionMetricLabels[block.metric]} chart` : viewLabels[view as Exclude<LiveView, "chart">];
+  return <div className="decision-block decision-block--link"><button className="text-link" type="button" onClick={() => onShowView(view, block.type === "chart" ? block.metric : undefined)}>{label}: shown in the comparison below <span aria-hidden="true">↓</span></button></div>;
 }

@@ -38,7 +38,7 @@ const OPTION = {
 export const TOOLS: ToolSchema[] = [
   tool("pick_scenario", "Start one of the preset comparisons. Returns its input fields and suggested follow-up questions.",
     { scenario_id: { type: "string", enum: SCENARIOS.map((s) => s.id) } }, ["scenario_id"]),
-  tool("define_comparison", "Start a custom comparison of any two money options. Include only cash flows that differ or matter; list every value you assumed rather than heard from the user.",
+  tool("define_comparison", "Start a custom comparison of any two money options. Include only cash flows that differ or matter. Use only values the user gave or picked; ask for anything missing first. List in assumptions any value the user explicitly asked you to fill with a typical figure.",
     { title: str, years: { type: "number", description: "Horizon, 1-10" }, options: { type: "array", items: OPTION, description: "Exactly two options" }, assumptions: { type: "array", items: str } },
     ["title", "years", "options", "assumptions"]),
   tool("set_inputs", "Change inputs of the current comparison by field key. Key \"years\" sets the horizon (1-10). Values are strings: numbers as digits, toggles as true/false, cities by id.",
@@ -46,11 +46,11 @@ export const TOOLS: ToolSchema[] = [
   tool("ask_user", "Ask the user one follow-up question with 2-4 short answer choices. Ends your turn until they reply.",
     { question: str, choices: { type: "array", items: str } }, ["question", "choices"]),
   tool("run_simulation", "Run the projection with the current inputs. Returns the only projected numbers you may quote."),
-  tool("show_playground", "Show summary cards for both options with a button to edit the comparison."),
-  tool("show_chart", "Show a line chart over time. netWorth = overall position, cash = savings balance (reveals dips and shortfalls), debt = payoff progress.",
+  tool("show_playground", "Add a link to the summary cards for both options in the comparison below."),
+  tool("show_chart", "Add a link to the line chart in the comparison below, switched to this measure. netWorth = overall position, cash = savings balance (reveals dips and shortfalls), debt = payoff progress.",
     { metric: { type: "string", enum: ["netWorth", "cash", "debt"] }, title: { type: "string", description: "Plain-language title saying what to look for" } }, ["metric", "title"]),
-  tool("show_breakdown", "Show a bar chart of each option's first-month budget: pay, each cost, debt payments, and what's left to save. Returns those amounts."),
-  tool("show_table", "Show selected result rows.", { rows: { type: "array", items: { type: "string", enum: TABLE_ROW_KEYS } } }, ["rows"]),
+  tool("show_breakdown", "Add a link to the bar chart of each option's first-month budget: pay, each cost, debt payments, and what's left to save. Returns those amounts."),
+  tool("show_table", "Add a link to the comparison table.", { rows: { type: "array", items: { type: "string", enum: TABLE_ROW_KEYS } } }, ["rows"]),
 ];
 
 function systemPrompt(session: Session, passages: Passage[]): string {
@@ -70,10 +70,10 @@ ${presets}
 
 HOW TO WORK
 1. Understand the decision. If it fits a preset, call pick_scenario, then ask its suggested follow-ups (from ask_about) one per turn with ask_user, mapping answers onto fields with set_inputs.
-2. Otherwise build a custom comparison. First ask up to 3 short follow-ups with ask_user (one per turn, with choices) for the numbers that matter most and that the user hasn't given (e.g. price, monthly payment, income, savings, monthly living costs). Then call define_comparison. Use the user's numbers; fill anything else with typical values and list each one in assumptions, saying it is an estimate the user can edit.
+2. Otherwise build a custom comparison. First ask short follow-ups with ask_user (one per turn, with choices) for every number the comparison needs that the user hasn't given (e.g. price, monthly payment, income, savings, monthly living costs). Then call define_comparison using only the user's numbers.
    Model each option as the user's whole monthly budget, not just the part that differs: both options include their income and their regular living costs (rent, food, etc.), otherwise savings and net worth come out unrealistically high. Include costs specific to an option (insurance, repairs, fees, depreciation of assets) on that option.
-3. When the comparison is set up, show the results visually, all in one reply: run_simulation, show_playground, show_chart (netWorth, with a title naming what to notice), show_breakdown, and show_table. Add a second show_chart when it helps the story: metric "debt" if either option carries debt, metric "cash" if lowest_savings is low or savings run out. Then explain the result in 3-5 sentences, mentioning your main assumptions.
-4. For a what-if on the current comparison: set_inputs (field keys from pick_scenario or define_comparison), run_simulation, then the one or two visuals that show the change best (show_chart for changes over time, show_breakdown for monthly-budget changes), show_table with a few relevant rows, then a 2-3 sentence explanation. If the what-if adds something new (a new cost or option), call define_comparison again with the change.
+3. When the comparison is set up, in one reply: run_simulation, then link the views that tell the story: show_playground, show_chart (netWorth, with a title naming what to notice), show_breakdown, and show_table. Add a second show_chart when it helps: metric "debt" if either option carries debt, metric "cash" if lowest_savings is low or savings run out. The show_ tools don't draw anything in the chat; each adds a link to that view in the live comparison below. Then explain the result in 3-5 sentences.
+4. For a what-if on the current comparison: set_inputs (field keys from pick_scenario or define_comparison), run_simulation, then link the one or two views that show the change best (show_chart for changes over time, show_breakdown for monthly-budget changes), then a 2-3 sentence explanation; the comparison below updates by itself. If the what-if adds something new (a new cost or option), call define_comparison again with the change.
 5. For a general money question, answer from SOURCES without tools.
 6. If the question isn't a money decision at all, say what you can help with.
 
@@ -81,6 +81,9 @@ NUMBERS (strict)
 - Never calculate or estimate results yourself. Projected figures (net worth, savings, payoff months, interest) come only from run_simulation; quote them as given (rounding such as $81,688 to $81.7k is fine).
 - In explanations, any other dollar amount or percentage must be one the user said, one you set as an input or assumption, or one in SOURCES. Don't quote typical market rates (savings yields, loan rates) unless a source states them; set them as inputs instead.
 - set_inputs only accepts the field keys returned by pick_scenario or define_comparison; other keys are rejected.
+- Never assume a value. Every input must come from the user: something they said, or a choice they picked. Don't fill gaps with typical, average, or default values, and don't guess from context (e.g. a city or job title). If a number is missing, ask for it; group related numbers into one question to keep the conversation short. Answer choices may offer rough ranges for the user to pick from, but the user must pick one.
+- If the user says they don't know, ask for their best rough guess. Use a typical value only if they explicitly ask you to, and then say which value you used.
+- Before the first run_simulation, check the current inputs: if any value the result depends on is still a preset default the user hasn't confirmed, ask about it first.
 
 SOURCES (strict)
 - Ground general guidance and consumer rights in the passages below. Cite with the source id in square brackets right after the sentence, e.g. [cfpb-apr-44]. Use only ids listed below.
@@ -88,6 +91,7 @@ SOURCES (strict)
 
 STYLE
 - Short paragraphs, plain text, no markdown, no headings, under 120 words per message.
+- Write every amount and rate as digits ($2,000, 8%), never spelled out in words.
 - Never ask for account numbers, SSNs, or other identifiers.
 
 ${state}
@@ -233,6 +237,78 @@ export function keepKnownCitations(text: string, passages: Pick<Passage, "source
     ids.split(",").map((id) => id.trim().split("#")[0]).filter((id) => known.has(id)).map((id) => ` [${id}]`).join(""));
 }
 
+/* ---------- Input checks: every input comes from the user ---------- */
+
+// Timing and horizon describe the comparison, not the user's money, so the model may set them.
+const TIMING_KEY = /^(years|month|start_month|end_month|payments_start_month)$/;
+
+function inputNumbers(value: unknown, key = "", out: number[] = []): number[] {
+  if (TIMING_KEY.test(key)) return out;
+  if (typeof value === "number" && Number.isFinite(value)) out.push(Math.abs(value));
+  else if (typeof value === "string" && /^\s*-?\$?\d[\d,]*(?:\.\d+)?\s*%?\s*$/.test(value)) out.push(Math.abs(Number(value.replace(/[$,%\s]/g, ""))));
+  else if (Array.isArray(value)) value.forEach((v) => inputNumbers(v, key, out));
+  else if (value && typeof value === "object") Object.entries(value).forEach(([k, v]) => inputNumbers(v, k, out));
+  return out;
+}
+
+/** Amounts the user typed or picked, with "$6k" scaling and monthly ↔ yearly conversions. Zero covers "no debt". */
+export function userNumbers(history: ChatItem[]): number[] {
+  const out = [0];
+  for (const item of history) {
+    if (item.role !== "user") continue;
+    for (const m of item.text.matchAll(/(\d[\d,]*(?:\.\d+)?)\s*(k|m|thousand|million)?\b/gi)) {
+      const n = Number(m[1].replace(/,/g, ""));
+      const scale = /^(k|thousand)$/i.test(m[2] ?? "") ? 1e3 : /^(m|million)$/i.test(m[2] ?? "") ? 1e6 : 1;
+      for (const v of new Set([n, n * scale])) out.push(v, v * 12, v / 12);
+    }
+  }
+  return out;
+}
+
+const mentioned = (history: ChatItem[], word: string) =>
+  history.some((h) => h.role === "user" && h.text.toLowerCase().includes(word.toLowerCase().replace(/-/g, " ")));
+
+type InputProblems = { message: string; rejected: Set<string>; missing: string[] };
+
+/** Finds inputs the model made up, and preset defaults the user never gave before a simulation runs. */
+export function inputProblems(history: ChatItem[], session: Session, calls: ToolCall[]): InputProblems | null {
+  const allowed = userNumbers(history);
+  const rejected = new Set<string>();
+  const invented: string[] = [];
+  for (const call of calls) {
+    if (call.name !== "set_inputs" && call.name !== "define_comparison") continue;
+    const args = call.name === "define_comparison" ? { ...call.args, assumptions: undefined, title: undefined } : call.args;
+    const numbers = inputNumbers(args).filter((n) => !close(allowed, n, 0.5));
+    const words = call.name === "set_inputs" ? Object.values((call.args.values ?? {}) as Record<string, unknown>).filter((v): v is string => typeof v === "string" && !mentioned(history, v)) : [];
+    if (numbers.length || words.length) {
+      rejected.add(call.id);
+      invented.push(...numbers.map((n) => String(n)), ...words);
+    }
+  }
+
+  let missing: string[] = [];
+  if (calls.some((c) => c.name === "run_simulation")) {
+    const picked = calls.find((c) => c.name === "pick_scenario")?.args.scenario_id;
+    const scenario = SCENARIOS.find((s) => s.id === (picked ?? session.scenarioId));
+    if (scenario) {
+      const given = new Set<string>();
+      const collect = (c: ToolCall) => { if (c.name === "set_inputs" && !rejected.has(c.id)) Object.keys((c.args.values ?? {}) as object).forEach((k) => given.add(k)); };
+      history.forEach((h) => { if (h.role === "assistant") h.toolCalls?.forEach(collect); });
+      calls.forEach(collect);
+      // A value the user changed in the inputs panel differs from the preset default.
+      const fresh = !!picked || session.scenarioId !== scenario.id;
+      missing = scenario.fields.filter((f) => !given.has(f.key) && (fresh || session.values[f.key] === scenario.defaults[f.key])).map((f) => f.label);
+    }
+  }
+
+  if (!rejected.size && !missing.length) return null;
+  const parts = [
+    invented.length ? `These input values were not given by the user: ${invented.join(", ")}. Never estimate or assume inputs.` : "",
+    missing.length ? `These inputs still hold preset defaults the user never gave: ${missing.join("; ")}. Do not call run_simulation yet.` : "",
+  ];
+  return { message: `[Automated check] ${parts.filter(Boolean).join(" ")} Call ask_user to ask for the missing numbers, grouping related ones into one question.`, rejected, missing };
+}
+
 /* ---------- One agent turn ---------- */
 
 export type DecisionTurn = AgentTurn & { sources: Pick<Passage, "source_id" | "title" | "url">[] };
@@ -257,11 +333,28 @@ export async function decideTurn(history: ChatItem[], session: Session): Promise
     if (turn.bad.length) turn.text = dropSentencesWith(turn.text, turn.bad);
   }
 
+  const problems = inputProblems(history, session, turn.toolCalls);
+  if (problems) {
+    // One retry; if the model still assumes, drop those calls and ask the user ourselves.
+    turn = await draft([{ role: "user", content: problems.message }]);
+    if (turn.bad.length) turn.text = dropSentencesWith(turn.text, turn.bad);
+    const still = inputProblems(history, session, turn.toolCalls);
+    if (still) {
+      turn.toolCalls = turn.toolCalls.filter((c) => !still.rejected.has(c.id) && !(still.missing.length && c.name === "run_simulation"));
+      if (!turn.toolCalls.some((c) => c.name === "ask_user")) {
+        const needed = still.missing.length ? still.missing.map((label) => label.toLowerCase()).join("; ") : "the actual amounts for each option";
+        turn.text = `Before I run the numbers, I need these from you rather than guessing: ${needed}. What are they?`;
+      }
+    }
+  }
+
+  const kept = new Set(turn.toolCalls.map((c) => c.id));
+  const rawCalls = turn.reply.tool_calls?.filter((c) => kept.has(c.id));
   const cited = new Set([...turn.text.matchAll(/\[([a-z0-9-]+)\]/g)].map((m) => m[1]));
   return {
     text: turn.text || undefined,
     toolCalls: turn.toolCalls,
-    providerMessage: { ...turn.reply, content: turn.text || null },
+    providerMessage: { ...turn.reply, content: turn.text || null, tool_calls: rawCalls?.length ? rawCalls : undefined },
     sources: passages.filter((p) => cited.has(p.source_id)).map(({ source_id, title, url }) => ({ source_id, title, url }))
       .filter((p, i, all) => all.findIndex((q) => q.source_id === p.source_id) === i),
   };

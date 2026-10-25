@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { allowedNumbers, keepKnownCitations, toProviderMessages, toToolCall, unverifiedAmounts } from "../src/server/decision-agent";
-import type { ChatItem } from "../../../frontend/src/lib/chat/types";
+import { allowedNumbers, inputProblems, keepKnownCitations, toProviderMessages, toToolCall, unverifiedAmounts } from "../src/server/decision-agent";
+import type { ChatItem, Session, ToolCall } from "../../../frontend/src/lib/chat/types";
 
 const history: ChatItem[] = [
   { role: "user", text: "Lease at $350/mo or buy used for $15,000?" },
@@ -52,4 +52,33 @@ test("citations are split per source and unknown ids are dropped", () => {
 test("set_inputs arrays become typed values", () => {
   const call = toToolCall({ id: "x", type: "function", function: { name: "set_inputs", arguments: JSON.stringify({ inputs: [{ key: "rentA", value: "$2,000" }, { key: "roommateA", value: "true" }, { key: "cityA", value: "austin" }] }) } });
   assert.deepEqual(call.args, { values: { rentA: 2000, roommateA: true, cityA: "austin" } });
+});
+
+const empty: Session = { scenarioId: null, values: {}, years: 5 };
+const moveOut: ChatItem[] = [{ role: "user", text: "Should I move out to a $1,400 apartment or keep living with my parents and pay them $300?" }];
+const call = (id: string, name: string, args: Record<string, unknown> = {}): ToolCall => ({ id, name, args });
+
+test("inputs the user gave pass; made-up inputs are rejected", () => {
+  assert.equal(inputProblems(moveOut, empty, [call("p", "pick_scenario", { scenario_id: "move-out" }), call("s", "set_inputs", { values: { rent: 1400, familyRent: 300 } })]), null);
+  const made = inputProblems(moveOut, empty, [call("s", "set_inputs", { values: { rent: 1400, utilities: 180 } })]);
+  assert.ok(made?.rejected.has("s"));
+  assert.match(made!.message, /180/);
+});
+
+test("$6k, yearly figures, and picked answers count as the user's numbers", () => {
+  const said: ChatItem[] = [{ role: "user", text: "I have $6k saved and insurance is $1,200 a year" }, { role: "user", text: "$3,600/mo, $6k saved" }];
+  assert.equal(inputProblems(said, empty, [call("s", "set_inputs", { values: { startingCash: 6000, insurance: 100, takeHome: 3600 } })]), null);
+});
+
+test("a simulation can't run on preset defaults the user never gave", () => {
+  const early = inputProblems(moveOut, empty, [call("p", "pick_scenario", { scenario_id: "move-out" }), call("s", "set_inputs", { values: { rent: 1400, familyRent: 300 } }), call("r", "run_simulation")]);
+  assert.ok(early?.missing.includes("Utilities + internet / mo"));
+  assert.ok(!early?.missing.includes("Rent / mo"));
+});
+
+test("custom comparisons may not invent amounts, but timing is the model's to set", () => {
+  const options = [{ label: "Lease", costs: [{ name: "Lease", monthly: 350, start_month: 1 }] }, { label: "Buy", one_time: [{ name: "Car", amount: 15000, month: 0 }], costs: [{ name: "Insurance", monthly: 140 }] }];
+  const custom = inputProblems(history, empty, [call("d", "define_comparison", { title: "Lease vs buy", years: 5, options, assumptions: ["Insurance $140/mo"] })]);
+  assert.match(custom!.message, /140/);
+  assert.doesNotMatch(custom!.message, /\b(350|15000|5)\b,/);
 });

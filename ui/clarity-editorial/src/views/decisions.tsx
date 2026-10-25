@@ -5,7 +5,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { createDecisionSession, decisionCities, getDecisionResult, getDecisionScenario, readDecisionField, runDecisionChat, type ChartMetric, type ChatItem, type CitedSource, type DecisionResult, type GuideMode, type LoopEvent, type Session, type Values } from "../api/decisions";
 import { Icon } from "../components/icon";
 import { currency } from "../lib/finance";
-import { DecisionBlock, DecisionBreakdown, DecisionChart, DecisionSummary, DecisionTable, decisionMetricLabels } from "./decision-blocks";
+import { DecisionBlock, type LiveView, DecisionBreakdown, DecisionChart, DecisionSummary, DecisionTable, decisionMetricLabels } from "./decision-blocks";
 
 type Draft = Record<string, number | string | boolean>;
 type ConversationTurn = { id: number; text: string; events: LoopEvent[]; error?: string; mode?: GuideMode; fallbackReason?: string | null; sources?: CitedSource[] };
@@ -157,6 +157,12 @@ export function DecisionsView() {
     }
   }
 
+  // Chart blocks in the chat link to the live comparison instead of drawing their own charts.
+  function showView(view: LiveView, chartMetric?: ChartMetric) {
+    if (chartMetric) setMetric(chartMetric);
+    document.getElementById(`decision-live-${view}`)?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+
   function submitMessage(event: FormEvent<HTMLFormElement>) { event.preventDefault(); void send(message); }
 
   const inspectedMonth = result ? Math.min(inspectionMonth, result.months) : 0;
@@ -164,7 +170,7 @@ export function DecisionsView() {
     <header className="view-header"><div><p className="eyebrow">THE FUTURE LAB / DECISION WORKSHOP</p><h1>Two paths.<br /><span className="serif-word">Your perspective.</span></h1></div><div className="view-header__aside"><span className="tag">MERGED LOCAL ENGINE</span><p>Compare a real-life decision with synthetic assumptions. Make the trade-offs visible before you choose.</p></div></header>
 
     <section className="panel decision-chat" aria-labelledby="decision-chat-title"><div className="section-heading"><div><p className="eyebrow">THINK IT THROUGH, TOGETHER</p><h2 id="decision-chat-title">Tell the guide what you’re deciding.</h2></div><span className="tag">GEMINI · CITES CFPB SOURCES</span></div><p>Describe any choice between two options in your own words. The guide asks a few short follow-ups, builds the comparison below, and then answers your what-ifs.</p>{turns.length > 0 && <div className="decision-chat-toolbar"><button className="text-link" type="button" disabled={pending} onClick={resetConversation}>Start over <Icon name="refresh" size={14} /></button></div>}
-      <div className="decision-chat-transcript" aria-label="Guide conversation">{turns.map((turn, index) => <article className="decision-chat-exchange" key={turn.id}><div className="decision-chat-turn is-user"><p className="eyebrow">YOU</p><p>{turn.text}</p></div><div className="decision-chat-turn is-assistant"><p className="eyebrow">{turn.mode === "scripted" ? "SCRIPTED GUIDE (OFFLINE BACKUP)" : "CLARITY GUIDE"}</p>{turn.fallbackReason && <p className="field-hint">{turn.fallbackReason} The scripted backup answered instead; it covers job offers, cars, grad school, moving out, and paying down debt.</p>}{turn.events.map((event, eventIndex) => event.kind === "assistant" ? <CitedText key={eventIndex} text={event.text} sources={turn.sources ?? []} /> : event.kind === "block" ? <DecisionBlock key={eventIndex} block={event.block} showLabel={turn.events.findIndex((item) => item.kind === "block" && "snapshot" in item.block) === eventIndex} interactive={!pending && !calculationError && index === turns.length - 1} onChoose={(choice) => void send(choice)} onLoadSnapshot={(snapshot) => { loadSession(snapshot); workspace.current?.focus(); }} /> : null)}{turn.sources && turn.sources.length > 0 && <ol className="decision-chat-sources" aria-label="Sources">{turn.sources.map((source) => <li key={source.source_id}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a></li>)}</ol>}{turn.error && <p className="form-error" role="alert">{turn.error}</p>}</div></article>)}</div>
+      <div className="decision-chat-transcript" aria-label="Guide conversation">{turns.map((turn, index) => <article className="decision-chat-exchange" key={turn.id}><div className="decision-chat-turn is-user"><p className="eyebrow">YOU</p><p>{turn.text}</p></div><div className="decision-chat-turn is-assistant"><p className="eyebrow">{turn.mode === "scripted" ? "SCRIPTED GUIDE (OFFLINE BACKUP)" : "CLARITY GUIDE"}</p>{turn.fallbackReason && <p className="field-hint">{turn.fallbackReason} The scripted backup answered instead; it covers job offers, cars, grad school, moving out, and paying down debt.</p>}{turn.events.map((event, eventIndex) => event.kind === "assistant" ? <CitedText key={eventIndex} text={event.text} sources={turn.sources ?? []} /> : event.kind === "block" ? <DecisionBlock key={eventIndex} block={event.block} interactive={!pending && !calculationError && index === turns.length - 1} onChoose={(choice) => void send(choice)} onShowView={showView} /> : null)}{turn.sources && turn.sources.length > 0 && <ol className="decision-chat-sources" aria-label="Sources">{turn.sources.map((source) => <li key={source.source_id}><a href={source.url} target="_blank" rel="noopener noreferrer">{source.title}</a></li>)}</ol>}{turn.error && <p className="form-error" role="alert">{turn.error}</p>}</div></article>)}</div>
       {pending && <p className="inline-notice" role="status">The guide is thinking it through…</p>}
       {chatError && <p className="form-error" role="alert">{chatError}</p>}
       <form className="decision-chat-form" onSubmit={submitMessage}><label className="field" htmlFor="decision-chat-message"><span>{ready ? "Ask a what-if" : turns.length ? "Your reply" : "What decision are you weighing?"}</span><input id="decision-chat-message" ref={messageInput} type="text" maxLength={1200} value={message} disabled={pending || !!calculationError} placeholder={ready ? "Try “What if…”" : "Describe your decision in a sentence"} onChange={(event) => setMessage(event.target.value)} /></label><button className="button button--primary" type="submit" disabled={pending || !!calculationError || !message.trim()}>Ask the guide <Icon name="arrow-up-right" size={17} /></button></form><p className="field-hint">Your messages are sent to Google’s Gemini API to write replies; don’t include account numbers or other identifiers. Projections are calculated in your browser, and guidance cites CFPB and other U.S. government sources. Educational, not financial advice.</p>
@@ -187,11 +193,11 @@ export function DecisionsView() {
       <section className="panel decision-results" aria-labelledby="decision-results-title"><div className="section-heading"><div><p className="eyebrow">SEE THE TRADE-OFFS</p><h2 id="decision-results-title">A clearer comparison.</h2></div><span className="tag">USD / ESTIMATE</span></div>
         {calculationError || !result ? <div className="inline-notice inline-notice--error" role="alert"><div><strong>Comparison paused.</strong><p>{calculationError} Correct the inputs to calculate a fresh result. The previous projection is hidden.</p></div></div> : <>
           <div className="decision-metric-selection segmented-control" role="group" aria-label="Chart measure">{(["netWorth", "cash", "debt"] as ChartMetric[]).map((item) => <button type="button" key={item} aria-pressed={metric === item} onClick={() => setMetric(item)}>{decisionMetricLabels[item]}</button>)}</div>
-          <DecisionSummary result={result} metric={metric} />
-          <DecisionChart result={result} metric={metric} />
-          <DecisionBreakdown result={result} />
+          <div id="decision-live-summary" className="decision-anchor"><DecisionSummary result={result} metric={metric} /></div>
+          <div id="decision-live-chart" className="decision-anchor"><DecisionChart result={result} metric={metric} /></div>
+          <div id="decision-live-budget" className="decision-anchor"><DecisionBreakdown result={result} /></div>
           <div className="decision-timeline"><label htmlFor="decision-month">Inspect month <strong>{inspectedMonth}</strong> of {result.months}</label><input className="range" id="decision-month" type="range" min="0" max={result.months} step="1" value={inspectedMonth} onChange={(event) => setInspectionMonth(Number(event.target.value))} /><div className="decision-inspection-values" aria-live="polite">{[result.comparison.a, result.comparison.b].map((projection, index) => <span key={index}>{index === 0 ? "A" : "B"} / {projection.label}<strong>{currency(projection.points[inspectedMonth][metric])}</strong></span>)}</div></div>
-          <DecisionTable result={result} />
+          <div id="decision-live-table" className="decision-anchor"><DecisionTable result={result} /></div>
           <details className="assumptions decision-monthly-schedule"><summary>Inspect monthly cash, debt, and net worth <Icon name="plus" size={17} /></summary><MonthlyTable result={result} /></details>
         </>}
       </section>

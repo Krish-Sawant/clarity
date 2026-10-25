@@ -13,7 +13,7 @@ function apiKey(): string {
   return key;
 }
 
-export const chatModel = () => process.env.GEMINI_MODEL || "gemini-3.1-flash-lite";
+export const chatModel = () => process.env.GEMINI_MODEL || "gemini-3.5-flash-lite";
 
 export type ProviderToolCall = { id: string; type: "function"; function: { name: string; arguments: string } };
 export type ProviderMessage =

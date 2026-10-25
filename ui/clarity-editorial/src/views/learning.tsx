@@ -120,7 +120,7 @@ function LessonDetail({ lesson }: { lesson: Lesson }) {
 
     <details className="source-list"><summary>Sources & assumptions ({lessonSources.length})</summary><p>This demo uses the repository’s curated lesson content. These references support the concepts; they are not personalized financial advice.</p><ul>{lessonSources.map((source) => <li key={source.source_id}><a href={source.url} target="_blank" rel="noreferrer">{source.title} <span aria-hidden="true">↗</span></a><small>{source.publisher}</small></li>)}</ul></details>
 
-    <footer className="lesson-footer">{completionError && <p className="inline-notice inline-notice--error" role="alert">{completionError}</p>}<div className="quiz-actions"><button className="button button--primary" disabled={complete} onClick={completeLesson}>{complete ? "✓ Lesson complete" : "Mark lesson complete"}</button><Link className="button button--ghost" href="/reassess">Check what stayed with you <span aria-hidden="true">↗</span></Link></div><p className="caption">Completing a lesson is a local demo progress record, separate from your assessment score.</p></footer>
+    <footer className="lesson-footer">{completionError && <p className="inline-notice inline-notice--error" role="alert">{completionError}</p>}<div className="quiz-actions"><button className="button button--primary" disabled={complete} onClick={completeLesson}>{complete ? "✓ Lesson complete" : "Mark lesson complete"}</button><Link className="button button--ghost" href="/discover?tab=reassess">Check what stayed with you <span aria-hidden="true">↗</span></Link></div><p className="caption">Completing a lesson is a local demo progress record, separate from your assessment score.</p></footer>
   </article>;
 }
 

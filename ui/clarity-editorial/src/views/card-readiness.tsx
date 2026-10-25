@@ -48,6 +48,6 @@ export function CardReadinessView() {
         <details className="assumptions"><summary>Why you can trust this comparison <Icon name="plus" size={16} /></summary><div><p>Spending and rewards are calculated locally. Readiness answers are yours; they are not inferred from a paycheck or credit score. No live AI or retrieval is connected.</p><ul>{result.assumptions.map((assumption) => <li key={assumption}>{assumption}</li>)}</ul>{result.sources.map((source) => <p key={source.id}><a href={source.url} target="_blank" rel="noreferrer">{source.title}</a> — {source.note} Reviewed {source.reviewed}.</p>)}</div></details>
       </section>
     </div>}
-    <div className="quiz-actions"><Link className="button button--secondary" href="/loan-comfort">Compare loan comfort <Icon name="arrow-right" size={16} /></Link><Link className="button button--ghost" href="/advisor">Back to the Advisor <Icon name="arrow-up-right" size={16} /></Link></div>
+    <div className="quiz-actions"><Link className="button button--secondary" href="/before-you-commit?tab=loan">Compare loan comfort <Icon name="arrow-right" size={16} /></Link><Link className="button button--ghost" href="/advisor">Back to the Advisor <Icon name="arrow-up-right" size={16} /></Link></div>
   </div>;
 }

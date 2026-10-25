@@ -57,7 +57,7 @@ function StressProjection({ result, label }: { result: StressResult; label: stri
   </>;
 }
 
-export function StressTestView() {
+export function StressTestView({ embedded = false }: { embedded?: boolean }) {
   const [start, setStart] = useState(() => toDrafts(stressDefaults));
   const [shock, setShock] = useState(() => toDrafts(shockDefaults));
   const [event, setEvent] = useState<StressEvent | "custom">("job-loss");
@@ -75,8 +75,10 @@ export function StressTestView() {
   }
   const label = event === "custom" ? shock.label.trim() || "Your own situation" : STRESS_LABELS[event];
 
-  return <div className="tool-view">
-    <header className="view-header"><div><p className="eyebrow">STRESS TEST / ONE SHOCK AT A TIME</p><h1>What if something goes wrong?<br /><span className="serif-word">See it before it happens.</span></h1></div><div className="view-header__aside"><span className="tag">MERGED SIMULATOR / SAMPLE INPUTS</span><p>Compare your current path with one setback at a time, month by month.</p></div></header>
+  const Heading = embedded ? "h2" : "h1";
+
+  return <div className={`tool-view${embedded ? " is-embedded" : ""}`} id={embedded ? "stress-test" : undefined}>
+    <header className="view-header"><div><p className="eyebrow">STRESS TEST / ONE SHOCK AT A TIME</p><Heading>What if something goes wrong?<br /><span className="serif-word">See it before it happens.</span></Heading></div><div className="view-header__aside"><span className="tag">MERGED SIMULATOR / SAMPLE INPUTS</span><p>Compare your current path with one setback at a time, month by month.</p></div></header>
     <p className="inline-notice">Local educational illustration. No bank is connected and no money moves. Monthly netting cannot detect an overdraft between paydays.</p>
     <div className="tool-choices" role="group" aria-label="Choose a stress scenario">{(Object.keys(STRESS_LABELS) as StressEvent[]).map((key) => <button key={key} type="button" className="button button--secondary" aria-pressed={event === key} onClick={() => setEvent(key)}>{STRESS_LABELS[key]}</button>)}<button type="button" className="button button--secondary" aria-pressed={event === "custom"} onClick={() => setEvent("custom")}>My own situation</button></div>
     <div className="tool-layout">
@@ -92,6 +94,6 @@ export function StressTestView() {
         {error ? <div className="inline-notice" role="alert"><strong>Check the sample inputs.</strong><p>{error} Results are hidden until the inputs are valid.</p></div> : result && <StressProjection result={result} label={label} />}
       </section>
     </div>
-    <div className="quiz-actions"><Link className="button button--secondary" href="/plan-checkins">Plan check-ins <Icon name="arrow-right" size={16} /></Link><Link className="button button--ghost" href="/future-lab">Back to Future Lab <Icon name="arrow-up-right" size={16} /></Link></div>
+    {!embedded && <div className="quiz-actions"><Link className="button button--secondary" href="/calculators#plan-checkins">Plan check-ins <Icon name="arrow-right" size={16} /></Link><Link className="button button--ghost" href="/future-lab">Back to Future Lab <Icon name="arrow-up-right" size={16} /></Link></div>}
   </div>;
 }

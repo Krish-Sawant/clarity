@@ -1,11 +1,12 @@
 /** The merged scenario, projection and scripted-chat modules remain the source of truth. */
 import { SCENARIOS, CITY_OPTIONS, type Field, type Scenario, type Values } from "../../../../frontend/src/lib/sim/scenarios";
 import { compare } from "../../../../frontend/src/lib/sim/project";
+import { lookupScenario } from "../../../../frontend/src/lib/sim/custom";
 import { futureYouMessage } from "../../../../frontend/src/lib/sim/message";
-import { TABLE_ROW_KEYS, TABLE_ROWS, summarize, type TableRow, type TableRowKey } from "../../../../frontend/src/lib/sim/summary";
+import { TABLE_ROW_KEYS, TABLE_ROWS, budgetRows, summarize, type TableRow, type TableRowKey } from "../../../../frontend/src/lib/sim/summary";
 import { runAgentLoop, type LoopEvent } from "../../../../frontend/src/lib/chat/loop";
 import { mockAgent } from "../../../../frontend/src/lib/chat/mockAgent";
-import type { Block, ChartMetric, ChatItem, Session, Snapshot } from "../../../../frontend/src/lib/chat/types";
+import type { Agent, AgentTurn, Block, ChartMetric, ChatItem, Session, Snapshot } from "../../../../frontend/src/lib/chat/types";
 
 export type { Block, ChartMetric, ChatItem, Field, LoopEvent, Scenario, Session, Snapshot, TableRowKey, Values };
 export const decisionScenarios = SCENARIOS;
@@ -13,7 +14,7 @@ export const decisionCities = CITY_OPTIONS;
 
 export function getDecisionScenario(id: unknown): Scenario {
   if (typeof id !== "string") throw new Error("Choose a supported comparison.");
-  const scenario = SCENARIOS.find((item) => item.id === id);
+  const scenario = lookupScenario(id);
   if (!scenario) throw new Error("Choose a supported comparison.");
   return scenario;
 }
@@ -71,13 +72,14 @@ export function getDecisionResult(snapshot: Snapshot | Session) {
   const valid = createDecisionSession(snapshot.scenarioId, snapshot.values, snapshot.years);
   const scenario = getDecisionScenario(valid.scenarioId);
   const months = valid.years * 12;
-  const comparison = compare(...scenario.build(valid.values), months);
+  const options = scenario.build(valid.values);
+  const comparison = compare(...options, months);
   for (const projection of [comparison.a, comparison.b]) {
     if (projection.points.length !== months + 1 || !projection.points.every((point) => [point.cash, point.debt, point.assets, point.netWorth, point.income, point.costs, point.debtPayments].every(Number.isFinite))) throw new Error("The comparison could not produce a valid projection. Review the inputs.");
   }
   return {
     scenario, snapshot: { scenarioId: scenario.id, values: { ...valid.values }, years: valid.years }, months, comparison,
-    summary: summarize(comparison, months), lines: futureYouMessage(comparison, months),
+    summary: summarize(comparison, months), budget: budgetRows(options, comparison), lines: futureYouMessage(comparison, months),
   };
 }
 
@@ -85,10 +87,27 @@ export type DecisionResult = ReturnType<typeof getDecisionResult>;
 
 export function decisionTableRows(months: number, requested: TableRowKey[] = TABLE_ROW_KEYS) {
   const valid = new Set<string>(TABLE_ROW_KEYS);
-  return requested.filter((key) => valid.has(key)).map((key) => ({ key, row: TABLE_ROWS[key] as TableRow })).filter(({ row }) => months >= Math.max(12, row.minMonths ?? 0));
+  // At a 3-year horizon "net worth after 3 years" would repeat the final-year row.
+  return requested.filter((key) => valid.has(key) && !(key === "netWorth3y" && months === 36)).map((key) => ({ key, row: TABLE_ROWS[key] as TableRow })).filter(({ row }) => months >= Math.max(12, row.minMonths ?? 0));
 }
 
-/** Local mock agent only. It has no model call or action-execution tools. */
+export type GuideMode = "gemini" | "scripted";
+export type CitedSource = { source_id: string; title: string; url: string };
+
+class GuideUnavailable extends Error {}
+
+/** One Gemini turn via the server route; the key and retrieval stay server-side. */
+async function geminiTurn(history: ChatItem[], session: Session): Promise<AgentTurn & { sources?: CitedSource[] }> {
+  let res: Response;
+  try {
+    res = await fetch("/api/decisions/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ history, session }) });
+  } catch { throw new GuideUnavailable("The AI guide is unreachable."); }
+  const body = await res.json().catch(() => ({}));
+  if (!res.ok) throw new GuideUnavailable(typeof body.error === "string" ? body.error : `The AI guide returned ${res.status}.`);
+  return body;
+}
+
+/** Gemini first; if it fails, the scripted guide finishes the message so the demo never dead-ends. */
 export async function runDecisionChat(
   history: ChatItem[], session: Session | null, message: string,
   onEvent?: (event: LoopEvent) => void,
@@ -99,11 +118,33 @@ export async function runDecisionChat(
     : { scenarioId: null, values: {}, years: 5 };
   const events: LoopEvent[] = [];
   const input: ChatItem[] = [...structuredClone(history), { role: "user", text: message.trim() }];
-  const output = await runAgentLoop(mockAgent, input, initial, (event) => {
+  let mode: GuideMode = "gemini";
+  let fallbackReason: string | null = null;
+  const sources = new Map<string, CitedSource>();
+  let geminiCalls = 0;
+  const agent: Agent = async (items, current) => {
+    if (mode === "gemini") {
+      try {
+        const turn = await geminiTurn(items, current);
+        geminiCalls += 1;
+        turn.sources?.forEach((s) => sources.set(s.source_id, s));
+        return { text: turn.text, toolCalls: turn.toolCalls, providerMessage: turn.providerMessage };
+      } catch (error) {
+        const reason = error instanceof Error ? error.message : "The AI guide is unavailable.";
+        // The scripted guide only knows the presets and can't pick up half-finished Gemini work,
+        // so it steps in only when Gemini fails before doing anything on a preset (or new) conversation.
+        if (geminiCalls > 0 || current.scenarioId?.startsWith("custom-")) throw new Error(`${reason} Send your message again to continue.`);
+        mode = "scripted";
+        fallbackReason = reason;
+      }
+    }
+    return mockAgent(items, current);
+  };
+  const output = await runAgentLoop(agent, input, initial, (event) => {
     const frozen = structuredClone(event);
     events.push(frozen);
     onEvent?.(frozen);
   });
   const validatedSession = output.session.scenarioId ? createDecisionSession(output.session.scenarioId, output.session.values, output.session.years) : output.session;
-  return { history: output.history, session: validatedSession, events };
+  return { history: output.history, session: validatedSession, events, mode, fallbackReason, sources: [...sources.values()] };
 }

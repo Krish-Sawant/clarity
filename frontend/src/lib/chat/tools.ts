@@ -1,7 +1,8 @@
 import { futureYouMessage } from "../sim/message.ts";
 import { compare } from "../sim/project.ts";
+import { lookupScenario, parseCustomSpec, registerCustomScenario } from "../sim/custom.ts";
 import { CITY_OPTIONS, SCENARIOS, type Scenario, type Values } from "../sim/scenarios.ts";
-import { TABLE_ROW_KEYS, summarize, type TableRowKey } from "../sim/summary.ts";
+import { TABLE_ROW_KEYS, budgetRows, summarize, type TableRowKey } from "../sim/summary.ts";
 import type { Block, ChartMetric, Session, Snapshot, ToolCall } from "./types.ts";
 
 export type ToolOutcome = {
@@ -17,7 +18,7 @@ export const EMPTY_SESSION: Session = { scenarioId: null, values: {}, years: 5 }
 const CHART_METRICS: ChartMetric[] = ["netWorth", "cash", "debt"];
 
 export function scenarioById(id: string | null): Scenario | undefined {
-  return SCENARIOS.find((s) => s.id === id);
+  return lookupScenario(id);
 }
 
 export function simulate(snapshot: Snapshot) {
@@ -50,7 +51,7 @@ export function runTool(call: ToolCall, session: Session): ToolOutcome {
   const args = call.args;
   const fail = (error: string, extra: object = {}): ToolOutcome => ({ result: { error, ...extra }, session });
   const scenario = scenarioById(session.scenarioId);
-  const needsScenario = ["set_inputs", "run_simulation", "show_chart", "show_table", "show_playground", "explain"];
+  const needsScenario = ["set_inputs", "run_simulation", "show_chart", "show_table", "show_playground", "show_breakdown", "explain"];
   if (needsScenario.includes(call.name) && !scenario) return fail("No scenario picked yet. Call pick_scenario first.");
 
   switch (call.name) {
@@ -65,6 +66,22 @@ export function runTool(call: ToolCall, session: Session): ToolOutcome {
           options: picked.groupLabels,
           fields: picked.fields.map((f) => ({ key: f.key, label: f.label, kind: f.kind, min: f.min, max: f.max, default: picked.defaults[f.key] })),
           ask_about: picked.followUps.map((f) => ({ question: fillLabels(f.question, next), fields: f.fields })),
+        },
+      };
+    }
+
+    case "define_comparison": {
+      const parsed = parseCustomSpec(args);
+      if ("error" in parsed) return fail(parsed.error);
+      const custom = registerCustomScenario(parsed.spec);
+      const next = { scenarioId: custom.id, values: { ...custom.defaults }, years: custom.defaultYears };
+      return {
+        session: next,
+        result: {
+          scenario_id: custom.id,
+          options: custom.groupLabels,
+          fields: custom.fields.map((f) => ({ key: f.key, label: f.label, value: custom.defaults[f.key] })),
+          assumptions: custom.assumptions,
         },
       };
     }
@@ -124,6 +141,13 @@ export function runTool(call: ToolCall, session: Session): ToolOutcome {
 
     case "show_playground":
       return { session, result: { shown: true }, block: { type: "playground", snapshot: snapshotOf(session) } };
+
+    case "show_breakdown": {
+      const snapshot = snapshotOf(session);
+      const { comparison } = simulate(snapshot);
+      const rows = budgetRows(scenario!.build(snapshot.values), comparison);
+      return { session, result: { shown: true, month_1_budget: rows }, block: { type: "breakdown", snapshot } };
+    }
 
     case "explain": {
       // Template text for now; the AI-written version must pass a number check against run_simulation's results.

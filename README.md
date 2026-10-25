@@ -28,7 +28,7 @@ Built around financial confidence for the FNB challenge, with Auth0 providing us
 | --- | --- |
 | **Discover, Learn, Reassess** | Baseline knowledge and habits screening, recommended learning, lesson exercises, and checkpoint assessments. |
 | **Future Lab** | Compare cash paths and explore an income interruption, unexpected repair, or rent increase. |
-| **Future Decisions** | Compare financial scenarios with editable assumptions, projected cash, debt and net worth, charts, monthly schedules, and a local rule-based conversation guide. |
+| **Future Decisions** | Describe any two-option money decision to a Gemini guide that asks follow-ups, runs the projection in code, shows charts, budget breakdowns and tables, and cites CFPB sources. See the [Future Decisions guide](docs/FUTURE_DECISIONS.md). |
 | **Debt & savings calculators** | Explore payoff schedules, extra payments, savings growth, and goal timelines. |
 | **Proactive Advisor** | Detect five possible life moments in synthetic transactions and balance snapshots, inspect evidence, and calculate a possible next step. |
 | **Purchase Impact Preview** | Compare savings with and without a purchase, including goal delays and cash shortfalls. |

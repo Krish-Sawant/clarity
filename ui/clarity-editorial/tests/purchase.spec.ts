@@ -1,9 +1,9 @@
 import { expect, test, type Page } from "@playwright/test";
 
 async function confirmSample(page: Page, timing: "planned" | "posted") {
-  const confirm = page.getByRole("button", { name: "Confirm sample assumptions", exact: false });
+  const confirm = page.getByRole("button", { name: "Confirm assumptions", exact: false });
   await expect(confirm).toBeDisabled();
-  await page.getByRole("checkbox", { name: "I confirm this sample purchase is funded from the goal savings account.", exact: true }).check();
+  await page.getByRole("checkbox", { name: "I confirm this purchase is funded from the goal savings account.", exact: true }).check();
   await expect(confirm).toBeDisabled();
   await page.getByRole("checkbox", { name: timing === "posted" ? "I confirm this balance already includes the purchase." : "I confirm this balance is before the purchase.", exact: true }).check();
   await confirm.click();
@@ -19,7 +19,7 @@ test("confirm a planned purchase, compare exact goal paths and hide invalid draf
   page.on("console", (message) => { if (message.type() === "error") errors.push(message.text()); });
   await page.goto("/before-you-commit");
   await expect(page.locator(".clarity-app")).toHaveAttribute("data-hydrated", "true");
-  await expect(page.locator(".purchase-signal")).toContainText("Demo Electronics");
+  await expect(page.locator(".purchase-signal")).toContainText("Electronics Store");
   await expect(page.locator(".purchase-signal")).toContainText("2026-10-24");
   await expect(page.locator(".purchase-metrics")).toHaveCount(0);
   await confirmSample(page, "planned");
@@ -57,7 +57,7 @@ test("posted purchases require timing confirmation and preserve null milestones 
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("console", (message) => { if (message.type() === "error") errors.push(message.text()); });
   await page.goto("/before-you-commit");
-  await page.getByRole("button", { name: "Review detected sample purchase", exact: false }).click();
+  await page.getByRole("button", { name: "Review detected purchase", exact: false }).click();
   await expect(page.getByRole("combobox", { name: "Balance timing", exact: true })).toHaveValue("posted");
   await expect(page.getByRole("spinbutton", { name: "Current goal savings (USD)", exact: true })).toHaveValue("1800");
   await expect(page.locator(".purchase-metrics")).toHaveCount(0);

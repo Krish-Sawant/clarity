@@ -71,18 +71,18 @@ export function StressTestView({ embedded = false }: { embedded?: boolean }) {
       result = createStressTest(event === "custom"
         ? { ...input, shock: { ...Object.fromEntries(shockControls.map(({ key }) => [key, Number(shock[key])])), label: shock.label } }
         : { ...input, event });
-    } catch (cause) { error = cause instanceof Error ? cause.message : "Check the sample inputs."; }
+    } catch (cause) { error = cause instanceof Error ? cause.message : "Check the inputs."; }
   }
   const label = event === "custom" ? shock.label.trim() || "Your own situation" : STRESS_LABELS[event];
 
   const Heading = embedded ? "h2" : "h1";
 
   return <div className={`tool-view${embedded ? " is-embedded" : ""}`} id={embedded ? "stress-test" : undefined}>
-    <header className="view-header"><div><p className="eyebrow">STRESS TEST / ONE SHOCK AT A TIME</p><Heading>What if something goes wrong?<br /><span className="serif-word">See it before it happens.</span></Heading></div><div className="view-header__aside"><span className="tag">MERGED SIMULATOR / SAMPLE INPUTS</span><p>Compare your current path with one setback at a time, month by month.</p></div></header>
-    <p className="inline-notice">Local educational illustration. No bank is connected and no money moves. Monthly netting cannot detect an overdraft between paydays.</p>
+    <header className="view-header"><div><p className="eyebrow">STRESS TEST / ONE SHOCK AT A TIME</p><Heading>What if something goes wrong?<br /><span className="serif-word">See it before it happens.</span></Heading></div><div className="view-header__aside"><span className="tag">MERGED SIMULATOR / YOUR INPUTS</span><p>Compare your current path with one setback at a time, month by month.</p></div></header>
+    <p className="inline-notice">Educational illustration. No bank is connected and no money moves. Monthly netting cannot detect an overdraft between paydays.</p>
     <div className="tool-choices" role="group" aria-label="Choose a stress scenario">{(Object.keys(STRESS_LABELS) as StressEvent[]).map((key) => <button key={key} type="button" className="button button--secondary" aria-pressed={event === key} onClick={() => setEvent(key)}>{STRESS_LABELS[key]}</button>)}<button type="button" className="button button--secondary" aria-pressed={event === "custom"} onClick={() => setEvent("custom")}>My own situation</button></div>
     <div className="tool-layout">
-      <section className="panel tool-controls" aria-labelledby="stress-inputs-heading"><div className="section-heading"><div><p className="eyebrow">YOUR STARTING POINT</p><h2 id="stress-inputs-heading">Set your assumptions.</h2></div><span className="tag">SAMPLE / USD</span></div>
+      <section className="panel tool-controls" aria-labelledby="stress-inputs-heading"><div className="section-heading"><div><p className="eyebrow">YOUR STARTING POINT</p><h2 id="stress-inputs-heading">Set your assumptions.</h2></div><span className="tag">USD</span></div>
         {startControls.map((control) => <div className="field" key={control.key}><label htmlFor={`stress-${control.key}`}>{control.label}</label><input id={`stress-${control.key}`} type="number" min={control.key === "horizonMonths" ? "1" : "0"} max={control.key === "horizonMonths" ? "120" : "1000000000"} step={control.step} value={start[control.key]} onChange={(changed) => setStart((previous) => ({ ...previous, [control.key]: changed.target.value }))} /></div>)}
         <p>Include rent and required debt payments once in total expenses. Use cash available before the shock.</p>
         {event === "custom" && <><div className="field"><label htmlFor="stress-label">My situation</label><input id="stress-label" maxLength={120} value={shock.label} onChange={(changed) => setShock((previous) => ({ ...previous, label: changed.target.value }))} /></div>
@@ -90,8 +90,8 @@ export function StressTestView({ embedded = false }: { embedded?: boolean }) {
           <p>Changes apply only for the duration you enter; your original income and spending then resume. Month 1 is next month.</p></>}
         <button className="button button--ghost" type="button" onClick={() => { setStart(toDrafts(stressDefaults)); setShock(toDrafts(shockDefaults)); setEvent("job-loss"); }}>Reset stress example <Icon name="refresh" size={15} /></button>
       </section>
-      <section className="panel tool-results" aria-labelledby="stress-results-heading"><div className="section-heading"><div><p className="eyebrow">TWO PATHS, SIDE BY SIDE</p><h2 id="stress-results-heading">{label}</h2></div><span className="tag">LOCAL CALCULATION</span></div>
-        {error ? <div className="inline-notice" role="alert"><strong>Check the sample inputs.</strong><p>{error} Results are hidden until the inputs are valid.</p></div> : result && <StressProjection result={result} label={label} />}
+      <section className="panel tool-results" aria-labelledby="stress-results-heading"><div className="section-heading"><div><p className="eyebrow">TWO PATHS, SIDE BY SIDE</p><h2 id="stress-results-heading">{label}</h2></div><span className="tag">TRANSPARENT CALCULATION</span></div>
+        {error ? <div className="inline-notice" role="alert"><strong>Check the inputs.</strong><p>{error} Results are hidden until the inputs are valid.</p></div> : result && <StressProjection result={result} label={label} />}
       </section>
     </div>
     {!embedded && <div className="quiz-actions"><Link className="button button--secondary" href="/calculators#plan-checkins">Plan check-ins <Icon name="arrow-right" size={16} /></Link><Link className="button button--ghost" href="/future-lab">Back to Future Lab <Icon name="arrow-up-right" size={16} /></Link></div>}

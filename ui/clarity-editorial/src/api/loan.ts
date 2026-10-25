@@ -20,7 +20,7 @@ export function modeledLoanActivity(input: Pick<LoanComfortInput, "monthlyTakeHo
 }
 
 export function createLoanComparison(input: unknown): LoanComfortResult {
-  if (!record(input)) throw new RangeError("Provide the sample income, spending, savings and loan terms.");
+  if (!record(input)) throw new RangeError("Provide income, spending, savings and loan terms.");
   const keys = ["monthlyTakeHome", "monthlySpending", "monthlyLoanPayments", "savings"] as const;
   if (!keys.every((key) => dollarAmount(input[key]))) throw new RangeError("Use non-negative USD amounts up to $1 billion with at most two decimal places.");
   if (Number(input.monthlyTakeHome) <= 0) throw new RangeError("Monthly take-home pay must be greater than zero.");

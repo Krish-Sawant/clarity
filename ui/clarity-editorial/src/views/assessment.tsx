@@ -20,7 +20,7 @@ function HabitsSurvey() {
     <section className="panel habits-panel" aria-labelledby="habits-heading">
       <p className="eyebrow">Optional · ungraded</p>
       <h2 id="habits-heading">A little context. No judgment.</h2>
-      <p>Use the synthetic demo profile. You can leave either question blank; habits stay separate from the knowledge check.</p>
+      <p>You can leave either question blank; habits stay separate from the knowledge check.</p>
       <div className="two-column">
         {questions.map((question) => (
           <label className="field" key={question.id}>
@@ -64,7 +64,7 @@ function Results({ stage, questions }: { stage: AssessmentStage; questions: Ques
     <div className="assessment-results">
       <section className="panel assessment-summary" aria-labelledby="result-heading">
         <div>
-          <p className="eyebrow">{stage === "baseline" ? "Your starting point" : "Your second signal"} · local demo</p>
+          <p className="eyebrow">{stage === "baseline" ? "Your starting point" : "Your second signal"}</p>
           <h2 id="result-heading" ref={resultHeading} tabIndex={-1}>{stage === "baseline" ? "A signal, not a label." : difference > 0 ? "More ideas are clicking." : difference === 0 ? "Same score. Keep exploring." : "A useful place to revisit."}</h2>
           <p>{stage === "baseline" ? "This is a snapshot of eight concepts, not a measure of your worth or a validated literacy rating. Your learning path starts with the ideas worth another look." : "Different questions. The same eight concepts and difficulty. This comparison describes knowledge responses; it does not establish a change in financial behavior."}</p>
           <div className="quiz-actions">
@@ -84,7 +84,7 @@ function Results({ stage, questions }: { stage: AssessmentStage; questions: Ques
         <span aria-hidden="true">→</span>
         <div><p className="eyebrow">Reassessment</p><strong>{score.correct} / {score.total}</strong></div>
         <div><p className="eyebrow">Change in correct answers</p><strong>{difference > 0 ? "+" : ""}{difference}</strong></div>
-        <p className="comparison-caveat">{paired.length} / 8 concepts answered in both checks: {pairedBefore} → {pairedAfter} correct on those pairs. Skips count as zero in the full-check totals. Small samples and repeated exposure limit the conclusions you can draw.</p>
+        <p className="comparison-caveat">{paired.length} / 8 concepts answered in both checks: {pairedBefore} → {pairedAfter} correct on those pairs. Skips count as zero in the full-check totals. Few questions and repeated exposure limit the conclusions you can draw.</p>
       </section>}
 
       <section className="panel" aria-labelledby="domain-heading">
@@ -152,7 +152,7 @@ export function AssessmentView({ stage }: { stage: AssessmentStage }) {
       update((previous) => ({
         ...previous,
         [stage]: { ...previous[stage], answers, completed: true },
-        activity: [{ id: crypto.randomUUID(), title: stage === "baseline" ? "Baseline completed" : "Reassessment completed", detail: "Local demo knowledge check; habits excluded from scoring.", at: new Date().toISOString() }, ...previous.activity],
+        activity: [{ id: crypto.randomUUID(), title: stage === "baseline" ? "Baseline completed" : "Reassessment completed", detail: "Knowledge check; habits excluded from scoring.", at: new Date().toISOString() }, ...previous.activity],
       }));
       setError("");
     } else {
@@ -162,7 +162,7 @@ export function AssessmentView({ stage }: { stage: AssessmentStage }) {
     requestAnimationFrame(() => heading.current?.focus());
   }
 
-  if (!hydrated) return <div className="panel loading-state" role="status">Restoring your demo check-in…</div>;
+  if (!hydrated) return <div className="panel loading-state" role="status">Restoring your check-in…</div>;
 
   return <>
     <header className="view-header">
@@ -196,8 +196,8 @@ export function AssessmentView({ stage }: { stage: AssessmentStage }) {
           <nav className="question-map" aria-label="Question navigation">{questions.map((item, itemIndex) => <button className={`question-dot ${index === itemIndex ? "is-current" : ""} ${typeof quiz.answers[item.id] === "string" ? "is-answered" : quiz.answers[item.id] === null ? "is-skipped" : ""}`} key={item.id} onClick={() => goTo(itemIndex)} aria-current={index === itemIndex ? "step" : undefined} aria-label={`Question ${itemIndex + 1}${typeof quiz.answers[item.id] === "string" ? ", answered" : quiz.answers[item.id] === null ? ", skipped" : ", open"}`}>{String(itemIndex + 1).padStart(2, "0")}{typeof quiz.answers[item.id] === "string" && <span aria-hidden="true"> ✓</span>}{quiz.answers[item.id] === null && <span aria-hidden="true"> —</span>}</button>)}</nav>
         </section>
         <aside className="quiz-aside">
-          <div className="panel"><p className="eyebrow">Make room for the unknown</p><h3>“I’m not sure”<br />is a useful answer.</h3><p>Skip any question. You can come back before you finish. Skipped questions stay visible in the results and count as zero in the full-check total.</p><div className="aside-rule" /><p className="eyebrow">Your progress</p><strong>{visited} of {questions.length} visited</strong><p>This tab remembers your demo answers if you refresh.</p></div>
-          <div className="inline-notice">Local demo · synthetic educational questions. No financial account connection, official grade, or AI scoring.</div>
+          <div className="panel"><p className="eyebrow">Make room for the unknown</p><h3>“I’m not sure”<br />is a useful answer.</h3><p>Skip any question. You can come back before you finish. Skipped questions stay visible in the results and count as zero in the full-check total.</p><div className="aside-rule" /><p className="eyebrow">Your progress</p><strong>{visited} of {questions.length} visited</strong><p>This tab remembers your answers if you refresh.</p></div>
+          <div className="inline-notice">Educational questions. No financial account connection, official grade, or AI scoring.</div>
           {stage === "checkpoint" && <p className="caption">This uses different prompts with the same concepts, difficulty, and point values as your baseline.</p>}
         </aside>
       </div>}

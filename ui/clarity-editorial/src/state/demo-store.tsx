@@ -81,7 +81,7 @@ function loadSample() {
   update(() => {
     const state = freshState();
     const answers = Object.fromEntries(baselineQuestions.map((question, index) => [question.id, index % 2 === 0 ? question.correct_option_id : question.options.find((option) => option.id !== question.correct_option_id)!.id]));
-    return { ...state, baseline: { answers, index: 7, completed: true }, sampleJourney: true, activity: [{ id: crypto.randomUUID(), title: "Sample journey loaded", detail: "Synthetic starting profile: 4 of 8 concepts answered correctly. No personal assessment was taken.", at: new Date().toISOString() }] };
+    return { ...state, baseline: { answers, index: 7, completed: true }, sampleJourney: true, activity: [{ id: crypto.randomUUID(), title: "Example journey loaded", detail: "Starting profile: 4 of 8 concepts answered correctly. No personal assessment was taken.", at: new Date().toISOString() }] };
   });
 }
 

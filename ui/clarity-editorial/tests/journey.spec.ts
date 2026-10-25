@@ -65,13 +65,13 @@ test("complete the synthetic knowledge, learning, reassessment, simulation and c
   await expect(page.locator(".learning-progress")).toContainText("1 / 4");
 
   await page.getByRole("button", { name: "Explain another way", exact: true }).click();
-  await expect(page.locator(".tutor-response")).toContainText("Opening the local sample explanation");
-  await expect(page.locator(".tutor-response")).toContainText("Prewritten local explanation");
+  await expect(page.locator(".tutor-response")).toContainText("Opening the explanation");
+  await expect(page.locator(".tutor-response")).toContainText("Prewritten explanation");
   await page.getByText("Preview an unavailable tutor", { exact: true }).click();
   await page.getByRole("button", { name: "Preview tutor error", exact: true }).click();
   await expect(page.locator(".tutor-response")).toContainText("No live Gemini request was made");
-  await page.getByRole("button", { name: "Retry sample explanation", exact: true }).click();
-  await expect(page.locator(".tutor-response")).toContainText("Prewritten local explanation");
+  await page.getByRole("button", { name: "Retry explanation", exact: true }).click();
+  await expect(page.locator(".tutor-response")).toContainText("Prewritten explanation");
   await expectNoOverflow(page);
 
   await page.getByRole("link", { name: "Check what stayed with you", exact: false }).click();
@@ -107,19 +107,19 @@ test("complete the synthetic knowledge, learning, reassessment, simulation and c
 
   const goal = page.locator(".proposal-card").filter({ hasText: "Practice saving $900 a month" });
   await expect(goal).toBeVisible();
-  await expect(goal.getByRole("button", { name: "Approve demo proposal", exact: false })).toBeDisabled();
+  await expect(goal.getByRole("button", { name: "Approve proposal", exact: false })).toBeDisabled();
   await goal.getByRole("button", { name: "Deny proposal", exact: false }).click();
-  await expect(page.locator(".action-history")).toContainText("Denied · local demo");
-  await page.getByLabel("Proposal title", { exact: true }).fill("Review a sample budget");
+  await expect(page.locator(".action-history")).toContainText("Denied · recorded");
+  await page.getByLabel("Proposal title", { exact: true }).fill("Review a budget");
   await page.getByRole("button", { name: "Review proposal", exact: false }).click();
-  const reminder = page.locator(".proposal-card").filter({ has: page.getByRole("heading", { name: "Review a sample budget", exact: true }) });
-  const approve = reminder.getByRole("button", { name: "Approve demo proposal", exact: false });
+  const reminder = page.locator(".proposal-card").filter({ has: page.getByRole("heading", { name: "Review a budget", exact: true }) });
+  const approve = reminder.getByRole("button", { name: "Approve proposal", exact: false });
   await expect(approve).toBeDisabled();
   await reminder.getByRole("checkbox").check();
   await expect(approve).toBeEnabled();
   await approve.click();
-  await expect(page.locator(".action-history")).toContainText("Approved · local demo");
-  await expect(page.getByText("Approved in this demo. No money was moved and no notification was scheduled.", { exact: true })).toBeVisible();
+  await expect(page.locator(".action-history")).toContainText("Approved · recorded");
+  await expect(page.getByText("Proposal approved. No money was moved and no notification was scheduled.", { exact: true })).toBeVisible();
   await page.getByText("Integration status and upcoming tools", { exact: false }).click();
   await page.getByRole("button", { name: "Check backend connection", exact: false }).click();
   await expect(page.getByRole("main").getByRole("alert")).toContainText("A verified backend connection has not been configured");
@@ -149,17 +149,17 @@ test("resume explicit skipped and answered questions after refresh without gradi
   await expect(page.getByText("Your optional check-in is complete.", { exact: false })).toBeVisible();
 });
 
-test("reassessment explains the missing baseline and sample journey stays labeled", async ({ page }) => {
+test("reassessment explains the missing baseline and example journey stays labeled", async ({ page }) => {
   await page.goto("/discover?tab=reassess");
   await expect(page.getByRole("heading", { name: "A comparison needs two signals.", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Start Discover", exact: false }).click();
   await expect(page.getByRole("heading", { name: baselineBank.questions[0].prompt, exact: true })).toBeVisible();
   await page.goto("/");
-  await page.getByRole("button", { name: "Explore sample journey", exact: false }).click();
+  await page.getByRole("button", { name: "Explore an example journey", exact: false }).click();
   await expect(page).toHaveURL(/\/learn$/);
   await page.goto("/discover");
   await expect(page.locator(".score-value")).toHaveAttribute("aria-label", "4 correct out of 8");
-  await expect(page.getByText(/sample journey/i).first()).toBeVisible();
+  await expect(page.getByText(/example journey/i).first()).toBeVisible();
 });
 
 test("navigation, keyboard focus and design preferences work at the current viewport", async ({ page }, testInfo) => {
@@ -253,24 +253,24 @@ test("recover corrupt stored values, retain valid calculations and require fresh
   await page.getByRole("button", { name: "Review proposal", exact: false }).click();
   const pending = page.locator(".proposal-card").filter({ has: page.getByRole("heading", { name: "Review a synthetic spending plan", exact: true }) });
   await pending.getByRole("checkbox").check();
-  await expect(pending.getByRole("button", { name: "Approve demo proposal", exact: false })).toBeEnabled();
+  await expect(pending.getByRole("button", { name: "Approve proposal", exact: false })).toBeEnabled();
   await page.reload();
   await expect(pending).toBeVisible();
   await expect(pending.getByRole("checkbox")).not.toBeChecked();
-  await expect(pending.getByRole("button", { name: "Approve demo proposal", exact: false })).toBeDisabled();
+  await expect(pending.getByRole("button", { name: "Approve proposal", exact: false })).toBeDisabled();
   await pending.getByRole("checkbox").check();
-  await pending.getByRole("button", { name: "Approve demo proposal", exact: false }).click();
+  await pending.getByRole("button", { name: "Approve proposal", exact: false }).click();
   await page.reload();
   await expect(page.locator(".action-history")).toContainText("Review a synthetic spending plan");
-  await expect(page.locator(".action-history")).toContainText("Approved · local demo");
+  await expect(page.locator(".action-history")).toContainText("Approved · recorded");
 
-  await page.getByRole("button", { name: "Reset local demo", exact: false }).click();
-  await page.getByRole("button", { name: "Keep my demo", exact: true }).click();
+  await page.getByRole("button", { name: "Reset my data", exact: false }).click();
+  await page.getByRole("button", { name: "Keep my data", exact: true }).click();
   await expect(page.locator(".action-history")).toContainText("Review a synthetic spending plan");
-  await page.getByRole("button", { name: "Reset local demo", exact: false }).click();
-  await page.getByRole("button", { name: "Yes, clear demo data", exact: true }).click();
+  await page.getByRole("button", { name: "Reset my data", exact: false }).click();
+  await page.getByRole("button", { name: "Yes, clear my data", exact: true }).click();
   await expect(page.locator(".action-history")).toHaveCount(0);
-  await expect(page.getByText("Local demo progress cleared. Your design preferences are preserved.", { exact: true })).toBeVisible();
+  await expect(page.getByText("Progress cleared. Your design preferences are preserved.", { exact: true })).toBeVisible();
   await expect(page.locator(".clarity-app")).toHaveClass(/palette-coral/);
   await page.reload();
   await expect(page.locator(".action-history")).toHaveCount(0);

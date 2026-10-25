@@ -12,6 +12,6 @@ export default async function LoginPage() {
       <a className="header-cta" href="/auth/login">Log in with Auth0 ↗</a>
       <p>New here? <a href="/auth/login?screen_hint=signup">Create an account</a></p>
     </> : <p role="status">Login setup is required. Configure the server environment using authentication/README.md, then restart Clarity.</p>}
-    <small>Authentication is powered by Auth0. Financial activities use synthetic demo data.</small>
+    <small>Authentication is powered by Auth0.</small>
   </section></main>;
 }

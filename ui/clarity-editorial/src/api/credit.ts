@@ -10,7 +10,7 @@ export type CardReadinessResult = ReturnType<typeof compareCardReadiness>;
 /** Same synthetic activity used by the merged frontend preview. */
 export const cardDemo = { asOf: CREDIT_DEMO_AS_OF, coveredFrom: CREDIT_DEMO_COVERAGE, transactions: CREDIT_DEMO_TRANSACTIONS };
 export const unansweredReadiness: Readiness = { repayment: "unknown", missedPayments: "unknown", historyConfirmed: "unknown" };
-const interestExample: Transaction = { id: "demo-interest-fee", date: CREDIT_DEMO_AS_OF, amount: -35, merchant: "Demo card interest", category: "credit_card_interest" };
+const interestExample: Transaction = { id: "demo-interest-fee", date: CREDIT_DEMO_AS_OF, amount: -35, merchant: "Card interest charge", category: "credit_card_interest" };
 
 const choices = { repayment: ["full", "carry", "first-card", "unknown"], missedPayments: ["yes", "no", "unknown"], historyConfirmed: ["yes", "no", "unknown"] } as const;
 
@@ -19,7 +19,7 @@ export function cardActivity(includeInterestExample: boolean): Transaction[] {
 }
 
 export function createCardReadiness(input: unknown) {
-  if (!record(input) || !record(input.readiness) || typeof input.includeInterestExample !== "boolean") throw new RangeError("Answer the readiness questions for the sample activity.");
+  if (!record(input) || !record(input.readiness) || typeof input.includeInterestExample !== "boolean") throw new RangeError("Answer the readiness questions for this activity.");
   const answers = input.readiness;
   for (const key of Object.keys(choices) as (keyof typeof choices)[]) {
     if (!(choices[key] as readonly unknown[]).includes(answers[key])) throw new RangeError("Choose one of the listed readiness answers.");

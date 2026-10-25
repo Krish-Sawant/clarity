@@ -7,9 +7,9 @@ export type PurchasePreviewResult = ReturnType<typeof previewPurchase>;
 
 /** Same synthetic electronics transaction used by the merged frontend preview. */
 export const purchaseDemo = {
-  label: "Synthetic electronics purchase",
+  label: "Electronics purchase",
   asOf: "2026-10-24",
-  transactions: [{ id: "demo-tv", date: "2026-10-24", amount: -1200, merchant: "Demo Electronics", category: "electronics" }],
+  transactions: [{ id: "demo-tv", date: "2026-10-24", amount: -1200, merchant: "Electronics Store", category: "electronics" }],
 };
 
 export function record(value: unknown): value is Record<string, unknown> {
@@ -27,7 +27,7 @@ export function dollarAmount(value: unknown, signed = false): value is number {
 }
 
 export function detectPurchaseSignals(input: unknown): PurchaseSignal[] {
-  if (!record(input) || !validDate(input.asOf) || !Array.isArray(input.transactions)) throw new RangeError("Provide a valid as-of date and sample transaction list.");
+  if (!record(input) || !validDate(input.asOf) || !Array.isArray(input.transactions)) throw new RangeError("Provide a valid as-of date and transaction list.");
   const threshold = input.threshold === undefined ? 500 : input.threshold;
   if (!dollarAmount(threshold) || threshold <= 0) throw new RangeError("Use a positive purchase threshold in USD, with at most two decimal places.");
   const ids = new Set<string>();
@@ -43,7 +43,7 @@ export function detectPurchaseSignals(input: unknown): PurchaseSignal[] {
 export function getPurchaseSignals(): PurchaseSignal[] { return detectPurchaseSignals(purchaseDemo); }
 
 export function createPurchasePreview(input: unknown): PurchasePreviewResult {
-  if (!record(input) || typeof input.label !== "string" || !input.label.trim() || input.label.trim().length > 80) throw new RangeError("Give the sample purchase a label between 1 and 80 characters.");
+  if (!record(input) || typeof input.label !== "string" || !input.label.trim() || input.label.trim().length > 80) throw new RangeError("Give the purchase a label between 1 and 80 characters.");
   const keys = ["purchaseAmount", "currentSavings", "targetSavings", "monthlyContribution"] as const;
   if (!keys.every((key) => dollarAmount(input[key]))) throw new RangeError("Use non-negative USD amounts up to $1 billion with at most two decimal places.");
   if (Number(input.targetSavings) <= 0) throw new RangeError("The savings goal must be greater than zero.");

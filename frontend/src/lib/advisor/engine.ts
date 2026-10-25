@@ -1,6 +1,6 @@
 export type Transaction = { id: string; date: string; amount: number; merchant: string; category: string };
 export type Snapshot = { date: string; balance: number };
-export type Moment = 'new-job' | 'moving' | 'overspending' | 'student-loan' | 'idle-cash';
+export type Moment = 'new-job' | 'moving' | 'overspending' | 'student-loan' | 'idle-cash' | 'higher-housing' | 'moving-costs' | 'income-increase';
 export type Nudge = { id: string; kind: Moment; title: string; message: string; evidence: string; amount: number };
 const month = (date: string) => date.slice(0, 7);
 const money = (n: number) => n.toLocaleString('en-US', {style:'currency', currency:'USD', maximumFractionDigits:0});
@@ -30,12 +30,35 @@ export function detect(transactions: Transaction[], snapshots: Snapshot[], asOf:
   if(balances.length === 4 && balances.every((s,i)=>!i || s.balance > balances[i-1].balance)) results.push({id:`idle-cash:${balances.at(-1)!.date}`,kind:'idle-cash',title:'Your cushion is growing',message:'Your balance has grown for several months. Explore an interest-earning savings account.',evidence:`Four monthly balances rose from ${money(balances[0].balance)} to ${money(balances[3].balance)}. Confirm upcoming bills before moving cash.`,amount:balances[3].balance});
   return results;
 }
+/** Additional review prompts from the same history; they can overlap a life event. */
+export function detectAdditionalMoments(transactions: Transaction[], asOf: string): Nudge[] {
+  const rows = transactions.filter(t => t.date <= asOf).sort((a,b) => a.date.localeCompare(b.date) || a.id.localeCompare(b.id));
+  const recent = rows.filter(t => month(t.date) === month(asOf));
+  const before = rows.filter(t => month(t.date) < month(asOf));
+  const results: Nudge[] = [];
+  const oldHousing = before.filter(t => t.category === 'housing' && t.amount < 0).at(-1);
+  const housing = recent.find(t => t.category === 'housing' && t.amount < 0 && oldHousing && t.amount < oldHousing.amount);
+  if (housing && oldHousing) results.push({ id: `higher-housing:${housing.id}`, kind: 'higher-housing', title: 'More room for housing?', message: 'A housing payment is higher than the last observed one. Check whether it includes a deposit before adjusting your monthly budget.', evidence: `${money(-housing.amount)} paid to ${housing.merchant}, compared with ${money(-oldHousing.amount)} for the last housing payment. This may include one-time costs.`, amount: oldHousing.amount - housing.amount });
+  const moving = recent.filter(t => t.category === 'moving' && t.amount < 0);
+  if (moving.length) {
+    const total = moving.reduce((sum,t) => sum - t.amount, 0);
+    results.push({ id: `moving-costs:${month(asOf)}`, kind: 'moving-costs', title: 'The costs around a move', message: 'Moving-category outflows appeared. Review these alongside deposits, utility setup, and any overlapping rent.', evidence: `${money(total)} across ${moving.length} moving-category payment(s) this month, including ${moving[0].merchant}. Categories do not confirm a move.`, amount: total });
+  }
+  const oldPay = before.filter(t => t.category === 'payroll' && t.amount > 0).at(-1);
+  const pay = recent.find(t => t.category === 'payroll' && oldPay && t.amount > oldPay.amount);
+  if (pay && oldPay) results.push({ id: `income-increase:${pay.id}`, kind: 'income-increase', title: 'A larger paycheck to plan', message: 'A payroll deposit increased. Confirm the pay period and whether it is recurring before changing your saving or spending.', evidence: `${money(pay.amount)} from ${pay.merchant}, versus the last observed payroll deposit of ${money(oldPay.amount)}. A bonus or different pay period could explain the difference.`, amount: pay.amount - oldPay.amount });
+  return results;
+}
+
 export function plan(kind: Moment, income: number, expenses: number, cash: number, apr: number) {
   if (![income,expenses,cash,apr].every(Number.isFinite) || Math.min(income,expenses,cash,apr)<0 || apr>100) throw new Error('Enter valid non-negative numbers; rate must be 0–100.');
   const surplus = Math.max(0,income-expenses);
   const gap = Math.max(0,expenses*3-cash);
   const monthly = Math.round(Math.min(surplus, gap || surplus)*0.5);
   const details: Record<Moment,string> = {
+    'higher-housing': 'Check whether the higher payment includes a deposit, arrears, or utilities. Use confirmed recurring housing costs in monthly expenses and keep one-time costs separate.',
+    'moving-costs': 'List movers, deposits, setup fees, and overlapping rent. Account for these costs before reviewing any savings proposal; do not treat them as permanent monthly expenses unless they recur.',
+    'income-increase': 'Confirm the deposit covers the same pay period and excludes a one-time bonus. Once recurring take-home pay is clear, review how much of the increase could support your goals.',
     'new-job':"Confirm whether this deposit is a recurring paycheck or a one-time bonus. Review your employer's 401(k) match and eligibility before choosing contributions; this estimate uses take-home pay.",
     moving:'Include deposits, movers, utilities and overlapping rent in expenses. Keep money for upcoming bills accessible before starting a transfer.',
     overspending:"Separate one-time costs from recurring spending. Pick one flexible category to reduce and review your next month's actual spending.",

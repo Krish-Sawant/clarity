@@ -30,12 +30,12 @@ Built around financial confidence for the FNB challenge, with Auth0 providing us
 | **Future Lab** | Compare cash paths and explore an income interruption, unexpected repair, or rent increase. |
 | **Future Decisions** | Describe any two-option money decision to a Gemini guide that asks follow-ups, runs the projection in code, shows charts, budget breakdowns and tables, and cites CFPB sources. See the [Future Decisions guide](docs/FUTURE_DECISIONS.md). |
 | **Debt & savings calculators** | Explore payoff schedules, extra payments, savings growth, and goal timelines. |
-| **Proactive Advisor** | Detect five possible life moments in synthetic transactions and balance snapshots, inspect evidence, and calculate a possible next step. |
+| **Proactive Advisor** | Explore eight possible moments from synthetic activity, with five cards at a time and arrows to cycle through them. Inspect evidence and confirm context before planning. |
 | **Purchase Impact Preview** | Compare savings with and without a purchase, including goal delays and cash shortfalls. |
 | **Our approach & Evidence** | Inspect methods, limitations, sources, and a recorded synthetic evaluation pilot. |
 | **Auth0 account** | Sign up, log in, log out, access protected pages, and verify the backend connection from `/account`. |
 
-The advisor detects a larger paycheck from a new employer, a large payment to a new housing merchant, a spending increase, a first observed student loan payment, and an increasing cash cushion. These are clues for the user to confirm, not established facts about their life.
+The advisor detects a larger paycheck from a new employer, a large payment to a new housing merchant, a spending increase, a first observed student loan payment, and an increasing cash cushion. Additional review prompts highlight a higher housing payment, moving-category costs, and an increased payroll deposit. Related prompts can overlap the same activity. These are clues for the user to confirm, not established facts about their life.
 
 The financial experience runs locally in the browser using synthetic fixtures and reusable TypeScript engines. Journey progress uses browser session storage; it is not yet persisted to a backend user account. Logging in protects access but does not turn the demo into a live banking service.
 

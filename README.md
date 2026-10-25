@@ -184,8 +184,8 @@ The backend is scaffolded; this checkout does not yet include a runnable API ent
 
 | Team member        | Role                    | Feature ownership               |
 | ------------------ | ----------------------- | ------------------------------- |
-| **Abhijay**        | Backend / Data Engineer | Proactive Advisor               |
-| **Ram**            | UI/UX Engineer          | UI and interaction design       |
+| **Abhijay Madanagopal**        | Backend / Data Engineer | Proactive Advisor               |
+| **Ram Gundapwar**            | UI/UX Engineer          | UI and interaction design       |
 | **Krish Sawant**   | Backend Engineer        | “Future You” Decision Simulator |
 | **Aayush Sandesh** | QA Engineer             | Testing and quality assurance   |
 | **Neil Barbara**   | Backend Engineer        | Backend development             |

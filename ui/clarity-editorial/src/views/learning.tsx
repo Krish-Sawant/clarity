@@ -36,7 +36,7 @@ function LessonExercise({ lesson }: { lesson: Lesson }) {
   const high = debtPayoff(balance, higherApr, value);
 
   return <section className="exercise-panel" aria-labelledby={`exercise-${lesson.id}`}>
-    <p className="eyebrow">Try the idea · deterministic local math</p>
+    <p className="eyebrow">Try the idea · deterministic math</p>
     <h3 id={`exercise-${lesson.id}`}>Make the numbers move.</h3>
     <p>{lesson.exercise.prompt}</p>
     <div className="exercise-controls"><label className="field" htmlFor={`slider-${lesson.id}`}><span>{label} <strong>{currency(value)}</strong></span><input id={`slider-${lesson.id}`} type="range" min={min} max={max} step={type === "budget_allocator" ? 50 : type === "emergency_shock" ? 25 : 10} value={value} onChange={(event) => update((previous) => ({ ...previous, lessonExercises: { ...previous.lessonExercises, [lesson.id]: Number(event.target.value) } }))} /></label><div className="range-labels"><span>{currency(min)}</span><span>{currency(max)}</span></div></div>
@@ -69,14 +69,14 @@ function LocalTutor({ lesson }: { lesson: Lesson }) {
   }
 
   return <section className="panel tutor-panel" aria-labelledby="tutor-heading">
-    <div className="section-heading"><div><p className="eyebrow">A second perspective</p><h3 id="tutor-heading">Let’s make it click.</h3></div><span className="tag">Sample tutor · not Gemini</span></div>
+    <div className="section-heading"><div><p className="eyebrow">A second perspective</p><h3 id="tutor-heading">Let’s make it click.</h3></div><span className="tag">Prewritten tutor · not Gemini</span></div>
     <p>Choose a prewritten explanation from the lesson fixture. Nothing is sent to an AI provider.</p>
-    <div className="quiz-actions"><button className="button button--secondary" disabled={status === "loading"} onClick={() => explain("another_way")}>Explain another way</button><button className="button button--ghost" disabled={status === "loading"} onClick={() => explain("example")}>Show a sample example</button></div>
+    <div className="quiz-actions"><button className="button button--secondary" disabled={status === "loading"} onClick={() => explain("another_way")}>Explain another way</button><button className="button button--ghost" disabled={status === "loading"} onClick={() => explain("example")}>Show an example</button></div>
     <div className="tutor-response" role={status === "error" ? "alert" : "status"} aria-live="polite">
-      {status === "idle" && <p>Your sample explanation will appear here.</p>}
-      {status === "loading" && <p>Opening the local sample explanation…</p>}
-      {status === "success" && <><span className="eyebrow">Prewritten local explanation</span><p>{response}</p></>}
-      {status === "error" && <><p>The sample explanation could not be opened in this error preview. No live Gemini request was made.</p><button className="button button--secondary" onClick={() => explain("another_way")}>Retry sample explanation</button></>}
+      {status === "idle" && <p>Your explanation will appear here.</p>}
+      {status === "loading" && <p>Opening the explanation…</p>}
+      {status === "success" && <><span className="eyebrow">Prewritten explanation</span><p>{response}</p></>}
+      {status === "error" && <><p>The explanation could not be opened in this error preview. No live Gemini request was made.</p><button className="button button--secondary" onClick={() => explain("another_way")}>Retry explanation</button></>}
     </div>
     <details className="tutor-demo-controls"><summary>Preview an unavailable tutor</summary><p>See how the experience handles an explanation error.</p><button className="button button--ghost" disabled={status === "loading"} onClick={() => explain("error")}>Preview tutor error</button></details>
   </section>;
@@ -98,7 +98,7 @@ function LessonDetail({ lesson }: { lesson: Lesson }) {
       return;
     }
     setCompletionError("");
-    update((previous) => ({ ...previous, completedLessons: [...new Set([...previous.completedLessons, lesson.id])], activity: [{ id: crypto.randomUUID(), title: "Lesson completed", detail: `${lesson.title} · local demo reflection.`, at: new Date().toISOString() }, ...previous.activity] }));
+    update((previous) => ({ ...previous, completedLessons: [...new Set([...previous.completedLessons, lesson.id])], activity: [{ id: crypto.randomUUID(), title: "Lesson completed", detail: `${lesson.title} · reflection.`, at: new Date().toISOString() }, ...previous.activity] }));
   }
 
   return <article className="lesson-content">
@@ -118,9 +118,9 @@ function LessonDetail({ lesson }: { lesson: Lesson }) {
 
     <LocalTutor lesson={lesson} />
 
-    <details className="source-list"><summary>Sources & assumptions ({lessonSources.length})</summary><p>This demo uses the repository’s curated lesson content. These references support the concepts; they are not personalized financial advice.</p><ul>{lessonSources.map((source) => <li key={source.source_id}><a href={source.url} target="_blank" rel="noreferrer">{source.title} <span aria-hidden="true">↗</span></a><small>{source.publisher}</small></li>)}</ul></details>
+    <details className="source-list"><summary>Sources & assumptions ({lessonSources.length})</summary><p>Clarity uses the repository’s curated lesson content. These references support the concepts; they are not personalized financial advice.</p><ul>{lessonSources.map((source) => <li key={source.source_id}><a href={source.url} target="_blank" rel="noreferrer">{source.title} <span aria-hidden="true">↗</span></a><small>{source.publisher}</small></li>)}</ul></details>
 
-    <footer className="lesson-footer">{completionError && <p className="inline-notice inline-notice--error" role="alert">{completionError}</p>}<div className="quiz-actions"><button className="button button--primary" disabled={complete} onClick={completeLesson}>{complete ? "✓ Lesson complete" : "Mark lesson complete"}</button><Link className="button button--ghost" href="/discover?tab=reassess">Check what stayed with you <span aria-hidden="true">↗</span></Link></div><p className="caption">Completing a lesson is a local demo progress record, separate from your assessment score.</p></footer>
+    <footer className="lesson-footer">{completionError && <p className="inline-notice inline-notice--error" role="alert">{completionError}</p>}<div className="quiz-actions"><button className="button button--primary" disabled={complete} onClick={completeLesson}>{complete ? "✓ Lesson complete" : "Mark lesson complete"}</button><Link className="button button--ghost" href="/discover?tab=reassess">Check what stayed with you <span aria-hidden="true">↗</span></Link></div><p className="caption">Completing a lesson is a progress record, separate from your assessment score.</p></footer>
   </article>;
 }
 
@@ -136,8 +136,8 @@ export function LearningView() {
 
   return <>
     <header className="view-header"><div><p className="eyebrow">02 / Learn</p><h1>Small lessons.<br />Lasting clarity.</h1></div><p>A few minutes, one useful idea, and numbers you can play with. Build confidence by understanding the why.</p></header>
-    <section className="learning-intro"><div><span className="eyebrow">Your learning path</span><p>{state.baseline.completed ? "Ordered by concepts you missed or skipped, then your chosen goal. This is a local rule, not an AI recommendation." : "Start anywhere. Complete Discover for a path ordered by your missed concepts."}</p></div><label className="field"><span>What would you like to focus on?</span><select value={state.goal} onChange={(event) => update((previous) => ({ ...previous, goal: event.target.value as "buffer" | "debt" | "budget" }))}><option value="buffer">Build an emergency buffer</option><option value="debt">Understand borrowing</option><option value="budget">Find more breathing room</option></select></label><div className="learning-progress"><strong>{coreComplete}<small> / {coreCount}</small></strong><span>core lessons complete</span></div></section>
-    {!state.baseline.completed && <div className="inline-notice">Your starting point is still open. <Link href="/discover">Take the eight-question check</Link> for a more useful lesson order, or explore the sample lessons below.</div>}
+    <section className="learning-intro"><div><span className="eyebrow">Your learning path</span><p>{state.baseline.completed ? "Ordered by concepts you missed or skipped, then your chosen goal. This is a fixed rule, not an AI recommendation." : "Start anywhere. Complete Discover for a path ordered by your missed concepts."}</p></div><label className="field"><span>What would you like to focus on?</span><select value={state.goal} onChange={(event) => update((previous) => ({ ...previous, goal: event.target.value as "buffer" | "debt" | "budget" }))}><option value="buffer">Build an emergency buffer</option><option value="debt">Understand borrowing</option><option value="budget">Find more breathing room</option></select></label><div className="learning-progress"><strong>{coreComplete}<small> / {coreCount}</small></strong><span>core lessons complete</span></div></section>
+    {!state.baseline.completed && <div className="inline-notice">Your starting point is still open. <Link href="/discover">Take the eight-question check</Link> for a more useful lesson order, or explore the lessons below.</div>}
     <div className="learning-layout"><nav className="lesson-menu" aria-label="Learning modules">{recommended.map((lesson, index) => <button key={lesson.id} className={`lesson-tab ${selected.id === lesson.id ? "is-active" : ""} ${state.completedLessons.includes(lesson.id) ? "is-complete" : ""}`} aria-current={selected.id === lesson.id ? "true" : undefined} onClick={() => setSelectedId(lesson.id)}><span className="lesson-number">{String(index + 1).padStart(2, "0")}</span><span><small>{DOMAIN_LABELS[lesson.domain]}{index === 0 && state.baseline.completed ? " · Recommended first" : lesson.domain === "advanced" ? " · Go further" : ""}</small><strong>{lesson.title}</strong><small>{state.completedLessons.includes(lesson.id) ? "✓ Complete" : `${lesson.minutes} minute lesson`}</small></span><span aria-hidden="true">{selected.id === lesson.id ? "↗" : "→"}</span></button>)}</nav><LessonDetail key={selected.id} lesson={selected} /></div>
   </>;
 }

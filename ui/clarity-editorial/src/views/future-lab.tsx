@@ -15,7 +15,7 @@ const controls: { key: keyof SimulationInputs; label: string; max: number; step:
   { key: "rent", label: "Monthly rent", max: 8000, step: 50, hint: "Housing cost only" },
   { key: "transportation", label: "Monthly transportation", max: 4000, step: 25, hint: "Transit, car payment, gas" },
   { key: "spending", label: "Other monthly spending", max: 8000, step: 50, hint: "Food, bills, and everything else" },
-  { key: "cash", label: "Starting cash", max: 50000, step: 100, hint: "Your sample cash buffer today" },
+  { key: "cash", label: "Starting cash", max: 50000, step: 100, hint: "Your cash buffer today" },
 ];
 
 const chartStyles: Record<string, { color: string; dash: string; marker: string }> = {
@@ -91,10 +91,10 @@ export function FutureLabView() {
       ...previous,
       actions: [{
         id, kind: "goal", title: `Practice saving ${currency(amount)} a month`,
-        summary: `Explore ${currency(amount)} as a monthly sample contribution, equal to the ${selected.label.toLowerCase()} path’s surplus before shocks. The ${shock.title.toLowerCase()} scenario has a lowest projected cash balance of ${currency(selected.minCash)}. This is an illustration to review, not a claim that the amount is affordable. Approval only records a local demo decision.`,
+        summary: `Explore ${currency(amount)} as a monthly contribution, equal to the ${selected.label.toLowerCase()} path’s surplus before shocks. The ${shock.title.toLowerCase()} scenario has a lowest projected cash balance of ${currency(selected.minCash)}. This is an illustration to review, not a claim that the amount is affordable. Approval only records your decision.`,
         amount, dueDate: futureDate(30), status: "pending", createdAt: at,
       }, ...previous.actions],
-      activity: [{ id: crypto.randomUUID(), title: "Savings goal proposed", detail: `${currency(amount)} monthly contribution · awaiting your decision · demo only`, at }, ...previous.activity],
+      activity: [{ id: crypto.randomUUID(), title: "Savings goal proposed", detail: `${currency(amount)} monthly contribution · awaiting your decision`, at }, ...previous.activity],
     }));
     router.push("/approach#proposals");
   }
@@ -103,10 +103,10 @@ export function FutureLabView() {
     <div className="future-lab-view">
       <header className="view-header">
         <div><p className="eyebrow">THE FUTURE LAB / 04</p><h1>Try a different<br /><span className="serif-word">tomorrow.</span></h1></div>
-        <div className="view-header__aside"><span className="tag">LOCAL CALCULATION</span><p>A few small choices. A different trajectory. Explore three paths before you commit to one.</p></div>
+        <div className="view-header__aside"><span className="tag">TRANSPARENT CALCULATION</span><p>A few small choices. A different trajectory. Explore three paths before you commit to one.</p></div>
       </header>
 
-      <p className="inline-notice"><Icon name="chart" size={16} /> Synthetic example. Edit sample numbers to explore the math. These estimates are educational and do not predict returns.</p>
+      <p className="inline-notice"><Icon name="chart" size={16} /> Edit the numbers to explore the math. These estimates are educational and do not predict returns.</p>
 
       <section className="shock-section" id="stress-test" aria-labelledby="shock-title">
         <div className="section-heading"><div><p className="eyebrow">CHOOSE A DIFFERENT TOMORROW</p><h2 id="shock-title">My own situation</h2></div><p>Describe what could change for you, then enter the amounts and timing.</p></div><div className="segmented-control" role="group" aria-label="Simulation time horizon">{([6, 12, 24] as Horizon[]).map((horizon) => <button key={horizon} type="button" aria-pressed={state.horizon === horizon} onClick={() => update((previous) => ({ ...previous, horizon }))}>{horizon} mo</button>)}</div>
@@ -150,9 +150,9 @@ export function FutureLabView() {
         </section>
       </div>
 
-      <section hidden={!!scenarioError} className="lab-details-grid"><details className="panel assumptions"><summary>The assumptions behind the lines <Icon name="plus" size={18} /></summary><div><p>Every path starts with {currency(state.simulation.cash)} in cash. Each month: previous cash + take-home income − rent − transportation − other spending − any shock.</p><ul><li>Current path keeps your sample inputs unchanged.</li><li>Intentional spending reduces other spending by up to $200 each month, with a $0 floor.</li><li>Flexible housing reduces rent by up to $300 each month, with a $0 floor. Moving costs are excluded.</li>{selected.stress.assumptions.map(assumption => <li key={assumption}>{assumption}</li>)}</ul><p>All values are estimates for learning. A displayed negative balance remains a gap to resolve.</p></div></details><details className="panel assumptions"><summary>Compare the exact balances <Icon name="plus" size={18} /></summary><div className="table-scroll"><table className="comparison-table"><caption>Projected cash with {shock.title.toLowerCase()}</caption><thead><tr><th scope="col">Path</th><th scope="col">Now / after upfront costs</th>{([6, 12, 24] as Horizon[]).filter((month) => month <= state.horizon).map((month) => <th key={month} scope="col">Month {month}</th>)}</tr></thead><tbody>{paths.map((path) => <tr key={path.id}><th scope="row">{path.label}</th><td>{currency(path.points[0].cash)}</td>{([6, 12, 24] as Horizon[]).filter((month) => month <= state.horizon).map((month) => <td key={month}>{currency(path.points.find((point) => point.month === month)?.cash ?? 0)}</td>)}</tr>)}</tbody></table></div></details></section>
+      <section hidden={!!scenarioError} className="lab-details-grid"><details className="panel assumptions"><summary>The assumptions behind the lines <Icon name="plus" size={18} /></summary><div><p>Every path starts with {currency(state.simulation.cash)} in cash. Each month: previous cash + take-home income − rent − transportation − other spending − any shock.</p><ul><li>Current path keeps your inputs unchanged.</li><li>Intentional spending reduces other spending by up to $200 each month, with a $0 floor.</li><li>Flexible housing reduces rent by up to $300 each month, with a $0 floor. Moving costs are excluded.</li>{selected.stress.assumptions.map(assumption => <li key={assumption}>{assumption}</li>)}</ul><p>All values are estimates for learning. A displayed negative balance remains a gap to resolve.</p></div></details><details className="panel assumptions"><summary>Compare the exact balances <Icon name="plus" size={18} /></summary><div className="table-scroll"><table className="comparison-table"><caption>Projected cash with {shock.title.toLowerCase()}</caption><thead><tr><th scope="col">Path</th><th scope="col">Now / after upfront costs</th>{([6, 12, 24] as Horizon[]).filter((month) => month <= state.horizon).map((month) => <th key={month} scope="col">Month {month}</th>)}</tr></thead><tbody>{paths.map((path) => <tr key={path.id}><th scope="row">{path.label}</th><td>{currency(path.points[0].cash)}</td>{([6, 12, 24] as Horizon[]).filter((month) => month <= state.horizon).map((month) => <td key={month}>{currency(path.points.find((point) => point.month === month)?.cash ?? 0)}</td>)}</tr>)}</tbody></table></div></details></section>
 
-      <section hidden={!!scenarioError} className="lab-next-step panel"><div><p className="eyebrow">A SMALL NEXT STEP</p><h2>Turn a possibility<br />into a practice.</h2><p>Draft a savings goal from this path. You can inspect it, approve it, or decide against it.</p></div><div>{selected.monthlySurplus > 0 ? <button className="button button--primary" type="button" onClick={proposeGoal}>Propose a savings goal <Icon name="arrow-up-right" size={17} /></button> : <p className="inline-notice">This path has no monthly surplus. Try adjusting the sample costs before proposing a savings contribution.</p>}<Link className="text-link" href="/approach">Explore our approach <Icon name="arrow-right" size={15} /></Link><p className="field-hint">Local demo only. No transfer or notification is made.</p></div></section>
+      <section hidden={!!scenarioError} className="lab-next-step panel"><div><p className="eyebrow">A SMALL NEXT STEP</p><h2>Turn a possibility<br />into a practice.</h2><p>Draft a savings goal from this path. You can inspect it, approve it, or decide against it.</p></div><div>{selected.monthlySurplus > 0 ? <button className="button button--primary" type="button" onClick={proposeGoal}>Propose a savings goal <Icon name="arrow-up-right" size={17} /></button> : <p className="inline-notice">This path has no monthly surplus. Try adjusting the costs before proposing a savings contribution.</p>}<Link className="text-link" href="/approach">Explore our approach <Icon name="arrow-right" size={15} /></Link><p className="field-hint">No transfer or notification is made.</p></div></section>
     </div>
   );
 }

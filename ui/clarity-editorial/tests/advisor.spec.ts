@@ -16,7 +16,7 @@ test("possible moments cycle in both directions with five cards and preserved se
   await page.getByRole("button", { name: "Review possible moving costs", exact: true }).click();
   await expect(page.locator(".advisor-confirmation")).toContainText("City Movers");
   await expect(page.locator(".advisor-plan-metrics")).toHaveCount(0);
-  await page.getByRole("button", { name: "Confirm this sample moment", exact: true }).click();
+  await page.getByRole("button", { name: "Confirm this moment", exact: true }).click();
   await expect(page.locator(".advisor-plan-metrics")).toContainText("$610");
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
 });
@@ -42,7 +42,7 @@ test("confirm a synthetic advisor signal, inspect merged engine math and explici
   await page.getByRole("button", { name: "Review a possible job change", exact: true }).click();
   await expect(page.locator(".advisor-confirmation")).toContainText("Northstar Labs");
   await expect(page.locator(".advisor-plan-metrics")).toHaveCount(0);
-  await page.getByRole("button", { name: "Confirm this sample moment", exact: true }).click();
+  await page.getByRole("button", { name: "Confirm this moment", exact: true }).click();
   const metrics = page.locator(".advisor-plan-metrics");
   await expect(metrics).toContainText("$1,220");
   await expect(metrics).toContainText("$5,640");
@@ -64,7 +64,7 @@ test("confirm a synthetic advisor signal, inspect merged engine math and explici
   await expect(propose).toBeEnabled();
   await expect(metrics).toContainText("$600");
 
-  await page.getByText("Inspect the synthetic activity", { exact: false }).click();
+  await page.getByText("Inspect the activity", { exact: false }).click();
   await expect(page.getByRole("row", { name: /2026-10-15 Northstar Labs/ })).toBeVisible();
   const viewportFit = await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth);
   expect(viewportFit).toBe(true);
@@ -72,11 +72,11 @@ test("confirm a synthetic advisor signal, inspect merged engine math and explici
   await expect(page).toHaveURL(/\/approach#proposals$/);
   const pending = page.locator(".proposal-card").filter({ has: page.getByRole("heading", { name: "Review saving $600 a month", exact: true }) });
   await expect(pending).toContainText("$3,600 monthly expenses");
-  await expect(pending).toContainText("Approval records a local demo choice only");
-  await expect(pending.getByRole("button", { name: "Approve demo proposal", exact: false })).toBeDisabled();
+  await expect(pending).toContainText("Approval records your choice only");
+  await expect(pending.getByRole("button", { name: "Approve proposal", exact: false })).toBeDisabled();
   await pending.getByRole("button", { name: "Deny proposal", exact: false }).click();
   await expect(page.locator(".action-history")).toContainText("Review saving $600 a month");
-  await expect(page.locator(".action-history")).toContainText("Denied · local demo");
+  await expect(page.locator(".action-history")).toContainText("Denied · recorded");
   await page.reload();
   await expect(page.locator(".action-history")).toContainText("Review saving $600 a month");
   expect(pageErrors).toEqual([]);
@@ -86,17 +86,17 @@ test("confirm a synthetic advisor signal, inspect merged engine math and explici
 test("a deficit blocks a savings proposal and a changed signal requires fresh confirmation", async ({ page }) => {
   await page.goto("/advisor");
   await page.getByRole("button", { name: "Review a possible job change", exact: true }).click();
-  await page.getByRole("button", { name: "Confirm this sample moment", exact: true }).click();
+  await page.getByRole("button", { name: "Confirm this moment", exact: true }).click();
   const propose = page.getByRole("button", { name: "Review this savings proposal", exact: false });
   await page.getByRole("spinbutton", { name: "Monthly take-home income", exact: true }).fill("3000");
   await expect(page.locator(".advisor-plan-metrics")).toContainText("$0");
-  await expect(page.getByText("There is no positive sample savings amount to propose.", { exact: false })).toBeVisible();
+  await expect(page.getByText("There is no positive savings amount to propose.", { exact: false })).toBeVisible();
   await expect(propose).toBeDisabled();
 
   await page.getByRole("button", { name: "Review a growing cash cushion", exact: true }).click();
   await expect(page.locator(".advisor-plan-metrics")).toHaveCount(0);
   await expect(page.getByRole("spinbutton", { name: "Monthly take-home income", exact: true })).toBeDisabled();
-  await page.getByRole("button", { name: "Confirm this sample moment", exact: true }).click();
+  await page.getByRole("button", { name: "Confirm this moment", exact: true }).click();
   await expect(propose).toBeDisabled();
   await page.getByRole("spinbutton", { name: "Monthly take-home income", exact: true }).fill("4800");
   await expect(page.locator(".advisor-plan-metrics")).toContainText("$610");

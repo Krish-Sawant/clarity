@@ -14,7 +14,7 @@ Financial learning, proactive guidance, and interactive simulations to help peop
 
 </div>
 
-> **Setting up the AI chat?** Read the [Future Decisions guide](docs/FUTURE_DECISIONS.md#run-it-locally) for Gemini API key configuration and RAG details. Add the key to `ui/clarity-editorial/.env.local` and restart the UI. Without it, the chat uses a scripted offline backup. Keep the actual API key out of Git.
+> **Setting up the AI chat?** Read the [Future Decisions guide](docs/FUTURE_DECISIONS.md#run-it-locally) for Gemini API key configuration and RAG details.
 
 ## Why Clarity?
 

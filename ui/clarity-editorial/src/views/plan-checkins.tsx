@@ -7,7 +7,7 @@ import { Icon } from "../components/icon";
 
 const usd = (value: number) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 2 }).format(value);
 
-export function PlanCheckinsView() {
+export function PlanCheckinsView({ embedded = false }: { embedded?: boolean }) {
   const [pay, setPay] = useState({ previous: String(raiseDemo.previousMonthlyPay), current: String(raiseDemo.currentMonthlyPay) });
   const [confirmedRecurring, setConfirmedRecurring] = useState(false);
   const [plan, setPlan] = useState<MonthlyPlan | null>(null);
@@ -40,8 +40,10 @@ export function PlanCheckinsView() {
   }
   function reset() { setPay({ previous: String(raiseDemo.previousMonthlyPay), current: String(raiseDemo.currentMonthlyPay) }); setConfirmedRecurring(false); setPlan(null); setMonths([]); setEntryError(""); }
 
-  return <div className="tool-view">
-    <header className="view-header"><div><p className="eyebrow">PLAN CHECK-INS / SAVE THE RAISE</p><h1>Save the raise.<br /><span className="serif-word">Keep the plan.</span></h1></div><div className="view-header__aside"><span className="tag">MERGED ENGINE / YOUR ENTRIES</span><p>Turn a pay increase into a savings pace, then compare each month with the plan you chose.</p></div></header>
+  const Heading = embedded ? "h2" : "h1";
+
+  return <div className={`tool-view${embedded ? " is-embedded" : ""}`} id={embedded ? "plan-checkins" : undefined}>
+    <header className="view-header"><div><p className="eyebrow">PLAN CHECK-INS / SAVE THE RAISE</p><Heading>Save the raise.<br /><span className="serif-word">Keep the plan.</span></Heading></div><div className="view-header__aside"><span className="tag">MERGED ENGINE / YOUR ENTRIES</span><p>Turn a pay increase into a savings pace, then compare each month with the plan you chose.</p></div></header>
     <p className="inline-notice">Local educational illustration. No transfer is created and no budget changes automatically. Entries last for this visit only.</p>
     <div className="tool-layout">
       <section className="panel tool-controls" aria-labelledby="raise-heading"><div className="section-heading"><div><p className="eyebrow">01 / A PAY INCREASE</p><h2 id="raise-heading">Put part of it to work.</h2></div><span className="tag">SAMPLE / USD</span></div>
@@ -72,6 +74,6 @@ export function PlanCheckinsView() {
         <button className="button button--ghost" type="button" onClick={reset}>Reset check-in example <Icon name="refresh" size={15} /></button>
       </section>
     </div>
-    <div className="quiz-actions"><Link className="button button--secondary" href="/stress-test">Run a stress test <Icon name="arrow-right" size={16} /></Link><Link className="button button--ghost" href="/future-lab">Back to Future Lab <Icon name="arrow-up-right" size={16} /></Link></div>
+    {!embedded && <div className="quiz-actions"><Link className="button button--secondary" href="/future-lab#stress-test">Run a stress test <Icon name="arrow-right" size={16} /></Link><Link className="button button--ghost" href="/future-lab">Back to Future Lab <Icon name="arrow-up-right" size={16} /></Link></div>}
   </div>;
 }

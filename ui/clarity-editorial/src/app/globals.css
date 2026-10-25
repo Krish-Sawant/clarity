@@ -546,6 +546,9 @@ details[open] > summary > svg { transform: rotate(45deg); }
 .experience-navigation a[aria-current="page"] { border-color: var(--ink); background: var(--accent); }
 .experience-navigation a:hover { border-color: var(--ink); }
 .decisions-view .view-header h1, .purchase-view .view-header h1, .tool-view .view-header h1, .calculators-view .view-header h1, .evidence-view .view-header h1 { font-size: clamp(48px, 5.7vw, 84px); }
+/* A tool shown as a section beneath another page. */
+.is-embedded { margin-top: 72px; border-top: 1px solid var(--line); scroll-margin-top: 24px; }
+.is-embedded > .view-header h2 { font-size: clamp(40px, 4.4vw, 64px); line-height: 1.02; letter-spacing: -.06em; }
 .decision-scenarios { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 13px; margin: 26px 0; }
 .decision-scenario { min-width: 0; padding: 22px 18px; text-align: left; border: 1px solid var(--line); background: var(--surface); display: flex; flex-direction: column; gap: 15px; line-height: 1.5; }
 .decision-scenario strong { font-size: 19px; font-weight: 500; line-height: 1.2; letter-spacing: -.035em; }
@@ -971,6 +974,8 @@ details[open] > summary > svg { transform: rotate(45deg); }
 }
 @media (max-width: 700px) {
   .decisions-view .view-header h1, .purchase-view .view-header h1, .tool-view .view-header h1, .calculators-view .view-header h1, .evidence-view .view-header h1 { font-size: 12vw; }
+  .is-embedded { margin-top: 48px; }
+  .is-embedded > .view-header h2 { font-size: 10vw; }
   .experience-navigation { gap: 8px; padding-top: 13px; }
   .experience-navigation a { font-size: 9px; gap: 13px; padding-inline: 11px; min-height: 40px; }
   .decision-field-groups { grid-template-columns: 1fr; gap: 27px; }

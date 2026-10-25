@@ -46,7 +46,7 @@ export const branchIntegrationStatus = [
   { id: "deterministic-calculations", title: "Debt & savings engine", branch: "main", status: "available-local", href: "/calculators", detail: "The merged integer-cent engine calculates debt payoff, extra-payment comparisons, and savings goals with explicit incomplete-result states." },
   { id: "proactive-advisor", title: "Proactive advisor", branch: "main", status: "available-local", href: "/advisor", detail: "The merged detection and planning engine runs locally on validated synthetic activity. Bank connections, monitoring, delivery, and authenticated APIs are not connected." },
   { id: "future-decisions", title: "Future Decisions", branch: "main", status: "available-local", href: "/decisions", detail: "Five merged scenario models compare cash, debt, and net worth. A scripted local guide calls calculation tools; no live model is connected." },
-  { id: "purchase-impact", title: "Purchase preview", branch: "main", status: "available-local", href: "/purchase-impact", detail: "The merged purchase detector and paired savings projections show the timing impact of a synthetic purchase after funding and balance assumptions are confirmed." },
+  { id: "purchase-impact", title: "Purchase preview", branch: "main", status: "available-local", href: "/before-you-commit", detail: "The merged purchase detector and paired savings projections show the timing impact of a synthetic purchase after funding and balance assumptions are confirmed." },
 ] as const;
 
 export const advisorAdapter: AdvisorAdapter = {

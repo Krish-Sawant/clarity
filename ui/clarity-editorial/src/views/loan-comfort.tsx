@@ -65,6 +65,6 @@ export function LoanComfortView() {
         </>}
       </section>
     </div>
-    <div className="quiz-actions"><Link className="button button--secondary" href="/card-readiness">Check card readiness <Icon name="arrow-right" size={16} /></Link><Link className="button button--ghost" href="/advisor">Back to the Advisor <Icon name="arrow-up-right" size={16} /></Link></div>
+    <div className="quiz-actions"><Link className="button button--secondary" href="/before-you-commit?tab=card">Check card readiness <Icon name="arrow-right" size={16} /></Link><Link className="button button--ghost" href="/advisor">Back to the Advisor <Icon name="arrow-up-right" size={16} /></Link></div>
   </div>;
 }

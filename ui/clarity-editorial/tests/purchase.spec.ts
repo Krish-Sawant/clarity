@@ -17,7 +17,7 @@ test("confirm a planned purchase, compare exact goal paths and hide invalid draf
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("console", (message) => { if (message.type() === "error") errors.push(message.text()); });
-  await page.goto("/purchase-impact");
+  await page.goto("/before-you-commit");
   await expect(page.locator(".clarity-app")).toHaveAttribute("data-hydrated", "true");
   await expect(page.locator(".purchase-signal")).toContainText("Demo Electronics");
   await expect(page.locator(".purchase-signal")).toContainText("2026-10-24");
@@ -56,7 +56,7 @@ test("posted purchases require timing confirmation and preserve null milestones 
   const errors: string[] = [];
   page.on("pageerror", (error) => errors.push(error.message));
   page.on("console", (message) => { if (message.type() === "error") errors.push(message.text()); });
-  await page.goto("/purchase-impact");
+  await page.goto("/before-you-commit");
   await page.getByRole("button", { name: "Review detected sample purchase", exact: false }).click();
   await expect(page.getByRole("combobox", { name: "Balance timing", exact: true })).toHaveValue("posted");
   await expect(page.getByRole("spinbutton", { name: "Current goal savings (USD)", exact: true })).toHaveValue("1800");

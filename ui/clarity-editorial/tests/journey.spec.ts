@@ -150,7 +150,7 @@ test("resume explicit skipped and answered questions after refresh without gradi
 });
 
 test("reassessment explains the missing baseline and sample journey stays labeled", async ({ page }) => {
-  await page.goto("/reassess");
+  await page.goto("/discover?tab=reassess");
   await expect(page.getByRole("heading", { name: "A comparison needs two signals.", exact: true })).toBeVisible();
   await page.getByRole("link", { name: "Start Discover", exact: false }).click();
   await expect(page.getByRole("heading", { name: baselineBank.questions[0].prompt, exact: true })).toBeVisible();

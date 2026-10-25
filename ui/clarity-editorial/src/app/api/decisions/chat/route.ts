@@ -1,4 +1,5 @@
 import type { ChatItem, Session } from "../../../../../../../frontend/src/lib/chat/types";
+import { auth0 } from "../../../../lib/auth/server";
 import { decideTurn } from "../../../../server/decision-agent";
 import { GeminiError } from "../../../../server/gemini";
 
@@ -39,6 +40,8 @@ function validSession(x: unknown): x is Session {
 const error = (message: string, status: number) => Response.json({ error: message }, { status });
 
 export async function POST(request: Request) {
+  // Gemini calls spend the project's quota, so only signed-in users may make them.
+  if (!(await auth0?.getSession())) return error("Sign in required.", 401);
   const raw = await request.text();
   if (raw.length > MAX_BODY_BYTES) return error("Conversation is too long. Start over to continue.", 413);
   const ip = request.headers.get("x-forwarded-for")?.split(",")[0].trim() || "local";

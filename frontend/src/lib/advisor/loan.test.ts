@@ -1,6 +1,6 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { analyzeCashFlow, compareLoanAffordability, paymentCents, maxPrincipalCents, LOAN_SOURCES } from './loan.ts';
+import { analyzeCashFlow, compareLoanAffordability, paymentCents, maxPrincipalCents, LOAN_SOURCES, loanHeadline } from './loan.ts';
 import type { Transaction } from './engine.ts';
 
 const months = ['2026-07', '2026-08', '2026-09'];
@@ -90,4 +90,42 @@ test('comfortable never exceeds what a lender might approve', () => {
   const s = r.scenarios!;
   assert.ok(s.comfortable.principalCents <= s.lender.principalCents);
   assert.ok(r.gapCents >= 0);
+});
+
+test('headline uses the engine numbers and makes no approval promise', () => {
+  const r = run();
+  const s = r.scenarios!;
+  const usd = (c: number) => (c / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+  const h = loanHeadline(r);
+  assert.ok(h.includes(usd(s.lender.principalCents)));
+  assert.ok(h.includes(usd(s.comfortable.principalCents)));
+  assert.ok(h.includes(String(s.comfortable.jobLossRunwayMonths)));
+  assert.match(h, /might approve/);
+  assert.doesNotMatch(h, /you (are|will be) approved/i);
+});
+
+test('headline explains not_yet instead of showing amounts', () => {
+  const h = loanHeadline(run(rows, { ...loan, cashCents: 300_000 }));
+  assert.match(h, /Not yet/);
+  assert.doesNotMatch(h, /\$\d/);
+});
+
+test('headline explains missing history without inventing a loan amount', () => {
+  const r = run([]);
+  assert.equal(loanHeadline(r), [r.message, ...r.reasons].join(' '));
+  assert.doesNotMatch(loanHeadline(r), /might approve/);
+});
+
+test('headline describes equal loan amounts without suggesting a gap', () => {
+  const r = compareLoanAffordability(rows, '2026-10-24', '2026-07-01', loan, { lenderDtiPct: 10 });
+  assert.equal(r.gapCents, 0);
+  assert.match(loanHeadline(r), /which is also what fits your spending/);
+  assert.doesNotMatch(loanHeadline(r), /keeps your savings growing/);
+});
+
+test('headline omits runway when no monthly outflow can be modeled', () => {
+  const r = run();
+  assert.ok(r.scenarios);
+  const withoutRunway = { ...r, scenarios: { ...r.scenarios, comfortable: { ...r.scenarios.comfortable, jobLossRunwayMonths: null } } };
+  assert.doesNotMatch(loanHeadline(withoutRunway), /lost your job|null months/);
 });

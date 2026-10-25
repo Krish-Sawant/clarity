@@ -20,6 +20,10 @@ export default function Home() {
           <Link href="/credit-cards" className="rounded-full bg-teal-700 px-5 py-3 font-medium text-white">
             Explore Credit Card Readiness
           </Link>
+          <Link href="/my-plan" className="rounded-full bg-teal-700 px-5 py-3 font-medium text-white">Open your editable financial plan</Link>
+          <Link href="/stress-test" className="rounded-full bg-teal-700 px-5 py-3 font-medium text-white">
+            Explore Stress Test
+          </Link>
           <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
             To get started, edit the{" "}
             <code className="rounded bg-black/[.06] px-1.5 py-0.5 font-mono text-[0.9em] dark:bg-white/[.08]">

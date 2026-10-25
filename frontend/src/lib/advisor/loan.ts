@@ -125,3 +125,16 @@ export function compareLoanAffordability(transactions: Transaction[], asOf: stri
     ],
   };
 }
+
+const usd = (cents: number) => (cents / 100).toLocaleString('en-US', { style: 'currency', currency: 'USD', maximumFractionDigits: 0 });
+
+export function loanHeadline(r: ReturnType<typeof compareLoanAffordability>): string {
+  if (r.status !== 'compare' || !r.scenarios) return [r.message, ...r.reasons].join(' ');
+  const { lender, comfortable } = r.scenarios;
+  const months = comfortable.jobLossRunwayMonths;
+  const runway = months === null ? '' : ` If you lost your job, your savings could still cover your spending plus the payment for about ${months} months.`;
+  if (r.gapCents === 0) {
+    return `A lender might approve about ${usd(lender.principalCents)}, which is also what fits your spending.${runway}`;
+  }
+  return `A lender might approve about ${usd(lender.principalCents)}. Based on your actual spending, ${usd(comfortable.principalCents)} keeps your savings growing.${runway}`;
+}

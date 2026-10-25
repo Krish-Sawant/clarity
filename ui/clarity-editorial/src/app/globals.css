@@ -581,6 +581,7 @@ details[open] > summary > svg { transform: rotate(45deg); }
 .decision-chat-turn.is-user { background: var(--ink); color: var(--paper); margin-left: 12%; }
 .decision-chat-turn.is-assistant { margin-right: 5%; }
 .decision-chat-turn p + p { margin-top: 12px; }
+.decision-anchor { scroll-margin-top: 24px; }
 .decision-chat-turn sup a { font-size: 10px; color: inherit; text-decoration: underline; margin-left: 2px; }
 .decision-chat-sources { margin: 16px 0 0; padding: 12px 0 0 18px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); }
 .decision-chat-sources li + li { margin-top: 4px; }

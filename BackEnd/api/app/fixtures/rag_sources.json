@@ -1,0 +1,1145 @@
+{
+  "origin": "curated_rag_corpus",
+  "note": "Retrieval corpus for decision explanations. Titles are each page's <h1>; every URL returned HTTP 200 when this file was built. Ids shared with sources_fallback.json refer to the same pages.",
+  "scenario_ids": [
+    "job-offer",
+    "car",
+    "grad-school",
+    "move-out",
+    "debt-vs-save"
+  ],
+  "sources": [
+    {
+      "source_id": "cfpb-budgeting-blog",
+      "title": "Budgeting: How to create a budget and stick with it",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/archive/blog/budgeting-how-to-create-a-budget-and-stick-with-it/",
+      "domain": "budget",
+      "concept_ids": [
+        "cash_flow_surplus",
+        "fixed_vs_variable"
+      ],
+      "license_or_use_notes": "U.S. federal government work; linked and summarized with attribution.",
+      "scenario_ids": [
+        "job-offer",
+        "car",
+        "grad-school",
+        "move-out",
+        "debt-vs-save"
+      ],
+      "kind": "guidance"
+    },
+    {
+      "source_id": "cfpb-ymyg",
+      "title": "Your Money, Your Goals",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/consumer-tools/educator-tool/your-money-your-goals/",
+      "domain": "budget",
+      "concept_ids": [
+        "fixed_vs_variable",
+        "cash_flow_surplus"
+      ],
+      "license_or_use_notes": "U.S. federal government work; linked and summarized with attribution.",
+      "scenario_ids": [
+        "job-offer",
+        "car",
+        "grad-school",
+        "move-out",
+        "debt-vs-save"
+      ],
+      "kind": "guidance"
+    },
+    {
+      "source_id": "fdic-money-smart",
+      "title": "Money Smart",
+      "publisher": "Federal Deposit Insurance Corporation",
+      "url": "https://www.fdic.gov/consumer-resource-center/money-smart",
+      "domain": "budget",
+      "concept_ids": [
+        "cash_flow_surplus"
+      ],
+      "license_or_use_notes": "U.S. federal government work; linked with attribution.",
+      "scenario_ids": [
+        "job-offer",
+        "car",
+        "grad-school",
+        "move-out",
+        "debt-vs-save"
+      ],
+      "kind": "guidance"
+    },
+    {
+      "source_id": "cfpb-credit-score-318",
+      "title": "How do I get and keep a good credit score?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-do-i-get-and-keep-a-good-credit-score-en-318/",
+      "domain": "credit",
+      "concept_ids": [
+        "credit_utilization"
+      ],
+      "license_or_use_notes": "U.S. federal government work; short attributed excerpts.",
+      "scenario_ids": [
+        "debt-vs-save",
+        "car",
+        "move-out"
+      ],
+      "kind": "guidance"
+    },
+    {
+      "source_id": "cfpb-credit-cards",
+      "title": "Credit cards",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/consumer-tools/credit-cards/",
+      "domain": "credit",
+      "concept_ids": [
+        "minimum_payment"
+      ],
+      "license_or_use_notes": "U.S. federal government work; linked with attribution.",
+      "scenario_ids": [
+        "debt-vs-save",
+        "job-offer"
+      ],
+      "kind": "guidance"
+    },
+    {
+      "source_id": "cfpb-apr-44",
+      "title": "What is a credit card interest rate? What does APR mean?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-a-credit-card-interest-rate-what-does-apr-mean-en-44/",
+      "domain": "interest",
+      "concept_ids": [
+        "credit_apr",
+        "minimum_payment"
+      ],
+      "license_or_use_notes": "U.S. federal government work; short attributed excerpts.",
+      "scenario_ids": [
+        "debt-vs-save",
+        "car"
+      ],
+      "kind": "guidance"
+    },
+    {
+      "source_id": "cfpb-emergency-fund-guide",
+      "title": "An essential guide to building an emergency fund",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/an-essential-guide-to-building-an-emergency-fund/",
+      "domain": "saving",
+      "concept_ids": [
+        "emergency_buffer",
+        "savings_goal_timeline"
+      ],
+      "license_or_use_notes": "U.S. federal government work; short attributed excerpts.",
+      "scenario_ids": [
+        "job-offer",
+        "car",
+        "grad-school",
+        "move-out",
+        "debt-vs-save"
+      ],
+      "kind": "guidance"
+    },
+    {
+      "source_id": "investor-compound-interest",
+      "title": "Compound Interest (glossary)",
+      "publisher": "U.S. Securities and Exchange Commission — Investor.gov",
+      "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary/compound-interest",
+      "domain": "interest",
+      "concept_ids": [
+        "compound_interest"
+      ],
+      "license_or_use_notes": "U.S. federal government work; short attributed excerpts.",
+      "scenario_ids": [
+        "debt-vs-save",
+        "job-offer",
+        "grad-school"
+      ],
+      "kind": "guidance"
+    },
+    {
+      "source_id": "investor-compound-calculator",
+      "title": "Compound Interest Calculator",
+      "publisher": "U.S. Securities and Exchange Commission — Investor.gov",
+      "url": "https://www.investor.gov/financial-tools-calculators/calculators/compound-interest-calculator",
+      "domain": "interest",
+      "concept_ids": [
+        "compound_interest"
+      ],
+      "license_or_use_notes": "U.S. federal government work; linked with attribution.",
+      "scenario_ids": [
+        "debt-vs-save",
+        "job-offer"
+      ],
+      "kind": "guidance"
+    },
+    {
+      "source_id": "cfpb-unexpected-job-loss",
+      "title": "Unexpected job loss",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/consumer-tools/unexpected-job-loss/",
+      "domain": "saving",
+      "concept_ids": [
+        "emergency_buffer"
+      ],
+      "scenario_ids": [
+        "job-offer",
+        "move-out",
+        "debt-vs-save"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-money-safe-1005",
+      "title": "How can I be sure my money is safe in my bank account?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-can-i-be-sure-my-money-is-safe-in-my-bank-account-en-1005/",
+      "domain": "saving",
+      "concept_ids": [
+        "savings_account"
+      ],
+      "scenario_ids": [
+        "move-out",
+        "debt-vs-save"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-money-market-1007",
+      "title": "What is a money market account?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-a-money-market-account-en-1007/",
+      "domain": "saving",
+      "concept_ids": [
+        "savings_account"
+      ],
+      "scenario_ids": [
+        "debt-vs-save",
+        "job-offer"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-autopay-2021",
+      "title": "How do automatic payments from a bank account work?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-do-automatic-payments-from-a-bank-account-work-en-2021/",
+      "domain": "budget",
+      "concept_ids": [
+        "fixed_vs_variable"
+      ],
+      "scenario_ids": [
+        "move-out",
+        "debt-vs-save"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-avoid-overdrafts-1053",
+      "title": "How can I avoid debit card overdrafts?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-can-i-avoid-debit-card-overdrafts-en-1053/",
+      "domain": "budget",
+      "concept_ids": [
+        "overdraft_fees"
+      ],
+      "scenario_ids": [
+        "move-out"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-overdraft-options",
+      "title": "Know your overdraft options",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/consumer-tools/bank-accounts/know-your-overdraft-options/",
+      "domain": "budget",
+      "concept_ids": [
+        "overdraft_fees"
+      ],
+      "scenario_ids": [
+        "move-out"
+      ],
+      "kind": "rights",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-card-interest-calc-51",
+      "title": "How does my credit card company calculate the amount of interest I owe?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-does-my-credit-card-company-calculate-the-amount-of-interest-i-owe-en-51/",
+      "domain": "interest",
+      "concept_ids": [
+        "credit_apr",
+        "compound_interest"
+      ],
+      "scenario_ids": [
+        "debt-vs-save",
+        "job-offer"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-fixed-variable-apr-45",
+      "title": "What is the difference between a fixed APR and a variable APR?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-the-difference-between-a-fixed-apr-and-a-variable-apr-en-45/",
+      "domain": "interest",
+      "concept_ids": [
+        "credit_apr"
+      ],
+      "scenario_ids": [
+        "debt-vs-save"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-grace-period-47",
+      "title": "What is a grace period for a credit card?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-a-grace-period-for-a-credit-card-en-47/",
+      "domain": "credit",
+      "concept_ids": [
+        "credit_apr"
+      ],
+      "scenario_ids": [
+        "debt-vs-save"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-payoff-box-36",
+      "title": "A box on my credit card bill says that I will pay off the balance in three years if I pay a certain amount. What does that mean? Do I have to pay that much? If I pay that much and make new purchases will I still owe nothing after three years?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/a-box-on-my-credit-card-bill-says-that-i-will-pay-off-the-balance-in-three-years-if-i-pay-a-certain-amount-what-does-that-mean-do-i-have-to-pay-that-much-if-i-pay-that-much-and-make-new-purchases-will-i-still-owe-nothing-after-three-years-en-36/",
+      "domain": "credit",
+      "concept_ids": [
+        "minimum_payment"
+      ],
+      "scenario_ids": [
+        "debt-vs-save"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-balance-transfer-49",
+      "title": "Do I pay interest on new purchases after I get a zero or low rate balance transfer?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/do-i-pay-interest-on-new-purchases-after-i-get-a-zero-or-low-rate-balance-transfer-en-49/",
+      "domain": "interest",
+      "concept_ids": [
+        "credit_apr"
+      ],
+      "scenario_ids": [
+        "debt-vs-save"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-cant-pay-cards-1697",
+      "title": "What should I do if I can’t pay my credit card bills?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-should-i-do-if-i-cant-pay-my-credit-card-bills-en-1697/",
+      "domain": "credit",
+      "concept_ids": [
+        "minimum_payment"
+      ],
+      "scenario_ids": [
+        "debt-vs-save",
+        "job-offer"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-consolidate-cards-1861",
+      "title": "What do I need to know about consolidating my credit card debt?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-do-i-need-to-know-if-im-thinking-about-consolidating-my-credit-card-debt-en-1861/",
+      "domain": "debt",
+      "concept_ids": [
+        "debt_consolidation"
+      ],
+      "scenario_ids": [
+        "debt-vs-save"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-consolidation-ads-1859",
+      "title": "I’ve seen a lot of advertisements for companies that consolidate credit card debt. Are these legitimate?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/ive-seen-a-lot-of-advertisements-for-companies-that-consolidate-credit-card-debt-are-these-legitimate-en-1859/",
+      "domain": "debt",
+      "concept_ids": [
+        "debt_consolidation",
+        "fraud_scams"
+      ],
+      "scenario_ids": [
+        "debt-vs-save"
+      ],
+      "kind": "rights",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-counselor-vs-settlement-1449",
+      "title": "What is the difference between credit counseling and debt settlement, debt consolidation, or credit repair?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/whats-the-difference-between-a-credit-counselor-and-a-debt-settlement-company-en-1449/",
+      "domain": "debt",
+      "concept_ids": [
+        "debt_consolidation"
+      ],
+      "scenario_ids": [
+        "debt-vs-save"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-rate-increase-69",
+      "title": "When can my credit card company increase my interest rate?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/when-can-my-credit-card-company-increase-my-interest-rate-what-can-i-do-to-get-the-rate-back-down-en-69/",
+      "domain": "credit",
+      "concept_ids": [
+        "credit_apr"
+      ],
+      "scenario_ids": [
+        "debt-vs-save"
+      ],
+      "kind": "rights",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-change-terms-70",
+      "title": "Can my credit card company change the terms of my account?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/can-my-credit-card-company-change-the-terms-of-my-account-en-70/",
+      "domain": "credit",
+      "concept_ids": [
+        "credit_apr"
+      ],
+      "scenario_ids": [
+        "debt-vs-save"
+      ],
+      "kind": "rights",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-report-vs-score-2069",
+      "title": "What is the difference between a credit report and a credit score?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-the-difference-between-a-credit-report-and-a-credit-score-en-2069/",
+      "domain": "credit",
+      "concept_ids": [
+        "credit_report"
+      ],
+      "scenario_ids": [
+        "debt-vs-save",
+        "car",
+        "move-out"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-free-reports-5",
+      "title": "How do I get a free copy of my credit reports?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-do-i-get-a-free-copy-of-my-credit-reports-en-5/",
+      "domain": "credit",
+      "concept_ids": [
+        "credit_report"
+      ],
+      "scenario_ids": [
+        "debt-vs-save",
+        "car",
+        "move-out"
+      ],
+      "kind": "rights",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-dispute-report-314",
+      "title": "How do I dispute an error on my credit report?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-do-i-dispute-an-error-on-my-credit-report-en-314/",
+      "domain": "credit",
+      "concept_ids": [
+        "credit_report"
+      ],
+      "scenario_ids": [
+        "debt-vs-save",
+        "car",
+        "move-out"
+      ],
+      "kind": "rights",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-soft-inquiry-321",
+      "title": "What kind of credit inquiry has no effect on my credit score?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-kind-of-credit-inquiry-has-no-effect-on-my-credit-score-en-321/",
+      "domain": "credit",
+      "concept_ids": [
+        "credit_report"
+      ],
+      "scenario_ids": [
+        "car",
+        "move-out"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-tenant-screening-2102",
+      "title": "What is a tenant screening report?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-a-tenant-screening-report-en-2102/",
+      "domain": "housing",
+      "concept_ids": [
+        "credit_report"
+      ],
+      "scenario_ids": [
+        "move-out",
+        "job-offer"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-tenant-denied-2105",
+      "title": "What should I do if my rental application is denied because of a tenant screening report?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-should-i-do-if-my-rental-application-is-denied-because-of-a-tenant-screening-report-en-2105/",
+      "domain": "housing",
+      "concept_ids": [
+        "credit_report"
+      ],
+      "scenario_ids": [
+        "move-out",
+        "job-offer"
+      ],
+      "kind": "rights",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-auto-afford-751",
+      "title": "How much can I afford to borrow for a car or auto loan?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-much-can-i-afford-to-borrow-for-a-car-or-auto-loan-en-751/",
+      "domain": "auto",
+      "concept_ids": [
+        "auto_loan_cost"
+      ],
+      "scenario_ids": [
+        "car"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-auto-compare-753",
+      "title": "How do I compare auto loan offers?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-do-i-compare-auto-loan-offers-what-should-i-look-at-besides-the-monthly-payment-en-753/",
+      "domain": "auto",
+      "concept_ids": [
+        "auto_loan_cost",
+        "credit_apr"
+      ],
+      "scenario_ids": [
+        "car"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-auto-before-shop-755",
+      "title": "What should I know before I shop for a car or auto loan?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-should-i-know-before-i-shop-for-auto-loan-at-a-bank-credit-union-dealership-or-other-lender-en-755/",
+      "domain": "auto",
+      "concept_ids": [
+        "auto_loan_cost"
+      ],
+      "scenario_ids": [
+        "car"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-auto-finance-ways-759",
+      "title": "What are the different ways to buy or finance a car or vehicle?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-the-difference-between-dealer-arranged-and-bank-financing-en-759/",
+      "domain": "auto",
+      "concept_ids": [
+        "auto_loan_cost"
+      ],
+      "scenario_ids": [
+        "car"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-auto-negotiate-2132",
+      "title": "What things can I negotiate when shopping for a car or auto loan?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-things-can-i-negotiate-when-shopping-for-a-car-or-auto-loan-en-2132/",
+      "domain": "auto",
+      "concept_ids": [
+        "auto_loan_cost"
+      ],
+      "scenario_ids": [
+        "car"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-auto-finalize-2131",
+      "title": "What should I know before I finalize a car or auto loan?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-should-i-know-before-i-finalize-a-car-or-auto-loan-en-2131/",
+      "domain": "auto",
+      "concept_ids": [
+        "auto_loan_cost"
+      ],
+      "scenario_ids": [
+        "car"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-auto-trade-in-2045",
+      "title": "Should I trade in my car if it’s not paid off?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/should-i-trade-in-my-car-if-its-not-paid-off-en-2045/",
+      "domain": "auto",
+      "concept_ids": [
+        "auto_loan_cost",
+        "asset_depreciation"
+      ],
+      "scenario_ids": [
+        "car"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-rate-vs-apr-733",
+      "title": "What is the difference between a loan interest rate and the APR?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-the-difference-between-a-loan-interest-rate-and-the-apr-en-733/",
+      "domain": "interest",
+      "concept_ids": [
+        "credit_apr",
+        "auto_loan_cost"
+      ],
+      "scenario_ids": [
+        "car",
+        "grad-school"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-car-price-723",
+      "title": "What factors into the price of a car or vehicle?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-factors-into-the-price-of-a-car-or-vehicle-en-723/",
+      "domain": "auto",
+      "concept_ids": [
+        "auto_loan_cost"
+      ],
+      "scenario_ids": [
+        "car"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-auto-warranty-729",
+      "title": "What is an extended warranty or vehicle service contract?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-an-extended-warranty-or-vehicle-service-contract-en-729/",
+      "domain": "auto",
+      "concept_ids": [
+        "auto_loan_cost"
+      ],
+      "scenario_ids": [
+        "car"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-auto-insurance-731",
+      "title": "What kind of auto insurance options are available when financing a car?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-kind-of-auto-insurance-options-are-available-when-financing-a-car-en-731/",
+      "domain": "auto",
+      "concept_ids": [
+        "auto_loan_cost"
+      ],
+      "scenario_ids": [
+        "car"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-auto-shopping-credit-763",
+      "title": "How will shopping for an auto loan affect my credit?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-will-shopping-for-an-auto-loan-affect-my-credit-en-763/",
+      "domain": "auto",
+      "concept_ids": [
+        "credit_report"
+      ],
+      "scenario_ids": [
+        "car"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-auto-rate-decided-765",
+      "title": "How does a lender decide what interest rate to offer me on an auto loan?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-does-a-lender-decide-what-interest-rate-to-offer-me-on-an-auto-loan-en-765/",
+      "domain": "auto",
+      "concept_ids": [
+        "credit_apr",
+        "credit_report"
+      ],
+      "scenario_ids": [
+        "car"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-auto-cant-pay-849",
+      "title": "What should I do if I can’t make my car payments?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-should-i-do-if-i-cant-make-my-car-payments-en-849/",
+      "domain": "auto",
+      "concept_ids": [
+        "auto_loan_cost"
+      ],
+      "scenario_ids": [
+        "car"
+      ],
+      "kind": "rights",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-pay-for-grad-545",
+      "title": "What are the different ways to pay for college or graduate school?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-are-the-different-ways-to-pay-for-college-or-graduate-school-en-545/",
+      "domain": "education",
+      "concept_ids": [
+        "student_loan_repayment"
+      ],
+      "scenario_ids": [
+        "grad-school"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-federal-vs-private-567",
+      "title": "What student loan option is best for me: federal student loans or private student loans?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/should-i-choose-federal-student-loans-or-private-student-loans-en-567/",
+      "domain": "education",
+      "concept_ids": [
+        "student_loan_repayment"
+      ],
+      "scenario_ids": [
+        "grad-school"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-how-much-borrow-579",
+      "title": "How much should I borrow in student loans?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-much-should-i-borrow-in-student-loans-en-579/",
+      "domain": "education",
+      "concept_ids": [
+        "student_loan_repayment"
+      ],
+      "scenario_ids": [
+        "grad-school"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-student-rates-571",
+      "title": "What are the interest rates on my student loans?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-are-the-interest-rates-on-my-student-loans-en-571/",
+      "domain": "education",
+      "concept_ids": [
+        "credit_apr",
+        "student_loan_repayment"
+      ],
+      "scenario_ids": [
+        "grad-school"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-in-school-interest-593",
+      "title": "How does interest accrue while I am in school?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-does-interest-accrue-while-i-am-in-school-en-593/",
+      "domain": "education",
+      "concept_ids": [
+        "compound_interest",
+        "student_loan_repayment"
+      ],
+      "scenario_ids": [
+        "grad-school"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-start-paying-585",
+      "title": "When and how do I start paying my student loans?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/when-and-how-do-i-start-paying-my-student-loans-en-585/",
+      "domain": "education",
+      "concept_ids": [
+        "student_loan_repayment"
+      ],
+      "scenario_ids": [
+        "grad-school"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-idr-1555",
+      "title": "What are income-driven repayment (IDR) plans, and how do I qualify?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-are-income-driven-repayment-idr-plans-and-how-do-i-qualify-en-1555/",
+      "domain": "education",
+      "concept_ids": [
+        "student_loan_repayment"
+      ],
+      "scenario_ids": [
+        "grad-school"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-refinance-student-561",
+      "title": "Should I consolidate or refinance my student loans?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/should-i-consolidate-refinance-student-loans-en-561/",
+      "domain": "education",
+      "concept_ids": [
+        "student_loan_repayment",
+        "debt_consolidation"
+      ],
+      "scenario_ids": [
+        "grad-school"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-student-credit-581",
+      "title": "Do student loans affect my credit score?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/do-student-loans-affect-my-credit-score-en-581/",
+      "domain": "education",
+      "concept_ids": [
+        "credit_report"
+      ],
+      "scenario_ids": [
+        "grad-school"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-student-job-loss-639",
+      "title": "What should I do if I can't afford my student loan payment?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/do-i-need-to-pay-my-student-loans-if-i-lose-my-job-en-639/",
+      "domain": "education",
+      "concept_ids": [
+        "student_loan_repayment",
+        "emergency_buffer"
+      ],
+      "scenario_ids": [
+        "grad-school",
+        "job-offer"
+      ],
+      "kind": "rights",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-repay-student-debt",
+      "title": "Find advice for your student loans",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/paying-for-college/repay-student-debt/",
+      "domain": "education",
+      "concept_ids": [
+        "student_loan_repayment"
+      ],
+      "scenario_ids": [
+        "grad-school"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-choose-student-loan",
+      "title": "Choosing a loan that's right for you",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/paying-for-college/choose-a-student-loan/",
+      "domain": "education",
+      "concept_ids": [
+        "student_loan_repayment"
+      ],
+      "scenario_ids": [
+        "grad-school"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "irs-withholding-estimator",
+      "title": "Tax Withholding Estimator",
+      "publisher": "Internal Revenue Service",
+      "url": "https://www.irs.gov/individuals/tax-withholding-estimator",
+      "domain": "income",
+      "concept_ids": [
+        "take_home_pay"
+      ],
+      "scenario_ids": [
+        "job-offer",
+        "grad-school"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-filing-taxes",
+      "title": "Guide to filing your taxes in 2026",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/consumer-tools/guide-to-filing-your-taxes/",
+      "domain": "income",
+      "concept_ids": [
+        "take_home_pay"
+      ],
+      "scenario_ids": [
+        "job-offer"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "irs-401k-overview",
+      "title": "401(k) Resource guide plan: Participants 401(k) plan overview",
+      "publisher": "Internal Revenue Service",
+      "url": "https://www.irs.gov/retirement-plans/plan-participant-employee/401k-resource-guide-plan-participants-401k-plan-overview",
+      "domain": "retirement",
+      "concept_ids": [
+        "retirement_savings"
+      ],
+      "scenario_ids": [
+        "job-offer"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "investor-401k",
+      "title": "Glossary: 401K-PLANS",
+      "publisher": "U.S. Securities and Exchange Commission — Investor.gov",
+      "url": "https://www.investor.gov/introduction-investing/investing-basics/glossary/401k-plans",
+      "domain": "retirement",
+      "concept_ids": [
+        "retirement_savings",
+        "compound_interest"
+      ],
+      "scenario_ids": [
+        "job-offer"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-retirement-on-track",
+      "title": "Three things to keep your retirement plan on track",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/about-us/blog/three-things-to-keep-your-retirement-plan-on-track/",
+      "domain": "retirement",
+      "concept_ids": [
+        "retirement_savings"
+      ],
+      "scenario_ids": [
+        "job-offer"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-payday-should-1583",
+      "title": "Should I get a payday loan if I need money now?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/should-i-get-a-payday-loan-if-i-need-money-now-en-1583/",
+      "domain": "debt",
+      "concept_ids": [
+        "high_cost_borrowing"
+      ],
+      "scenario_ids": [
+        "debt-vs-save",
+        "move-out"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-payday-apr-1625",
+      "title": "What is an annual percentage rate (APR) and why is it higher than the interest rate for my payday loan?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-an-annual-percentage-rate-apr-and-why-is-it-higher-than-the-interest-rate-for-my-payday-loan-en-1625/",
+      "domain": "interest",
+      "concept_ids": [
+        "high_cost_borrowing",
+        "credit_apr"
+      ],
+      "scenario_ids": [
+        "debt-vs-save"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-installment-loan-2114",
+      "title": "What is a personal installment loan?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-is-a-personal-installment-loan-en-2114/",
+      "domain": "debt",
+      "concept_ids": [
+        "high_cost_borrowing",
+        "debt_consolidation"
+      ],
+      "scenario_ids": [
+        "debt-vs-save",
+        "car"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-bnpl-2116",
+      "title": "What happens if I can’t pay back a Buy Now, Pay Later (BNPL) loan?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-happens-if-i-cant-pay-back-a-buy-now-pay-later-bnpl-loan-en-2116/",
+      "domain": "debt",
+      "concept_ids": [
+        "high_cost_borrowing"
+      ],
+      "scenario_ids": [
+        "debt-vs-save",
+        "move-out"
+      ],
+      "kind": "rights",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-collector-contact-1695",
+      "title": "What should I do when a debt collector contacts me?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-should-i-do-when-a-debt-collector-contacts-me-en-1695/",
+      "domain": "debt",
+      "concept_ids": [
+        "debt_collection"
+      ],
+      "scenario_ids": [
+        "debt-vs-save"
+      ],
+      "kind": "rights",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-collector-limits-329",
+      "title": "What laws limit what debt collectors can say or do?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/are-there-laws-that-limit-what-debt-collectors-can-say-or-do-en-329/",
+      "domain": "debt",
+      "concept_ids": [
+        "debt_collection"
+      ],
+      "scenario_ids": [
+        "debt-vs-save"
+      ],
+      "kind": "rights",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-scam-warning-signs-2094",
+      "title": "What are some classic warning signs of possible fraud and scams?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/what-are-some-classic-warning-signs-of-possible-fraud-and-scams-en-2094/",
+      "domain": "safety",
+      "concept_ids": [
+        "fraud_scams"
+      ],
+      "scenario_ids": [
+        "job-offer",
+        "car",
+        "grad-school",
+        "move-out",
+        "debt-vs-save"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    },
+    {
+      "source_id": "cfpb-student-scams-2100",
+      "title": "What are the signs of a student loan scam?",
+      "publisher": "Consumer Financial Protection Bureau",
+      "url": "https://www.consumerfinance.gov/ask-cfpb/how-do-i-avoid-student-loan-scams-en-2100/",
+      "domain": "safety",
+      "concept_ids": [
+        "fraud_scams",
+        "student_loan_repayment"
+      ],
+      "scenario_ids": [
+        "grad-school"
+      ],
+      "kind": "guidance",
+      "license_or_use_notes": "U.S. federal government work; retrieved, chunked and cited with attribution."
+    }
+  ]
+}

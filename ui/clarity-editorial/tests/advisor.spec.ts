@@ -1,5 +1,26 @@
 import { expect, test } from "@playwright/test";
 
+test("possible moments cycle in both directions with five cards and preserved selection", async ({ page }) => {
+  await page.goto("/advisor");
+  const cards = page.locator(".advisor-signal");
+  await expect(cards).toHaveCount(5);
+  await page.getByRole("button", { name: "Review a possible job change", exact: true }).click();
+  await page.getByRole("button", { name: "Previous possible moments", exact: true }).click();
+  await expect(cards).toHaveCount(5);
+  await expect(cards.first()).toContainText("A possible income increase");
+  await expect(page.locator(".advisor-confirmation")).toContainText("A possible job change");
+  await page.getByRole("button", { name: "Next possible moments", exact: true }).click();
+  await expect(cards.first()).toContainText("A possible job change");
+  for (let i = 0; i < 3; i++) await page.getByRole("button", { name: "Next possible moments", exact: true }).click();
+  await expect(cards).toHaveCount(5);
+  await page.getByRole("button", { name: "Review possible moving costs", exact: true }).click();
+  await expect(page.locator(".advisor-confirmation")).toContainText("City Movers");
+  await expect(page.locator(".advisor-plan-metrics")).toHaveCount(0);
+  await page.getByRole("button", { name: "Confirm this sample moment", exact: true }).click();
+  await expect(page.locator(".advisor-plan-metrics")).toContainText("$610");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+});
+
 test("confirm a synthetic advisor signal, inspect merged engine math and explicitly deny its proposal", async ({ page }) => {
   const pageErrors: string[] = [];
   const consoleErrors: string[] = [];
@@ -7,8 +28,6 @@ test("confirm a synthetic advisor signal, inspect merged engine math and explici
   page.on("console", (message) => { if (message.type() === "error") consoleErrors.push(message.text()); });
   await page.goto("/advisor");
   await expect(page.locator(".clarity-app")).toHaveAttribute("data-hydrated", "true");
-  await expect(page.locator(".advisor-source-note")).toContainText("2026-10-24");
-  await expect(page.locator(".advisor-source-note")).toContainText("No bank is connected");
   await expect(page.locator(".advisor-signal")).toHaveCount(5);
   const propose = page.getByRole("button", { name: "Review this savings proposal", exact: false });
   await expect(propose).toBeDisabled();

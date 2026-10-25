@@ -175,7 +175,10 @@ function answerTurn(scenario: Scenario, index: number, text: string, session: Se
     calls.push(askFollowUp(scenario, index + 1, nextSession));
     return { text: note, toolCalls: calls };
   }
-  calls.push(call("run_simulation"), call("show_playground"), call("show_table", { rows: RESULT_ROWS }), call("explain"));
+  calls.push(
+    call("run_simulation"), call("show_playground"), call("show_chart", { metric: "netWorth" }), call("show_breakdown"),
+    call("show_table", { rows: RESULT_ROWS }), call("explain"),
+  );
   return {
     text: `${note}Here's how the two paths compare. Drag the sliders on the card to test your own assumptions, or ask me a what-if.`,
     toolCalls: calls,

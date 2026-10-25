@@ -54,7 +54,7 @@ test("Maya's demo flow: question → 2 follow-ups → results → what-if", asyn
   assert.deepEqual(types(shown[1]), ["question"]);
   const q2 = shown[1][0] as Extract<Block, { type: "question" }>;
   assert.ok(q2.choices.includes("New York City, $95k grows faster (~12% a year)"), "choices use the option labels");
-  assert.deepEqual(types(shown[2]), ["playground", "table", "message"]);
+  assert.deepEqual(types(shown[2]), ["playground", "chart", "breakdown", "table", "message"]);
   assert.deepEqual(types(shown[3]), ["chart", "table", "message"]);
   assert.equal(session.values.cityA, "nyc");
   assert.equal(session.values.salaryB, 78_000);

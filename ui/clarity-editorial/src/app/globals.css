@@ -476,8 +476,18 @@ details[open] > summary > svg { transform: rotate(45deg); }
 .advisor-teaser .text-link { margin-top: 14px; }
 .advisor-teaser .caption { font-size: 9px; margin-top: 8px; }
 .advisor-view .view-header h1 { font-size: clamp(50px, 5.8vw, 88px); }
-.advisor-source-note { margin-bottom: 28px; }
 .advisor-signals { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 14px; margin: 28px 0; }
+.advisor-carousel { display: grid; grid-template-columns: 36px minmax(0, 1fr) 36px; gap: 12px; align-items: center; }
+.advisor-carousel .advisor-signals { min-width: 0; }
+.advisor-carousel__arrow { width: 36px; height: 48px; display: grid; place-items: center; border: 1px solid var(--line); background: var(--surface); color: var(--ink); }
+.advisor-carousel__arrow:hover { background: var(--accent); }
+.advisor-carousel__arrow:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+@media (max-width: 700px) {
+  .advisor-carousel { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .advisor-carousel .advisor-signals { grid-column: 1 / -1; grid-row: 2; margin: 4px 0 20px; }
+  .advisor-carousel__arrow { grid-row: 1; width: 48px; }
+  .advisor-carousel__arrow:last-child { justify-self: end; }
+}
 .advisor-signal { min-width: 0; display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 16px; padding: 24px 20px; border: 1px solid var(--line); background: var(--surface); box-shadow: var(--panel-shadow); }
 .advisor-signal:hover { background: #e9edde; }
 .advisor-signal.is-selected { border-color: var(--ink); background: var(--ink); color: var(--paper); }
@@ -568,6 +578,43 @@ details[open] > summary > svg { transform: rotate(45deg); }
 .decision-chat-turn.is-user { background: var(--ink); color: var(--paper); margin-left: 12%; }
 .decision-chat-turn.is-assistant { margin-right: 5%; }
 .decision-chat-turn p + p { margin-top: 12px; }
+.decision-chat-turn sup a { font-size: 10px; color: inherit; text-decoration: underline; margin-left: 2px; }
+.decision-chat-sources { margin: 16px 0 0; padding: 12px 0 0 18px; border-top: 1px solid var(--line); font-size: 11px; color: var(--muted); }
+.decision-chat-sources li + li { margin-top: 4px; }
+.decision-chat-sources a { color: inherit; text-decoration: underline; }
+.chart-hover line { stroke: var(--muted); stroke-width: 1; }
+.chart-hover rect { fill: var(--surface); stroke: var(--line); }
+.chart-hover text { font-size: 12px; fill: var(--ink); }
+.chart-hover .chart-tip-title { fill: var(--muted); font-size: 11px; }
+.decision-chart svg:focus-visible { outline: 2px solid var(--ink); outline-offset: 2px; }
+.decision-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 11px; color: var(--muted); margin-top: 8px; }
+.decision-legend span { display: inline-flex; align-items: center; }
+.decision-chart .decision-legend i { display: inline-block; width: 22px; margin-right: 7px; border-top: 3px solid var(--ink); }
+.decision-chart .decision-legend span + span i { border-top: 3px dashed var(--accent-ink); }
+.decision-breakdown { margin: 22px 0 0; }
+.decision-breakdown figcaption { display: flex; flex-direction: column; gap: 3px; font-size: 13px; margin-bottom: 10px; }
+.decision-breakdown figcaption span { font-size: 11px; color: var(--muted); }
+.breakdown-rows { display: flex; flex-direction: column; margin-top: 12px; }
+.breakdown-row { display: grid; grid-template-columns: minmax(96px, 28%) 1fr; grid-template-rows: auto auto; column-gap: 14px; row-gap: 4px; padding: 8px 4px; border-top: 1px solid var(--line); }
+.breakdown-row:hover { background: color-mix(in srgb, var(--accent) 18%, transparent); }
+.breakdown-row.is-leftover { border-top: 1px solid var(--ink); }
+.breakdown-label { grid-row: span 2; align-self: center; font-size: 12px; line-height: 1.35; }
+.breakdown-row.is-leftover .breakdown-label, .breakdown-row.is-income .breakdown-label { font-weight: 600; }
+.breakdown-line { display: grid; grid-template-columns: 1fr 86px; align-items: center; gap: 10px; }
+.breakdown-track { position: relative; height: 12px; }
+.breakdown-zero { position: absolute; top: -3px; bottom: -3px; width: 1px; background: var(--muted); }
+.breakdown-bar { position: absolute; top: 0; bottom: 0; border-radius: 0 3px 3px 0; min-width: 1px; }
+.breakdown-bar.is-negative { border-radius: 3px 0 0 3px; }
+.breakdown-bar.is-a, .breakdown-swatch.is-a { background: var(--ink); }
+.breakdown-bar.is-b, .breakdown-swatch.is-b { background: repeating-linear-gradient(135deg, var(--accent-ink) 0 4px, color-mix(in srgb, var(--accent-ink) 55%, var(--surface)) 4px 6px); }
+.breakdown-swatch { display: inline-block; width: 14px; height: 10px; margin-right: 6px; vertical-align: -1px; }
+.breakdown-value { font-size: 12px; text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.decision-chart-heading { font-size: 13px; font-weight: 600; margin: 0 0 6px; }
+@media (max-width: 600px) {
+  .breakdown-row { grid-template-columns: 1fr; }
+  .breakdown-label { grid-row: auto; }
+  .breakdown-line { grid-template-columns: 1fr 66px; }
+}
 .decision-block { border-top: 1px solid var(--line); padding-top: 20px; margin-top: 20px; }
 .decision-block .panel { padding: 22px; }
 .decision-question-choices { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
@@ -926,10 +973,6 @@ details[open] > summary > svg { transform: rotate(45deg); }
   .decisions-view .view-header h1, .purchase-view .view-header h1, .tool-view .view-header h1, .calculators-view .view-header h1, .evidence-view .view-header h1 { font-size: 12vw; }
   .experience-navigation { gap: 8px; padding-top: 13px; }
   .experience-navigation a { font-size: 9px; gap: 13px; padding-inline: 11px; min-height: 40px; }
-  .decision-scenarios { grid-template-columns: 1fr; gap: 11px; }
-  .decision-scenario { padding: 23px; }
-  .decision-scenario strong { font-size: 24px; }
-  .decision-scenario small, .decision-scenario p { font-size: 11px; }
   .decision-field-groups { grid-template-columns: 1fr; gap: 27px; }
   .decision-summary { grid-template-columns: 1fr; gap: 16px; }
   .decision-summary-card { padding: 23px; }

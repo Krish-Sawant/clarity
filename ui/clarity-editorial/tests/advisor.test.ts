@@ -1,12 +1,39 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { detect, plan } from "../../../frontend/src/lib/advisor/engine";
+import { detect, detectAdditionalMoments, plan } from "../../../frontend/src/lib/advisor/engine";
 import mergedDemo from "../../../frontend/src/lib/advisor/demo.json";
-import { advisorDemo, createAdvisorPlan, detectAdvisorSignals, getAdvisorSignals, type AdvisorMoment, type AdvisorPlanInputs } from "../src/api/advisor";
+import { advisorDemo, createAdvisorPlan, detectAdvisorSignals, getAdvisorSignals, getAdvisorCarouselSignals, type AdvisorMoment, type AdvisorPlanInputs } from "../src/api/advisor";
 import { advisorAdapter, backendService, branchIntegrationStatus } from "../src/api/services";
 
 const planInputs = { income: 4800, expenses: 3580, cash: 5100, annualRate: 4 };
 const cloneDemo = () => structuredClone(advisorDemo);
+
+test("carousel keeps the original five and adds grounded, plannable moments", () => {
+  const signals = getAdvisorCarouselSignals();
+  assert.equal(signals.length, 8);
+  assert.deepEqual(signals.slice(0, 5), getAdvisorSignals());
+  assert.equal(new Set(signals.map((signal) => signal.id)).size, 8);
+  assert.deepEqual(signals.slice(5).map(({ kind, amount }) => ({ kind, amount })), [
+    { kind: "higher-housing", amount: 1200 }, { kind: "moving-costs", amount: 700 }, { kind: "income-increase", amount: 1200 },
+  ]);
+  for (const signal of signals.slice(5)) {
+    const result = createAdvisorPlan(signal.kind, planInputs);
+    assert.ok(result.explanation.length > 0);
+    assert.equal(result.monthly, 610);
+  }
+});
+
+test("additional moments ignore future activity, inflow moving categories, and missing baselines", () => {
+  assert.deepEqual(detectAdditionalMoments([], advisorDemo.asOf), []);
+  const recentOnly = advisorDemo.transactions.filter((t) => t.date.startsWith("2026-10") && t.category !== "moving");
+  assert.deepEqual(detectAdditionalMoments([...recentOnly,
+    { id: "future", date: "2026-11-01", amount: -900, merchant: "Future Movers", category: "moving" },
+    { id: "refund", date: "2026-10-01", amount: 50, merchant: "Refund", category: "moving" },
+  ], advisorDemo.asOf), []);
+  const before = structuredClone(advisorDemo.transactions);
+  assert.deepEqual(detectAdditionalMoments([...before].reverse(), advisorDemo.asOf), detectAdditionalMoments(before, advisorDemo.asOf));
+  assert.deepEqual(advisorDemo.transactions, before);
+});
 
 test("advisor adapter uses the actual merged fixture and engine for all five sample moments", () => {
   assert.deepEqual(advisorDemo, mergedDemo);

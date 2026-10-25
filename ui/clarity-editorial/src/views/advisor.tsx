@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useState } from "react";
-import { advisorDemo, createAdvisorPlan, getAdvisorSignals, type AdvisorMoment } from "../api/advisor";
+import { advisorDemo, createAdvisorPlan, getAdvisorCarouselSignals, type AdvisorMoment } from "../api/advisor";
 import { Icon } from "../components/icon";
 import { currency } from "../lib/finance";
 import { useDemo } from "../state/demo-store";
@@ -18,10 +18,12 @@ const controls: { key: InputKey; label: string; hint: string; max: number }[] = 
 const momentLabels: Record<AdvisorMoment, string> = {
   "new-job": "A possible job change", moving: "A possible move", overspending: "A spending change",
   "student-loan": "A possible loan payment", "idle-cash": "A growing cash cushion",
+  "higher-housing": "A higher housing payment", "moving-costs": "Possible moving costs", "income-increase": "A possible income increase",
 };
 const amountLabels: Record<AdvisorMoment, string> = {
   "new-job": "Sample payroll deposit", moving: "Housing outflow", overspending: "Spending above baseline",
   "student-loan": "Loan outflow", "idle-cash": "Latest sample balance",
+  "higher-housing": "Increase over last payment", "moving-costs": "Moving-category outflows", "income-increase": "Increase over last deposit",
 };
 
 function targetDate() {
@@ -37,7 +39,13 @@ export function AdvisorView() {
   const [confirmed, setConfirmed] = useState(false);
   const [dismissed, setDismissed] = useState<string[]>([]);
   const [drafts, setDrafts] = useState(defaults);
-  const signals = getAdvisorSignals();
+  const [startIndex, setStartIndex] = useState(0);
+  const signals = getAdvisorCarouselSignals();
+  const visibleSignals = Array.from({ length: Math.min(5, signals.length) }, (_, offset) => {
+    const index = (startIndex + offset) % signals.length;
+    return { signal: signals[index], index };
+  });
+  function cycle(direction: number) { setStartIndex((index) => (index + direction + signals.length) % signals.length); }
   const selected = signals.find((signal) => signal.id === selectedId);
   const errors: Partial<Record<InputKey, string>> = {};
   for (const control of controls) {
@@ -81,21 +89,24 @@ export function AdvisorView() {
       <div className="view-header__aside"><span className="tag">LOCAL RULES / SYNTHETIC ACTIVITY</span><p>A signal starts a conversation. You decide whether it fits before any planning begins.</p></div>
     </header>
 
-    <div className="inline-notice advisor-source-note"><Icon name="sparkles" size={18} /><div><strong>{advisorDemo.label} · as of {advisorDemo.asOf}</strong><p>Five transparent rules read this fixed sample history locally. No bank is connected, no account is monitored, and no notification is delivered.</p></div></div>
-
     <section aria-labelledby="advisor-signals-heading">
       <div className="section-heading"><div><p className="eyebrow">PATTERNS WORTH A QUESTION</p><h2 id="advisor-signals-heading">Possible moments.<br />Never assumptions about you.</h2></div><span className="tag">{signals.length} SAMPLE SIGNALS</span></div>
       <p className="section-description">These possibilities come from the supplied history, not verified life events. Sparse records, bonuses, irregular expenses, and merchant name changes can mislead a detector.</p>
-      <div className="advisor-signals">{signals.map((signal, index) => {
+      <div className="advisor-carousel" role="region" aria-roledescription="carousel" aria-label="Possible financial moments">
+      <button type="button" className="advisor-carousel__arrow" aria-label="Previous possible moments" aria-controls="advisor-moment-cards" onClick={() => cycle(-1)}><Icon name="arrow-left" size={22} /></button>
+      <div className="advisor-signals" id="advisor-moment-cards">{visibleSignals.map(({ signal, index }) => {
         const isDismissed = dismissed.includes(signal.id);
         return <button key={signal.id} type="button" className={`advisor-signal ${selectedId === signal.id ? "is-selected" : ""} ${isDismissed ? "is-dismissed" : ""}`} aria-label={`Review ${momentLabels[signal.kind].toLowerCase()}`} aria-pressed={selectedId === signal.id} disabled={isDismissed} onClick={() => choose(signal.id)}>
-          <span className="advisor-signal__number"><span className="eyebrow">0{index + 1} / POSSIBLE MOMENT</span><Icon name={isDismissed ? "close" : "arrow-up-right"} size={17} /></span>
+          <span className="advisor-signal__number"><span className="eyebrow">{String(index + 1).padStart(2, "0")} / POSSIBLE MOMENT</span><Icon name={isDismissed ? "close" : "arrow-up-right"} size={17} /></span>
           <strong>{momentLabels[signal.kind]}</strong><span>{signal.title}</span>
           <span className="advisor-signal__evidence">{signal.evidence}</span>
           <span className="advisor-signal__amount"><small>{amountLabels[signal.kind]}</small><strong>{currency(signal.amount)}</strong></span>
           <span className="tag">{isDismissed ? "DOES NOT FIT / THIS VISIT" : selectedId === signal.id ? "SELECTED FOR REVIEW" : "REVIEW THE SIGNAL"}</span>
         </button>;
       })}</div>
+      <button type="button" className="advisor-carousel__arrow" aria-label="Next possible moments" aria-controls="advisor-moment-cards" onClick={() => cycle(1)}><Icon name="arrow-right" size={22} /></button>
+      </div>
+      <p className="sr-only" role="status">Showing moments {visibleSignals.map(({ index }) => index + 1).join(", ")} of {signals.length}.</p>
       {dismissed.length > 0 && <button className="button button--ghost" type="button" onClick={() => setDismissed([])}>Restore dismissed sample signals <Icon name="refresh" size={15} /></button>}
     </section>
 
@@ -121,7 +132,7 @@ export function AdvisorView() {
       </section>
     </div>
 
-    <details className="panel assumptions advisor-assumptions"><summary>The rules behind this illustration <Icon name="plus" size={18} /></summary><div><ul><li>Monthly surplus = max(0, take-home income − monthly expenses).</li><li>Cushion gap = max(0, expenses × 3 − accessible cash). Three months is an illustrative heuristic, not an individualized emergency-fund target.</li><li>Monthly saving = half the smaller of surplus and a positive cushion gap. If the gap is zero, use half of surplus. Round to whole dollars.</li><li>Simple annual interest = cash × annual rate ÷ 100, rounded to whole dollars. Cash and rate stay constant; compounding, taxes, fees, and withdrawals are excluded.</li><li>All five moments use the same arithmetic with different educational explanations. The engine does not optimize retirement contributions, rank debt versus investing, or execute transfers.</li><li>Spending compares the current month to the three latest earlier active spending months. The cash signal uses four distinct monthly snapshots, which need not be consecutive.</li><li>“New” means first observed in this limited sample. Balance snapshots are supplied separately and are not reconstructed from transactions.</li></ul><p>The detector and planner run from the merged project module. Live authenticated activity, monitoring, and notification delivery have not been connected.</p></div></details>
+    <details className="panel assumptions advisor-assumptions"><summary>The rules behind this illustration <Icon name="plus" size={18} /></summary><div><ul><li>Monthly surplus = max(0, take-home income − monthly expenses).</li><li>Cushion gap = max(0, expenses × 3 − accessible cash). Three months is an illustrative heuristic, not an individualized emergency-fund target.</li><li>Monthly saving = half the smaller of surplus and a positive cushion gap. If the gap is zero, use half of surplus. Round to whole dollars.</li><li>Simple annual interest = cash × annual rate ÷ 100, rounded to whole dollars. Cash and rate stay constant; compounding, taxes, fees, and withdrawals are excluded.</li><li>All eight moments use the same arithmetic with different educational explanations. The engine does not optimize retirement contributions, rank debt versus investing, or execute transfers.</li><li>Spending compares the current month to the three latest earlier active spending months. The cash signal uses four distinct monthly snapshots, which need not be consecutive.</li><li>Housing and income increases compare individual payments with the last earlier-month payment in that category, not normalized monthly totals. Moving costs sum the current month’s moving-category outflows. Related prompts may overlap; do not add their amounts together.</li><li>“New” means first observed in this limited sample. Balance snapshots are supplied separately and are not reconstructed from transactions.</li></ul><p>The detector and planner run from the merged project module. Live authenticated activity, monitoring, and notification delivery have not been connected.</p></div></details>
 
     <details className="panel assumptions advisor-source-data"><summary>Inspect the synthetic activity <Icon name="plus" size={18} /></summary><div><p>Fixed sample as of {advisorDemo.asOf}. Positive transaction amounts are inflows; negative amounts are outflows. Signal amounts describe observed activity and are not proposed transfers.</p><div className="table-scroll"><table className="comparison-table"><caption>Sample transactions supplied to the merged detector</caption><thead><tr><th scope="col">Date</th><th scope="col">Merchant</th><th scope="col">Category</th><th scope="col">Amount</th></tr></thead><tbody>{advisorDemo.transactions.map((transaction) => <tr key={transaction.id}><td>{transaction.date}</td><td>{transaction.merchant}</td><td>{transaction.category.replaceAll("_", " ")}</td><td>{currency(transaction.amount)}</td></tr>)}</tbody></table></div><div className="table-scroll"><table className="comparison-table"><caption>Separately supplied sample cash snapshots</caption><thead><tr><th scope="col">Date</th><th scope="col">Cash balance</th></tr></thead><tbody>{advisorDemo.snapshots.map((snapshot) => <tr key={snapshot.date}><td>{snapshot.date}</td><td>{currency(snapshot.balance)}</td></tr>)}</tbody></table></div></div></details>
   </div>;

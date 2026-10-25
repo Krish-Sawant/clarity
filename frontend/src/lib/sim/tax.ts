@@ -21,7 +21,7 @@ const FEDERAL: Bracket[] = [
 ];
 const SOCIAL_SECURITY_WAGE_BASE = 184_500;
 
-function federalTax(gross: number): number {
+export function federalTax(gross: number): number {
   const income = progressive(Math.max(0, gross - FEDERAL_STANDARD_DEDUCTION), FEDERAL);
   const socialSecurity = Math.min(gross, SOCIAL_SECURITY_WAGE_BASE) * 0.062;
   const medicare = gross * 0.0145 + Math.max(0, gross - 200_000) * 0.009;

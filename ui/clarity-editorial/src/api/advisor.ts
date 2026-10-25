@@ -3,14 +3,14 @@
  * and detection algorithms remain owned by frontend/src/lib/advisor/engine.ts.
  * This adapter adds runtime validation and uses synthetic activity, not a bank.
  */
-import { detect, plan, type Snapshot, type Transaction } from "../../../../frontend/src/lib/advisor/engine";
+import { detect, detectAdditionalMoments, plan, type Snapshot, type Transaction } from "../../../../frontend/src/lib/advisor/engine";
 import mergedDemo from "../../../../frontend/src/lib/advisor/demo.json";
 import type { AdvisorMoment, AdvisorPlan, AdvisorPlanInputs, AdvisorSignal } from "./contracts";
 
 export type { AdvisorMoment, AdvisorPlan, AdvisorPlanInputs } from "./contracts";
 export type AdvisorDataset = { label: string; asOf: string; transactions: Transaction[]; snapshots: Snapshot[] };
 
-const moments: AdvisorMoment[] = ["new-job", "moving", "overspending", "student-loan", "idle-cash"];
+const moments: AdvisorMoment[] = ["new-job", "moving", "overspending", "student-loan", "idle-cash", "higher-housing", "moving-costs", "income-increase"];
 const maxAmount = 1_000_000_000;
 
 function record(value: unknown): value is Record<string, unknown> {
@@ -64,6 +64,11 @@ export function detectAdvisorSignals(input: unknown): AdvisorSignal[] {
 }
 
 export function getAdvisorSignals(): AdvisorSignal[] { return detectAdvisorSignals(advisorDemo); }
+
+/** Keep the original five first; additional prompts use the same inspectable data. */
+export function getAdvisorCarouselSignals(): AdvisorSignal[] {
+  return [...getAdvisorSignals(), ...detectAdditionalMoments(advisorDemo.transactions, advisorDemo.asOf)];
+}
 
 export function createAdvisorPlan(kind: AdvisorMoment, inputs: AdvisorPlanInputs): AdvisorPlan {
   if (typeof kind !== "string" || !moments.includes(kind)) throw new Error("Choose a supported advisor moment before planning.");

@@ -1,5 +1,11 @@
 # Proactive Advisor
 
+## Credit card readiness
+
+See [Credit Card Readiness](CREDIT_CARDS.md) for transaction-based reward
+comparisons, repayment checks, paycheck nudges, and the `/credit-cards` demo.
+The profiles are illustrative; live issuer recommendations and AI/RAG are not connected.
+
 ## Purchase Impact Preview
 
 See [Purchase Impact Preview](PURCHASE_IMPACT.md) for the large-purchase detector,

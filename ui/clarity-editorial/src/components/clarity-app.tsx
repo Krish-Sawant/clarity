@@ -15,6 +15,10 @@ import { AdvisorView } from "../views/advisor";
 import { DecisionsView } from "../views/decisions";
 import { CalculatorsView } from "../views/calculators";
 import { PurchaseImpactView } from "../views/purchase-impact";
+import { LoanComfortView } from "../views/loan-comfort";
+import { CardReadinessView } from "../views/card-readiness";
+import { StressTestView } from "../views/stress-test";
+import { PlanCheckinsView } from "../views/plan-checkins";
 import { EvidenceView } from "../views/evidence";
 import { DesignControls } from "./design-controls";
 import { Icon } from "./icon";
@@ -39,7 +43,7 @@ export function ClarityApp({ section, evidence }: { section: Section; evidence?:
   const [menuOpen, setMenuOpen] = useState(false);
   const [designOpen, setDesignOpen] = useState(false);
   const design = useDesign();
-  const activeSection = section === "decisions" || section === "calculators" ? "future-lab" : section === "purchase-impact" ? "advisor" : section === "evidence" ? "approach" : section;
+  const activeSection = ["decisions", "calculators", "stress-test", "plan-checkins"].includes(section) ? "future-lab" : ["purchase-impact", "loan-comfort", "card-readiness"].includes(section) ? "advisor" : section === "evidence" ? "approach" : section;
   const { state, hydrated, storageAvailable } = useDemo();
   const menuButton = useRef<HTMLButtonElement>(null);
   const style = { "--radius": `${design.radius}px`, "--panel-shadow": design.elevation === "lifted" ? "0 9px 22px #13161114" : design.elevation === "soft" ? "0 3px 10px #1316110b" : "none" } as CSSProperties;
@@ -58,8 +62,8 @@ export function ClarityApp({ section, evidence }: { section: Section; evidence?:
     <div className="experience-mode"><span><span className="tiny-dot" /> {state.sampleJourney ? "SYNTHETIC SAMPLE JOURNEY" : "YOUR LOCAL EXPLORATION"}</span><Link href="/approach#connections-title">Sample data. Transparent methods.<Icon name="arrow-up-right" size={12} /></Link></div>
     {!storageAvailable && <p className="storage-notice" role="status">Browser storage is unavailable. Your demo works for this visit; progress may be lost on refresh.</p>}
     <main id="main-content" className="main-content" tabIndex={-1}>
-      {["future-lab", "decisions", "calculators"].includes(section) && <ExperienceNavigation group="lab" active={section} />}
-      {["advisor", "purchase-impact"].includes(section) && <ExperienceNavigation group="advisor" active={section} />}
+      {["future-lab", "decisions", "calculators", "stress-test", "plan-checkins"].includes(section) && <ExperienceNavigation group="lab" active={section} />}
+      {["advisor", "purchase-impact", "loan-comfort", "card-readiness"].includes(section) && <ExperienceNavigation group="advisor" active={section} />}
       {["approach", "evidence"].includes(section) && <ExperienceNavigation group="trust" active={section} />}
       {section === "overview" && <OverviewView />}
       {section === "discover" && <AssessmentView stage="baseline" />}
@@ -70,6 +74,10 @@ export function ClarityApp({ section, evidence }: { section: Section; evidence?:
       {section === "decisions" && <DecisionsView />}
       {section === "calculators" && <CalculatorsView />}
       {section === "purchase-impact" && <PurchaseImpactView />}
+      {section === "loan-comfort" && <LoanComfortView />}
+      {section === "card-readiness" && <CardReadinessView />}
+      {section === "stress-test" && <StressTestView />}
+      {section === "plan-checkins" && <PlanCheckinsView />}
       {section === "evidence" && evidence && <EvidenceView pilot={evidence} />}
       {section === "approach" && <ApproachView />}
     </main>

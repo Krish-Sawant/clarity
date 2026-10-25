@@ -545,13 +545,18 @@ details[open] > summary > svg { transform: rotate(45deg); }
 .experience-navigation a { display: inline-flex; align-items: center; justify-content: space-between; gap: 24px; min-height: 40px; padding: 10px 15px; border: 1px solid var(--line); font-size: 10px; background: var(--surface); }
 .experience-navigation a[aria-current="page"] { border-color: var(--ink); background: var(--accent); }
 .experience-navigation a:hover { border-color: var(--ink); }
-.decisions-view .view-header h1, .purchase-view .view-header h1, .calculators-view .view-header h1, .evidence-view .view-header h1 { font-size: clamp(48px, 5.7vw, 84px); }
-.decision-workspace, .calculator-layout, .purchase-layout { display: grid; grid-template-columns: minmax(290px,.8fr) minmax(0,1.3fr); gap: 26px; align-items: start; margin-top: 28px; }
-.decision-workspace > *, .calculator-layout > *, .purchase-layout > *, .decision-block { min-width: 0; }
-.decision-controls, .calculator-controls, .purchase-controls { display: flex; flex-direction: column; gap: 24px; }
-.decision-controls h2, .calculator-controls h2, .purchase-controls h2 { font-size: 29px; }
-.decision-controls .section-heading, .purchase-controls .section-heading { margin-bottom: 0; align-items: flex-start; flex-wrap: wrap; gap: 15px; }
-.decision-controls p, .calculator-controls p, .purchase-controls p { font-size: 11px; color: var(--muted); }
+.decisions-view .view-header h1, .purchase-view .view-header h1, .tool-view .view-header h1, .calculators-view .view-header h1, .evidence-view .view-header h1 { font-size: clamp(48px, 5.7vw, 84px); }
+.decision-scenarios { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 13px; margin: 26px 0; }
+.decision-scenario { min-width: 0; padding: 22px 18px; text-align: left; border: 1px solid var(--line); background: var(--surface); display: flex; flex-direction: column; gap: 15px; line-height: 1.5; }
+.decision-scenario strong { font-size: 19px; font-weight: 500; line-height: 1.2; letter-spacing: -.035em; }
+.decision-scenario p, .decision-scenario small { font-size: 10px; color: var(--muted); }
+.decision-scenario.is-selected { background: var(--accent); border-color: var(--ink); }
+.decision-workspace, .calculator-layout, .purchase-layout, .tool-layout { display: grid; grid-template-columns: minmax(290px,.8fr) minmax(0,1.3fr); gap: 26px; align-items: start; margin-top: 28px; }
+.decision-workspace > *, .calculator-layout > *, .purchase-layout > *, .tool-layout > *, .decision-block { min-width: 0; }
+.decision-controls, .calculator-controls, .purchase-controls, .tool-controls { display: flex; flex-direction: column; gap: 24px; }
+.decision-controls h2, .calculator-controls h2, .purchase-controls h2, .tool-controls h2 { font-size: 29px; }
+.decision-controls .section-heading, .purchase-controls .section-heading, .tool-controls .section-heading { margin-bottom: 0; align-items: flex-start; flex-wrap: wrap; gap: 15px; }
+.decision-controls p, .calculator-controls p, .purchase-controls p, .tool-controls p { font-size: 11px; color: var(--muted); }
 .decision-field-groups { display: grid; gap: 28px; }
 .decision-field-group { display: flex; flex-direction: column; gap: 18px; padding-top: 23px; border-top: 1px solid var(--line); }
 .decision-field-group legend { padding: 0 0 12px; font-size: 12px; font-weight: 500; }
@@ -632,31 +637,39 @@ details[open] > summary > svg { transform: rotate(45deg); }
 .calculator-comparison strong { font-weight: 500; }
 .calculator-assumptions, .calculator-timeline, .calculator-schedule { margin-top: 25px; }
 .calculator-summary { font-size: 12px; line-height: 1.7; color: var(--muted); margin-top: 20px; }
-.purchase-signal { display: flex; justify-content: space-between; align-items: center; gap: 40px; margin: 25px 0; background: #ecefe2; }
-.purchase-signal h2 { font-size: 32px; margin: 20px 0 15px; }
-.purchase-signal p:not(.eyebrow) { font-size: 12px; color: var(--muted); margin-top: 10px; }
-.purchase-signal > div { max-width: 740px; }
-.purchase-signal .button { flex-shrink: 0; }
-.purchase-confirmation { margin-bottom: 26px; background: #e9edde; }
-.purchase-confirmation h2 { font-size: 32px; margin: 17px 0; }
-.purchase-confirmation > p:not(.eyebrow) { font-size: 12px; color: var(--muted); line-height: 1.7; }
-.purchase-confirmation .button { margin-top: 8px; }
-.purchase-results h2 { font-size: 31px; }
-.purchase-results .section-heading { align-items: flex-start; flex-wrap: wrap; gap: 17px; }
-.purchase-result-message { border-top: 1px solid var(--line); padding-top: 24px; margin-top: 25px; }
-.purchase-result-message h3 { font-size: 25px; margin: 16px 0; line-height: 1.25; }
-.purchase-result-message > p:last-child { color: var(--muted); font-size: 12px; }
-.purchase-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin: 26px 0; }
-.purchase-metrics > div { min-width: 0; border-top: 1px solid var(--line); padding-top: 18px; }
-.purchase-metrics .eyebrow { font-size: 8px; }
-.purchase-metrics strong { display: block; font-size: 29px; letter-spacing: -.04em; font-weight: 400; line-height: 1.15; margin-top: 12px; }
-.purchase-chart { margin: 30px -8px 20px; }
-.purchase-chart svg { width: 100%; display: block; }
-.purchase-chart figcaption { margin: 10px 8px 0; font-size: 10px; line-height: 1.6; color: var(--muted); }
-.purchase-chart-key { display: flex; flex-wrap: wrap; gap: 15px; font-size: 9px; line-height: 1.5; margin-bottom: 25px; }
-.purchase-results .assumptions { border-top: 1px solid var(--line); padding: 23px 0; }
+.purchase-signal, .tool-signal { display: flex; justify-content: space-between; align-items: center; gap: 40px; margin: 25px 0; background: #ecefe2; }
+.purchase-signal h2, .tool-signal h2 { font-size: 32px; margin: 20px 0 15px; }
+.purchase-signal p:not(.eyebrow), .tool-signal p:not(.eyebrow) { font-size: 12px; color: var(--muted); margin-top: 10px; }
+.purchase-signal > div, .tool-signal > div { max-width: 740px; }
+.purchase-signal .button, .tool-signal .button { flex-shrink: 0; }
+.purchase-confirmation, .tool-confirmation { margin-bottom: 26px; background: #e9edde; }
+.purchase-confirmation h2, .tool-confirmation h2 { font-size: 32px; margin: 17px 0; }
+.purchase-confirmation > p:not(.eyebrow), .tool-confirmation > p:not(.eyebrow) { font-size: 12px; color: var(--muted); line-height: 1.7; }
+.purchase-confirmation .button, .tool-confirmation .button { margin-top: 8px; }
+.purchase-results h2, .tool-results h2 { font-size: 31px; }
+.purchase-results .section-heading, .tool-results .section-heading { align-items: flex-start; flex-wrap: wrap; gap: 17px; }
+.purchase-result-message, .tool-message { border-top: 1px solid var(--line); padding-top: 24px; margin-top: 25px; }
+.purchase-result-message h3, .tool-message h3 { font-size: 25px; margin: 16px 0; line-height: 1.25; }
+.purchase-result-message > p:last-child, .tool-message > p:last-child { color: var(--muted); font-size: 12px; }
+.purchase-metrics, .tool-metrics { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin: 26px 0; }
+.purchase-metrics > div, .tool-metrics > div { min-width: 0; border-top: 1px solid var(--line); padding-top: 18px; }
+.purchase-metrics .eyebrow, .tool-metrics .eyebrow { font-size: 8px; }
+.purchase-metrics strong, .tool-metrics strong { display: block; font-size: 29px; letter-spacing: -.04em; font-weight: 400; line-height: 1.15; margin-top: 12px; }
+.purchase-chart, .tool-chart { margin: 30px -8px 20px; }
+.purchase-chart svg, .tool-chart svg { width: 100%; display: block; }
+.purchase-chart figcaption, .tool-chart figcaption { margin: 10px 8px 0; font-size: 10px; line-height: 1.6; color: var(--muted); }
+.purchase-chart-key, .tool-chart-key { display: flex; flex-wrap: wrap; gap: 15px; font-size: 9px; line-height: 1.5; margin-bottom: 25px; }
+.purchase-results .assumptions, .tool-results .assumptions { border-top: 1px solid var(--line); padding: 23px 0; }
 .purchase-shortfall { display: block; margin: 25px 0; }
 .purchase-table-controls { margin-top: 15px; }
+.tool-choices { display: flex; flex-wrap: wrap; gap: 10px; margin: 25px 0 5px; }
+.tool-choices .button { font-size: 11px; padding: 12px 16px; }
+.tool-choices .button[aria-pressed="true"] { background: var(--accent); border-color: var(--ink); }
+.tool-results ul, .tool-controls ul { padding-left: 18px; font-size: 12px; line-height: 1.7; }
+.tool-results li + li, .tool-controls li + li { margin-top: 8px; }
+.tool-results h3 { font-size: 22px; margin-top: 26px; }
+.tool-results > p, .tool-results .caption { font-size: 12px; line-height: 1.7; }
+.tool-results .decision-summary-card ul { font-size: 11px; color: var(--muted); }
 .evidence-section { padding: 40px 0 0; }
 .evidence-conditions { display: grid; grid-template-columns: 1fr 1fr; gap: 26px; }
 .evidence-condition { padding: 32px; }
@@ -944,19 +957,20 @@ details[open] > summary > svg { transform: rotate(45deg); }
 }
 
 @media (max-width: 1100px) {
-  .decision-workspace, .calculator-layout, .purchase-layout { grid-template-columns: minmax(280px,.9fr) minmax(0,1.1fr); gap: 22px; }
-  .purchase-signal { align-items: flex-start; flex-direction: column; gap: 25px; }
+  .decision-scenarios { grid-template-columns: repeat(3,minmax(0,1fr)); }
+  .decision-workspace, .calculator-layout, .purchase-layout, .tool-layout { grid-template-columns: minmax(280px,.9fr) minmax(0,1.1fr); gap: 22px; }
+  .purchase-signal, .tool-signal { align-items: flex-start; flex-direction: column; gap: 25px; }
   .calculator-metrics strong, .calculator-metrics dd { font-size: 29px; }
 }
 @media (max-width: 900px) {
-  .decision-workspace, .calculator-layout, .purchase-layout { grid-template-columns: 1fr; }
+  .decision-workspace, .calculator-layout, .purchase-layout, .tool-layout { grid-template-columns: 1fr; }
   .decision-field-groups { grid-template-columns: 1fr 1fr; gap: 30px; }
   .decision-results .section-heading { flex-wrap: wrap; }
   .evidence-ratings { gap: 26px; }
   .evidence-rating-row { gap: 9px; }
 }
 @media (max-width: 700px) {
-  .decisions-view .view-header h1, .purchase-view .view-header h1, .calculators-view .view-header h1, .evidence-view .view-header h1 { font-size: 12vw; }
+  .decisions-view .view-header h1, .purchase-view .view-header h1, .tool-view .view-header h1, .calculators-view .view-header h1, .evidence-view .view-header h1 { font-size: 12vw; }
   .experience-navigation { gap: 8px; padding-top: 13px; }
   .experience-navigation a { font-size: 9px; gap: 13px; padding-inline: 11px; min-height: 40px; }
   .decision-field-groups { grid-template-columns: 1fr; gap: 27px; }
@@ -971,17 +985,17 @@ details[open] > summary > svg { transform: rotate(45deg); }
   .decision-chat-turn.is-assistant { margin-right: 0; }
   .decision-question-choices { flex-direction: column; align-items: stretch; }
   .decision-block .panel { padding: 17px; }
-  .calculator-metrics, .purchase-metrics { gap: 23px 16px; }
+  .calculator-metrics, .purchase-metrics, .tool-metrics { gap: 23px 16px; }
   .calculator-metrics strong, .calculator-metrics dd { font-size: 29px; }
   .calculator-comparison { padding: 23px; }
   .calculator-tabs button { font-size: 11px; padding-inline: 18px; }
-  .purchase-signal h2 { font-size: 31px; }
-  .purchase-signal .button { width: 100%; font-size: 11px; padding-inline: 15px; }
-  .purchase-confirmation h2 { font-size: 29px; }
-  .purchase-confirmation .button { width: 100%; font-size: 11px; }
-  .purchase-results h2 { font-size: 30px; }
-  .purchase-metrics strong { font-size: 26px; }
-  .purchase-chart-key { gap: 10px; font-size: 8px; }
+  .purchase-signal h2, .tool-signal h2 { font-size: 31px; }
+  .purchase-signal .button, .tool-signal .button { width: 100%; font-size: 11px; padding-inline: 15px; }
+  .purchase-confirmation h2, .tool-confirmation h2 { font-size: 29px; }
+  .purchase-confirmation .button, .tool-confirmation .button { width: 100%; font-size: 11px; }
+  .purchase-results h2, .tool-results h2 { font-size: 30px; }
+  .purchase-metrics strong, .tool-metrics strong { font-size: 26px; }
+  .purchase-chart-key, .tool-chart-key { gap: 10px; font-size: 8px; }
   .evidence-section { padding-top: 30px; }
   .evidence-conditions, .evidence-ratings { grid-template-columns: 1fr; gap: 23px; }
   .evidence-condition { padding: 26px; }

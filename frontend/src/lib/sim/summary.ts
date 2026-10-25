@@ -1,5 +1,5 @@
 import { monthLabel, usd } from "./message.ts";
-import type { Comparison, Projection } from "./types.ts";
+import type { Comparison, Option, Projection } from "./types.ts";
 
 const first = (p: Projection) => p.points[1];
 const leftover = (p: Projection) => first(p).income - first(p).costs - first(p).debtPayments;
@@ -33,6 +33,31 @@ export const TABLE_ROWS = {
 
 export type TableRowKey = keyof typeof TABLE_ROWS;
 export const TABLE_ROW_KEYS = Object.keys(TABLE_ROWS) as TableRowKey[];
+
+export type BudgetRow = { label: string; kind: "income" | "cost" | "debt" | "leftover"; a: number; b: number };
+
+// Where each option's money goes in month 1: pay, each recurring cost, debt payments,
+// and what's left. Matches the "Left to save / mo (now)" table row.
+export function budgetRows(options: [Option, Option], c: Comparison): BudgetRow[] {
+  const [pa, pb] = [first(c.a), first(c.b)];
+  const costs = new Map<string, { a: number; b: number }>();
+  options.forEach((o, i) => {
+    for (const cost of o.recurring) {
+      if ((cost.startMonth ?? 1) > 1 || (cost.endMonth ?? Infinity) < 1) continue;
+      const row = costs.get(cost.name) ?? { a: 0, b: 0 };
+      row[i === 0 ? "a" : "b"] += cost.monthly;
+      costs.set(cost.name, row);
+    }
+  });
+  const r = Math.round;
+  return [
+    { label: "Take-home pay", kind: "income" as const, a: r(pa.income), b: r(pb.income) },
+    ...[...costs].sort(([, x], [, y]) => Math.max(y.a, y.b) - Math.max(x.a, x.b))
+      .map(([label, v]) => ({ label, kind: "cost" as const, a: r(v.a), b: r(v.b) })),
+    ...(pa.debtPayments || pb.debtPayments ? [{ label: "Debt payments", kind: "debt" as const, a: r(pa.debtPayments), b: r(pb.debtPayments) }] : []),
+    { label: "Left to save", kind: "leftover" as const, a: r(leftover(c.a)), b: r(leftover(c.b)) },
+  ];
+}
 
 // Compact, rounded results: what the AI receives from run_simulation and the
 // only numbers it is allowed to repeat.

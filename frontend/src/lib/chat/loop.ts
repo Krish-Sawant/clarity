@@ -22,7 +22,7 @@ export async function runAgentLoop(
     const reply = await agent(items, sess);
     const calls = reply.toolCalls ?? [];
     if (!reply.text && !calls.length) break;
-    items = [...items, { role: "assistant", text: reply.text, toolCalls: calls }];
+    items = [...items, { role: "assistant", text: reply.text, toolCalls: calls, ...(reply.providerMessage ? { providerMessage: reply.providerMessage } : {}) }];
     if (reply.text) onEvent({ kind: "assistant", text: reply.text });
 
     let waitForUser = false;

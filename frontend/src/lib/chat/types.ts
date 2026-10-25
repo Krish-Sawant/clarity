@@ -8,7 +8,8 @@ export type ToolCall = { id: string; name: string; args: Record<string, unknown>
 
 export type ChatItem =
   | { role: "user"; text: string }
-  | { role: "assistant"; text?: string; toolCalls?: ToolCall[] }
+  // providerMessage: the model's raw reply, replayed verbatim (Gemini rejects tool calls without their thought signatures).
+  | { role: "assistant"; text?: string; toolCalls?: ToolCall[]; providerMessage?: unknown }
   | { role: "tool"; callId: string; name: string; result: unknown };
 
 export type Session = { scenarioId: string | null; values: Values; years: number };
@@ -23,9 +24,10 @@ export type Block =
   | { type: "chart"; snapshot: Snapshot; metric: ChartMetric; title?: string }
   | { type: "table"; snapshot: Snapshot; rows: TableRowKey[] }
   | { type: "playground"; snapshot: Snapshot }
+  | { type: "breakdown"; snapshot: Snapshot }
   | { type: "message"; lines: string[] };
 
-export type AgentTurn = { text?: string; toolCalls?: ToolCall[] };
+export type AgentTurn = { text?: string; toolCalls?: ToolCall[]; providerMessage?: unknown };
 
 // The scripted agent reads the session directly; the real one will learn it from tool results.
 export type Agent = (history: ChatItem[], session: Session) => Promise<AgentTurn>;

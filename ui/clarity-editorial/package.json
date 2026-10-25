@@ -10,7 +10,8 @@
     "lint": "eslint src tests --max-warnings=0",
     "typecheck": "tsc --noEmit",
     "test": "node --import tsx --test tests/*.test.ts",
-    "test:browser": "playwright test"
+    "test:browser": "playwright test",
+    "rag:index": "node --env-file=.env.local scripts/build-rag-index.mjs"
   },
   "dependencies": {
     "next": "^16.0.0",

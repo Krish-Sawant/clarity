@@ -1,201 +1,226 @@
 <div align="center">
 
+<img src="public/branding/clarity-logo.png" alt="Clarity logo" width="96" />
+
 # Clarity
 
-### A clearer path to your next money decision.
+### A little knowledge. A different future.
 
-Clarity helps people understand their finances and make smarter money decisions with personalized, proactive guidance.
+Financial learning, proactive guidance, and interactive simulations to help people understand their next money decision.
 
 **HackPSU Fall 2026 · October 24–25 · Penn State · Synthetic financial data**
 
-[Our idea](#why-clarity) · [Core features](#core-features) · [Learning journey](#personalized-learning-journey) · [Roadmap](#roadmap) · [Getting started](#getting-started) · [Team](#team)
+[Features](#what-you-can-do) · [Local setup](#run-locally) · [Authentication](authentication/README.md) · [Tests](#verification) · [Team](#team)
 
 </div>
 
----
-
 ## Why Clarity?
 
-A bigger salary does not always mean more money left over. A new job, a move, or a first loan payment can change your finances before you have a plan.
+A banking app can show a balance. Knowing what to do next takes understanding. A new job, a move, a loan payment, or a major purchase can change someone's finances before they have a plan.
 
-We’re building Clarity to make those trade-offs easier to understand. It combines personalized financial learning, side-by-side decision simulations, and timely guidance when financial activity suggests something has changed.
+Clarity connects financial education to those decisions. Users can assess their knowledge, work through relevant lessons, and compare possible outcomes with calculations whose assumptions they can inspect. For banking audiences, the prototype demonstrates how financial activity can become a starting point for education and informed customer conversations.
 
-Our goal is financial confidence: give users information they understand, help them see their options, and make their next step actionable.
+Built around financial confidence for the FNB challenge, with Auth0 providing user authentication. The prototype does not connect to First National Bank systems or live bank accounts.
 
-Our approach: calculate the numbers in code, show the assumptions, explain the trade-offs, and help the user choose a practical next step.
+## What you can do
 
-## Core features
+| Experience | Current implementation |
+| --- | --- |
+| **Discover, Learn, Reassess** | Baseline knowledge and habits screening, recommended learning, lesson exercises, and checkpoint assessments. |
+| **Future Lab** | Compare cash paths and explore an income interruption, unexpected repair, or rent increase. |
+| **Future Decisions** | Compare financial scenarios with editable assumptions, projected cash, debt and net worth, charts, monthly schedules, and a local rule-based conversation guide. |
+| **Debt & savings calculators** | Explore payoff schedules, extra payments, savings growth, and goal timelines. |
+| **Proactive Advisor** | Detect five possible life moments in synthetic transactions and balance snapshots, inspect evidence, and calculate a possible next step. |
+| **Purchase Impact Preview** | Compare savings with and without a purchase, including goal delays and cash shortfalls. |
+| **Our approach & Evidence** | Inspect methods, limitations, sources, and a recorded synthetic evaluation pilot. |
+| **Auth0 account** | Sign up, log in, log out, access protected pages, and verify the backend connection from `/account`. |
 
-### 1. “Future You” Decision Simulator
+The advisor detects a larger paycheck from a new employer, a large payment to a new housing merchant, a spending increase, a first observed student loan payment, and an increasing cash cushion. These are clues for the user to confirm, not established facts about their life.
 
-**Led by Krish · In development**
+The financial experience runs locally in the browser using synthetic fixtures and reusable TypeScript engines. Journey progress uses browser session storage; it is not yet persisted to a backend user account. Logging in protects access but does not turn the demo into a live banking service.
 
-Compare possible financial futures side by side. For example: _Should I take a $95,000 offer in New York City or a $78,000 offer in Pittsburgh?_
-
-The planned simulator compares estimated take-home pay, living expenses, moving costs, savings growth, and debt payoff timelines. Adjustable assumptions—such as rent and expected raises—let users see when the answer changes.
-
-The intended flow:
-
-1. Enter two options and their assumptions.
-2. Compare projected outcomes across time.
-3. Adjust sliders to explore the trade-offs.
-4. Read a future-self explanation grounded in computed results.
-5. Turn a chosen path into a budget, savings target, and debt payoff plan.
-
-These projections are intended as illustrations, not guarantees. Tax estimates, cost data, charts, and AI explanations require implementation and integration.
-
-### 2. Proactive Advisor
-
-**Led by Abhijay · Detection and planning engine implemented**
-
-Notice possible life moments in financial activity and offer a useful starting point.
-
-| Signal                                          | Possible moment           | Intended guided experience                                        |
-| ----------------------------------------------- | ------------------------- | ----------------------------------------------------------------- |
-| A larger paycheck from a new employer           | Starting a new job        | First-paycheck budget, retirement benefits, and emergency savings |
-| A large payment to a new housing merchant       | Moving or signing a lease | Moving costs and a new monthly budget                             |
-| Spending at least 40% above the recent baseline | A spending shift          | Understand what changed and reset the budget                      |
-| First observed student loan payment             | Repayment beginning       | Explore required payments, saving, and extra repayment            |
-| Four increasing monthly balance snapshots       | A growing cash cushion    | Explore accessible, interest-earning savings                      |
-
-An example nudge:
-
-> “Looks like you may have started a new job. Want to plan your first paycheck? Takes 3 minutes.”
-
-The current engine returns stable signal IDs, nudge copy, supporting evidence, and amounts. Its planner calculates monthly surplus, an illustrative emergency savings gap, and a possible savings action from editable inputs. Signals are clues for the user to confirm, not established facts about their life.
-
-**Still to integrate:** the production UI, shared conversation flow, background scanning, notification delivery, and persistent user actions. The temporary preview UI has been removed. No real transfers occur.
-
-The advisor implementation currently lives on [`feature/proactive-advisor`](https://github.com/Krish-Sawant/clarity/tree/feature/proactive-advisor). [Read its integration guide](https://github.com/Krish-Sawant/clarity/blob/feature/proactive-advisor/frontend/src/lib/advisor/README.md).
-
-## Personalized learning journey
-
-**Planned experience · Assessment, lesson, and progress-tracking foundations in the backend**
-
-Financial guidance should meet people at their current level of understanding. Our intended learning loop is:
-
-1. **Assess** — Start with a short quiz and financial-habits screening to understand what the user knows and where they need support.
-2. **Learn** — Offer relevant explanations and exercises based on that starting point.
-3. **Apply** — Connect learning to a financial decision or a detected life moment.
-4. **Check progress** — Reassess understanding and habits against the initial screening, then adjust the learning plan.
-
-We plan to tailor guidance across savings, budgeting, retirement, investing, and taxes, with topic-specific advisor styles and explanations suited to the user’s financial literacy. These broader topic experiences are planned; the repository currently includes assessment and educational-content fixtures and persistence foundations, rather than a complete learning UI.
-
-## How we’re building it
+## How the pieces connect
 
 ```text
-Synthetic transactions + balance snapshots
-                    ↓
-          Rule-based detection
-                    ↓
-       Nudge + supporting evidence
-                    ↓
-     Confirm the moment with the user
-                    ↓
-   Calculations + explained assumptions
-                    ↓
-       User-reviewed next step
+Auth0 Universal Login
+        ↓ authenticated session
+Next.js UI — ui/clarity-editorial
+        ├── frontend/src/lib → financial calculations and local conversation guide
+        ├── browser session storage → synthetic learning journey
+        └── /api/account → server-side Auth0 access token
+                                  ↓
+                     FastAPI /api/me — BackEnd/api
+                                  ↓ verified identity
+                     SQLite user record keyed by Auth0 subject
 ```
 
-This is the intended end-to-end experience. Detection and planning are reusable modules; the connected experience is still under development.
+The UI checks the session on the server. The Python API independently checks token signature, issuer, audience, expiry, and subject. Ownership helpers reject access to another user's records.
 
-The repository also contains backend foundations for authenticated user records, financial assessments, learning plans, educational lessons, and demo action proposals.
+## Run locally
 
-## Roadmap
+The supported demo runs on your computer. A localhost link is accessible on that computer; teammates need their own local setup. Internet access is required for Auth0 login and signing-key retrieval.
 
-These are planned extensions, not completed features:
+### Prerequisites
 
-| Feature                     | What we want it to help users do                                                                                    |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------- |
-| **Stress tests**            | Explore job loss, an unexpected repair, or a rent increase and see how long their cash could last.                  |
-| **Save the Raise**          | Consider directing part of a pay increase toward savings.                                                           |
-| **Purchase Impact Preview** | See how a large purchase could change a savings goal’s timeline.                                                    |
-| **Plan Check-Ins**          | Compare activity with a chosen plan and make small adjustments.                                                     |
-| **Credit Card Readiness**   | Compare estimated rewards using spending patterns while allowing an honest “not yet” outcome.                       |
-| **Loan Affordability**      | Explore a comfortable payment alongside savings and stress scenarios, starting with car and student loan decisions. |
+- Node.js **22 or newer** and npm.
+- Python **3.10 or newer**, with `venv` and pip.
+- Access to an Auth0 Regular Web Application and API, or the team's development configuration shared privately.
 
-## Technology
+Run the following commands from the repository root. The Python environment commands below use macOS/Linux paths.
 
-| Area                 | Current foundation                                                       |
-| -------------------- | ------------------------------------------------------------------------ |
-| Frontend             | Next.js, React, TypeScript, Tailwind CSS                                 |
-| Advisor engine       | TypeScript rules and deterministic planning calculations                 |
-| Backend foundations  | Python, FastAPI dependencies, SQLite repositories                        |
-| Identity foundations | Auth0 token verification and separate development demo identities        |
-| Demo data            | Synthetic JSON transactions, balance snapshots, and educational fixtures |
-| Advisor tests        | Node.js test runner                                                      |
+### 1. Configure authentication
 
-## Getting started
-
-### Frontend
-
-With Node.js and npm installed:
+Copy the templates only if you do not already have local environment files:
 
 ```sh
-cd frontend
-npm ci
+cp ui/clarity-editorial/.env.example ui/clarity-editorial/.env.local
+cp BackEnd/api/.env.example BackEnd/api/.env
+```
+
+Fill in these values in `ui/clarity-editorial/.env.local`:
+
+| Variable | Value |
+| --- | --- |
+| `AUTH0_DOMAIN` | Your Auth0 tenant domain, such as `your-tenant.us.auth0.com`. |
+| `AUTH0_CLIENT_ID` | Client ID of the Clarity Regular Web Application. |
+| `AUTH0_CLIENT_SECRET` | Client secret of that application, shared privately. |
+| `AUTH0_SECRET` | Your own session secret; generate with `openssl rand -hex 32`. |
+| `APP_BASE_URL` | `http://127.0.0.1:3001` |
+| `AUTH0_AUDIENCE` | `https://clarity-api` |
+| `API_BASE_URL` | `http://127.0.0.1:8001` |
+
+In `BackEnd/api/.env`, use the same `AUTH0_DOMAIN` and `AUTH0_AUDIENCE`, with `DEMO_MODE_ENABLED=false`.
+
+In the same Auth0 tenant:
+
+1. Create a **Regular Web Application** named Clarity, or use the existing team application.
+2. Set **Allowed Callback URLs** to `http://127.0.0.1:3001/auth/callback`.
+3. Set **Allowed Logout URLs** and **Allowed Web Origins** to `http://127.0.0.1:3001`.
+4. Create a custom API with identifier **`https://clarity-api`** and signing algorithm **RS256**, or use the existing API.
+5. Under the API's **Application Access**, authorize Clarity for **User-delegated Access** if per-application authorization is required.
+
+Use `127.0.0.1` consistently; it is a different origin from `localhost`. Keep client secrets, session secrets, environment files, and saved browser sessions out of Git. The committed examples contain placeholders. See the [authentication guide](authentication/README.md) for details.
+
+### 2. Start the Python backend
+
+```sh
+python3 -m venv BackEnd/api/.venv
+BackEnd/api/.venv/bin/pip install -r BackEnd/api/requirements.txt
+BackEnd/api/.venv/bin/uvicorn app.main:app --app-dir BackEnd/api --reload --host 127.0.0.1 --port 8001
+```
+
+Use **8001** so another backend on port 8000 does not accidentally receive Clarity requests.
+
+### 3. Start the UI in a second terminal
+
+```sh
+npm run setup
 npm run dev
 ```
 
-Open **http://localhost:3000**. The frontend currently contains the starter page; this command does not launch a complete advisor experience.
+Open **http://127.0.0.1:3001**. Choose **Create an account** for your first visit, or **Log in with Auth0** for an existing Clarity account. A Clarity user account is separate from an Auth0 dashboard administrator account.
 
-### Verify the advisor engine
+The root commands start the active application in `ui/clarity-editorial/`. Starting `frontend/` independently opens an older starter application, not the authenticated Clarity UI.
 
-Until the advisor feature is merged, use its branch to run the implementation. From the repository root:
+### 4. Verify the connection
+
+1. Sign in and open **Account** in the top bar, or visit `/account`.
+2. Click **Check backend connection**. A successful result says the identity was verified with Auth0.
+3. Return to Clarity and begin **Discover**, or explore the financial tools.
+4. Log out and revisit the homepage to confirm it returns to `/login`.
+
+| Endpoint | Purpose |
+| --- | --- |
+| UI `/login` | Public entry point for Auth0 login and signup. |
+| UI `/account` | Protected account page and backend connection check. |
+| UI `/api/account` | Session-protected adapter; keeps the access token server-side. |
+| API `http://127.0.0.1:8001/health` | Backend health and Auth0 configuration status. |
+| API `http://127.0.0.1:8001/api/me` | Protected identity endpoint; also ensures a user record exists. |
+
+### Troubleshooting
+
+| Symptom | Check |
+| --- | --- |
+| Login page says setup is required | Fill in the required UI environment values, then restart `npm run dev`. |
+| Auth0 reports “Service not found” | The API identifier must match `AUTH0_AUDIENCE` exactly in the same tenant. |
+| Auth0 rejects application access | Authorize Clarity for User-delegated Access under the API's Application Access tab. |
+| Callback URL mismatch | Match the exact callback URL above, including hostname, port, and path. |
+| Backend check fails | Start this repository's API on 8001; check `API_BASE_URL` and matching Auth0 domain/audience. Restart the affected server after changing its environment. |
+
+## Technology
+
+| Area | Technologies |
+| --- | --- |
+| Active UI | Next.js App Router, React, TypeScript, CSS, SVG charts |
+| Financial engines | TypeScript calculations, rule-based detection, local conversation tools |
+| Authentication | Official Auth0 Next.js SDK, server-side sessions, RS256 JWT verification |
+| Backend | Python, FastAPI, Uvicorn, PyJWT, SQLite |
+| Testing | Node.js test runner, Playwright, pytest, TypeScript, ESLint |
+| Evaluation | Separate Gemini/OpenAI-compatible experiment tooling and saved synthetic results |
+
+Live model access is not required for the demo. The current decision conversation uses a local mock agent. Evaluation scripts are separate from the interactive app; their saved results do not establish real customer learning or financial outcomes. See [evaluation documentation](evaluation/README.md).
+
+## Verification
+
+Install the UI and Python dependencies first, then run from the repository root:
 
 ```sh
-git switch feature/proactive-advisor
-cd frontend
-node --test tests/advisor.test.mjs
+npm --prefix ui/clarity-editorial run typecheck
+npm --prefix ui/clarity-editorial run lint
+npm --prefix ui/clarity-editorial test
+npm run build
+
+# Reusable engines and evaluation tools
+npm --prefix frontend test
+node --test finance.test.mjs evaluation/*.test.mjs
+
+# Backend authentication and ownership checks
+BackEnd/api/.venv/bin/pip install pytest httpx
+PYTHONPATH=BackEnd/api BackEnd/api/.venv/bin/pytest BackEnd/api/tests -q
+
+# Signed-out access checks; requires Chrome or a configured Playwright executable
+npm --prefix ui/clarity-editorial run test:browser -- auth.spec.ts
 ```
 
-The six tests cover all five demo signals, repeat scans and input order, incomplete histories, repeat employers and loan payments, the spending threshold, balance dips, and planning input validation.
+Full browser journey tests require a saved, authenticated Auth0 browser session. Follow the [browser test instructions](authentication/README.md#verification); no login bypass is enabled.
 
-The engine and fixture can be imported independently:
-
-```ts
-import { detect, plan } from "@/lib/advisor/engine";
-import demo from "@/lib/advisor/demo.json";
-
-const nudges = detect(demo.transactions, demo.snapshots, demo.asOf);
-const paycheckPlan = plan("new-job", 4800, 3580, 5100, 4);
-```
-
-### Repository layout
-
-The advisor library and tests shown below are currently on the feature branch.
+## Repository layout
 
 ```text
 clarity/
-├── BackEnd/api/app/
-│   ├── auth/                    # Identity and access foundations
-│   ├── fixtures/                # Synthetic persona and learning content
-│   └── repositories/            # User-owned application records
-├── frontend/
-│   ├── src/app/                 # Next.js app
-│   ├── src/lib/advisor/         # Detection, planner, demo data, integration guide
-│   └── tests/advisor.test.mjs   # Advisor engine tests
-└── README.md
+├── authentication/             # Shared Auth0 configuration and setup guide
+├── BackEnd/api/
+│   ├── app/main.py             # Runnable FastAPI server
+│   ├── app/auth/               # Token verification and ownership checks
+│   ├── app/repositories/       # SQLite persistence foundations
+│   ├── app/fixtures/           # Synthetic financial and educational data
+│   └── tests/                  # Backend authentication tests
+├── frontend/src/lib/           # Reusable advisor, simulation, and chat engines
+├── ui/clarity-editorial/        # Active Next.js app, adapters, views, and tests
+├── evaluation/                 # Experiment runners, scoring, and recorded results
+├── public/branding/            # Clarity logo PNG
+├── finance.ts                  # Shared debt and savings calculations
+└── package.json                # Root UI setup, dev, build, and start commands
 ```
 
-The backend is scaffolded; this checkout does not yet include a runnable API entry point or a backend installation manifest.
+## What's next
+
+- Persist assessments, lesson progress, and user-reviewed actions to authenticated backend accounts.
+- Add background scanning and notification delivery for confirmed life moments.
+- Explore additional guidance such as plan check-ins, credit readiness, and loan affordability.
+- Evaluate usability and comprehension with participants beyond synthetic test cases.
+- Investigate consent-based banking integrations and the security work needed for real financial data.
 
 ## Team
 
-| Team member        | Role                    | Feature ownership               |
-| ------------------ | ----------------------- | ------------------------------- |
-| **Abhijay Madanagopal**        | Backend / Data Engineer | Proactive Advisor               |
-| **Ram Gundapwar**            | UI/UX Engineer          | UI and interaction design       |
-| **Krish Sawant**   | Backend Engineer        | “Future You” Decision Simulator |
-| **Aayush Sandesh** | QA Engineer             | Testing and quality assurance   |
-| **Neil Barbara**   | Backend Engineer        | Backend development             |
-
-## HackPSU focus
-
-Built for HackPSU Fall 2026 with a focus on understandable, trustworthy financial decisions—the problem highlighted in the FNB Financial Confidence challenge. Our demo priorities are transparent calculations, user-reviewed choices, and a reproducible synthetic dataset. Competition entries and additional sponsor integrations are team decisions still to be confirmed.
+| Team member | Role | Feature ownership |
+| --- | --- | --- |
+| **Abhijay Madanagopal** | Backend / Data Engineer | Proactive Advisor and Auth0 integration |
+| **Ram Gundapwar** | UI/UX Engineer | UI and interaction design |
+| **Krish Sawant** | Backend Engineer | Future You Decision Simulator |
+| **Aayush Sandesh** | QA Engineer | Testing and quality assurance |
+| **Neil Barbara** | Backend Engineer | Backend development |
 
 ## Prototype scope
 
-Clarity is an educational hackathon prototype. Demo activity is synthetic. Live account connections, real transfers, and a complete integrated advisory experience are outside the current implementation. Outputs depend on the supplied history and assumptions.
-
-> > > > > > > origin
+Clarity is an educational hackathon prototype using synthetic financial activity. It does not connect live accounts, transfer money, or execute banking actions. Projections depend on entered assumptions and are illustrations, not guarantees or personalized financial advice. SQLite currently supports verified user records and repository foundations; the learning journey remains a browser-session demo.

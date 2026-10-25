@@ -982,3 +982,10 @@ details[open] > summary > svg { transform: rotate(45deg); }
   .evidence-example blockquote, .evidence-quote blockquote { font-size: 12px; padding: 17px; }
   .evidence-method .button { font-size: 11px; padding-inline: 15px; }
 }
+/* Public Auth0 entry screen. */
+.auth-page { min-height: 100svh; display: grid; place-items: center; padding: 24px; background: #f5f3ed; color: #20271d; }
+.auth-card { width: min(100%, 540px); padding: clamp(28px, 6vw, 60px); border: 1px solid #cbd0bf; border-radius: 20px; background: #fffef8; }
+.auth-card h1 { font-size: clamp(36px, 5vw, 54px); line-height: 1.1; margin: 24px 0; overflow-wrap: anywhere; }
+.auth-card p { margin: 24px 0; line-height: 1.6; }
+.auth-card .header-cta { display: inline-flex; padding: 16px 22px; }
+.auth-card small { display: block; margin-top: 32px; line-height: 1.6; }

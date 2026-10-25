@@ -7,5 +7,8 @@
     "dev": "npm --prefix ui/clarity-editorial run dev",
     "build": "npm --prefix ui/clarity-editorial run build",
     "start": "npm --prefix ui/clarity-editorial run start"
+  },
+  "dependencies": {
+    "next": "^16.4.3"
   }
 }

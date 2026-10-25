@@ -17,7 +17,7 @@ import { CalculatorsView } from "../views/calculators";
 import { PurchaseImpactView } from "../views/purchase-impact";
 import { LoanComfortView } from "../views/loan-comfort";
 import { CardReadinessView } from "../views/card-readiness";
-import { StressTestView } from "../views/stress-test";
+
 import { PlanCheckinsView } from "../views/plan-checkins";
 import { EvidenceView } from "../views/evidence";
 import { DesignControls } from "./design-controls";
@@ -72,7 +72,7 @@ export function ClarityApp({ section, tab, evidence }: { section: Section; tab?:
       {section === "overview" && <OverviewView />}
       {section === "discover" && <AssessmentView key={assessmentTab} stage={assessmentTab === "reassess" ? "checkpoint" : "baseline"} />}
       {section === "learn" && <LearningView />}
-      {section === "future-lab" && <><FutureLabView /><StressTestView embedded /></>}
+      {section === "future-lab" && <FutureLabView />}
       {section === "advisor" && <AdvisorView />}
       {section === "decisions" && <DecisionsView />}
       {section === "calculators" && <><CalculatorsView /><PlanCheckinsView embedded /></>}

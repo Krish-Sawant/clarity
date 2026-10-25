@@ -5,9 +5,10 @@ not capabilities on unmerged teammate branches.
 
 | Layer | Current implementation | What still needs integration |
 | --- | --- | --- |
-| Polished experience | `ui/clarity-editorial`, with local lessons, quizzes and simulation screens | Verified authenticated services and live model tutor |
-| Reusable feature logic | `frontend/src/lib/advisor`, `frontend/src/lib/sim`, plus root `finance.ts` | Editorial adapters for each newly added feature |
-| Feature demo pages | `frontend/src/app`, including purchase preview and credit-card readiness | Navigation and components in the editorial site |
+| Polished experience | `ui/clarity-editorial`, with local lessons, quizzes, simulation screens and the advisor tools below | Verified authenticated services and live model tutor |
+| Reusable feature logic | `frontend/src/lib/advisor`, `frontend/src/lib/sim`, plus root `finance.ts` | Editorial adapter for `scenario-ai.ts` once a live model endpoint exists |
+| Feature demo pages | `frontend/src/app`, including purchase preview and credit-card readiness | None; each is mirrored in the editorial site (see below) |
+| Editorial advisor tools | `ui/clarity-editorial/src/api/{purchase,loan,credit,stress,checkins}.ts` adapters with `/purchase-impact`, `/loan-comfort`, `/card-readiness`, `/stress-test` and `/plan-checkins` views | Live account data in place of sample inputs |
 | Simulator conversation | `frontend/src/lib/chat/mockAgent.ts`, a scripted tool-calling stand-in | Server-side model connection using the same validated tools |
 | Editorial tutor | `ui/clarity-editorial/src/api/services.ts` explicitly marks live tutor unavailable | Reviewed Gemini service, endpoint and error handling |
 | Educational sources | Bundled source/lesson fixtures and per-feature links | Retrieval over reviewed material, passage citations and grounding checks |
@@ -34,4 +35,4 @@ concepts and terms. Live card offers require a separate verified product catalog
 
 The new [credit-card feature](../frontend/src/lib/advisor/CREDIT_CARDS.md) implements
 transaction analysis, readiness gates, illustrative reward math and a demo page.
-Its live model/RAG connection and editorial integration are explicitly pending.
+It is available in the editorial site at `/card-readiness`; its live model/RAG connection is still pending.

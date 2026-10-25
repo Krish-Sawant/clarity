@@ -6,10 +6,14 @@ const links = {
     { href: "/future-lab", section: "future-lab", label: "Everyday paths" },
     { href: "/decisions", section: "decisions", label: "Future Decisions" },
     { href: "/calculators", section: "calculators", label: "Debt & savings" },
+    { href: "/stress-test", section: "stress-test", label: "Stress test" },
+    { href: "/plan-checkins", section: "plan-checkins", label: "Plan check-ins" },
   ],
   advisor: [
     { href: "/advisor", section: "advisor", label: "Possible moments" },
     { href: "/purchase-impact", section: "purchase-impact", label: "Purchase preview" },
+    { href: "/loan-comfort", section: "loan-comfort", label: "Loan comfort" },
+    { href: "/card-readiness", section: "card-readiness", label: "Card readiness" },
   ],
   trust: [
     { href: "/approach", section: "approach", label: "Our approach" },

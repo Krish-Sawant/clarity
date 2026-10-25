@@ -3,7 +3,7 @@ import { ClarityApp } from "../../components/clarity-app";
 import type { Section } from "../../lib/types";
 import { requireSession } from "../../lib/auth/server";
 
-const sections = ["discover", "learn", "reassess", "future-lab", "advisor", "approach", "decisions", "calculators", "purchase-impact", "evidence"];
+const sections = ["discover", "learn", "reassess", "future-lab", "advisor", "approach", "decisions", "calculators", "purchase-impact", "loan-comfort", "card-readiness", "stress-test", "plan-checkins", "evidence"];
 
 export default async function ExperiencePage({ params }: { params: Promise<{ section: string }> }) {
   await requireSession();

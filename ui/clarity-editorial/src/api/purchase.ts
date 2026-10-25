@@ -12,17 +12,17 @@ export const purchaseDemo = {
   transactions: [{ id: "demo-tv", date: "2026-10-24", amount: -1200, merchant: "Demo Electronics", category: "electronics" }],
 };
 
-function record(value: unknown): value is Record<string, unknown> {
+export function record(value: unknown): value is Record<string, unknown> {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-function validDate(value: unknown): value is string {
+export function validDate(value: unknown): value is string {
   if (typeof value !== "string" || !/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
   const timestamp = Date.parse(`${value}T00:00:00.000Z`);
   return Number.isFinite(timestamp) && new Date(timestamp).toISOString().slice(0, 10) === value;
 }
 
-function dollarAmount(value: unknown, signed = false): value is number {
+export function dollarAmount(value: unknown, signed = false): value is number {
   return typeof value === "number" && Number.isFinite(value) && Math.abs(value) <= 1e9 && (signed || value >= 0) && Math.abs(value * 100 - Math.round(value * 100)) <= 0.00001;
 }
 

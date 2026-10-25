@@ -2,6 +2,8 @@
 
 # Clarity
 
+Auth0 login is integrated into the active UI. See [authentication setup](authentication/README.md) for the folder connections, Auth0 dashboard settings, environment templates, and commands to run the UI and Python API together.
+
 ### A clearer path to your next money decision.
 
 Clarity helps people understand their finances and make smarter money decisions with personalized, proactive guidance.

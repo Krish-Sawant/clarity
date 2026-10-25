@@ -11,6 +11,7 @@ export default defineConfig({
   reporter: [["list"]],
   use: {
     baseURL: "http://127.0.0.1:3001",
+    storageState: process.env.PLAYWRIGHT_AUTH_STATE || undefined,
     launchOptions: process.env.PLAYWRIGHT_CHROME_EXECUTABLE
       ? { executablePath: process.env.PLAYWRIGHT_CHROME_EXECUTABLE }
       : { channel: "chrome" },

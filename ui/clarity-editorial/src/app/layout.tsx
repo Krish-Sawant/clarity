@@ -3,6 +3,9 @@ import type { ReactNode } from "react";
 import { DemoProvider } from "../state/demo-store";
 import "./globals.css";
 
+// Authentication must be evaluated per request, including builds without secrets.
+export const dynamic = "force-dynamic";
+
 export const metadata: Metadata = {
   title: "Clarity — A little knowledge. A different future.",
   description: "Find your starting point, make financial ideas click, and explore what comes next. An independent, transparent learning demo.",

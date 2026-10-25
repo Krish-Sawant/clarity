@@ -1,0 +1,11 @@
+{
+  "name": "clarity",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "setup": "npm --prefix ui/clarity-editorial ci",
+    "dev": "npm --prefix ui/clarity-editorial run dev",
+    "build": "npm --prefix ui/clarity-editorial run build",
+    "start": "npm --prefix ui/clarity-editorial run start"
+  }
+}

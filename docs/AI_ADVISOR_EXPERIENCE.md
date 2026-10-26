@@ -24,7 +24,6 @@ build specification, not a claim that the advisor has been implemented.
 | [`finance.ts`](../finance.ts): `calculateDebt(input)` | Baseline debt summary and monthly balance chart. |
 | [`finance.ts`](../finance.ts): `compareExtraPayment(input, extraPaymentCents)` | Current versus proposed payment, payoff curves, months saved, and interest saved. |
 | [`finance.ts`](../finance.ts): `calculateSavings(input)` | Later savings-goal experience with contributions, interest, and goal time. |
-| [`FinanceDemo.tsx`](../FinanceDemo.tsx) | Starting example of a live extra-payment control; replace hardcoded data when building customer forms. |
 | [`finance.test.mjs`](../finance.test.mjs) | Regression checks for the shared calculations. |
 | [`README.md`](../README.md) | Authoritative input units, validation, status handling, and frontend contract. |
 

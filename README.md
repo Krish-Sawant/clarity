@@ -45,7 +45,7 @@ The financial experience runs locally in the browser using synthetic fixtures an
 Auth0 Universal Login
         ↓ authenticated session
 Next.js UI — ui/clarity-editorial
-        ├── frontend/src/lib → financial calculations and local conversation guide
+        ├── src/engines → financial calculations and conversation guide
         ├── browser session storage → synthetic learning journey
         └── /api/account → server-side Auth0 access token
                                   ↓
@@ -120,7 +120,7 @@ npm run dev
 
 Open **http://127.0.0.1:3001**. Choose **Create an account** for your first visit, or **Log in with Auth0** for an existing Clarity account. A Clarity user account is separate from an Auth0 dashboard administrator account.
 
-The root commands start the active application in `ui/clarity-editorial/`. Starting `frontend/` independently opens an older starter application, not the authenticated Clarity UI.
+The root commands start the application in `ui/clarity-editorial/`.
 
 ### 4. Verify the connection
 
@@ -170,8 +170,7 @@ npm --prefix ui/clarity-editorial run lint
 npm --prefix ui/clarity-editorial test
 npm run build
 
-# Reusable engines and evaluation tools
-npm --prefix frontend test
+# Shared finance engine and evaluation tools
 node --test finance.test.mjs evaluation/*.test.mjs
 
 # Backend authentication and ownership checks
@@ -195,8 +194,7 @@ clarity/
 │   ├── app/repositories/       # SQLite persistence foundations
 │   ├── app/fixtures/           # Synthetic financial and educational data
 │   └── tests/                  # Backend authentication tests
-├── frontend/src/lib/           # Reusable advisor, simulation, and chat engines
-├── ui/clarity-editorial/        # Active Next.js app, adapters, views, and tests
+├── ui/clarity-editorial/        # Next.js app: views, adapters, engines (src/engines), and tests
 ├── evaluation/                 # Experiment runners, scoring, and recorded results
 ├── public/branding/            # Clarity logo PNG
 ├── finance.ts                  # Shared debt and savings calculations

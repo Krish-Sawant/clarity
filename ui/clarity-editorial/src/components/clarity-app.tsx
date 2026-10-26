@@ -75,11 +75,11 @@ export function ClarityApp({ section, tab, evidence }: { section: Section; tab?:
       {section === "future-lab" && <FutureLabView />}
       {section === "advisor" && <AdvisorView />}
       {section === "decisions" && <DecisionsView />}
-      {section === "calculators" && <><CalculatorsView /><PlanCheckinsView embedded /></>}
+      {section === "calculators" && <><CalculatorsView /><PlanCheckinsView /></>}
       {section === "before-you-commit" && commitTab === "purchase" && <PurchaseImpactView />}
       {section === "before-you-commit" && commitTab === "loan" && <LoanComfortView />}
       {section === "before-you-commit" && commitTab === "card" && <CardReadinessView />}
-      {section === "approach" && <><ApproachView />{evidence && <EvidenceView pilot={evidence} embedded />}</>}
+      {section === "approach" && <><ApproachView />{evidence && <EvidenceView pilot={evidence} />}</>}
     </main>
     <footer className="site-footer"><div className="footer-top"><Link href="/" className="brand" aria-label="Clarity home"><Brand /></Link><p>Less noise.<br />More understanding.</p><Link href="/approach" className="text-link">Built on transparency <Icon name="arrow-up-right" size={16} /></Link></div><div className="footer-bottom"><span>CLARITY / FINANCIAL LEARNING, IN FOCUS.</span><span>Educational only · Not personal financial advice</span><button onClick={() => setDesignOpen(true)}>MAKE IT YOURS <Icon name="sliders" size={13} /></button></div></footer>
     <DesignControls open={designOpen} onClose={() => setDesignOpen(false)} />

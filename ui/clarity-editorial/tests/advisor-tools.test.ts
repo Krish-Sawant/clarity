@@ -1,9 +1,9 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { compareLoanAffordability } from "../../../frontend/src/lib/advisor/loan";
-import { compareCardReadiness } from "../../../frontend/src/lib/advisor/credit";
-import { customStressTest, stressTest } from "../../../frontend/src/lib/advisor/stress";
-import { checkIn, saveTheRaise } from "../../../frontend/src/lib/advisor/checkins";
+import { compareLoanAffordability } from "../src/engines/advisor/loan";
+import { compareCardReadiness } from "../src/engines/advisor/credit";
+import { customStressTest, stressTest } from "../src/engines/advisor/stress";
+import { checkIn, saveTheRaise } from "../src/engines/advisor/checkins";
 import { createLoanComparison, loanDefaults, loanDemo, modeledLoanActivity } from "../src/api/loan";
 import { cardActivity, cardDemo, createCardReadiness, unansweredReadiness } from "../src/api/credit";
 import { createStressTest, shockDefaults, stressDefaults } from "../src/api/stress";

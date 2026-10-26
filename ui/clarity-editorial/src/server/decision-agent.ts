@@ -1,10 +1,10 @@
 // Gemini-backed decision guide. It speaks the same tool protocol as the scripted
-// guide (frontend/src/lib/chat/tools.ts): Gemini chooses tools, the browser runs
+// guide (src/engines/chat/tools.ts): Gemini chooses tools, the browser runs
 // them, and every projected number comes from the simulator, never the model.
-import { SCENARIOS } from "../../../../frontend/src/lib/sim/scenarios";
-import { CITIES } from "../../../../frontend/src/lib/sim/tax";
-import { TABLE_ROW_KEYS } from "../../../../frontend/src/lib/sim/summary";
-import type { AgentTurn, ChatItem, Session, ToolCall } from "../../../../frontend/src/lib/chat/types";
+import { SCENARIOS } from "../engines/sim/scenarios";
+import { CITIES } from "../engines/sim/tax";
+import { TABLE_ROW_KEYS } from "../engines/sim/summary";
+import type { AgentTurn, ChatItem, Session, ToolCall } from "../engines/chat/types";
 import { chat, type ProviderMessage, type ProviderToolCall, type ToolSchema } from "./gemini";
 import { retrieve, type Passage } from "./rag";
 

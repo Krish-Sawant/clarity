@@ -13,8 +13,3 @@ export const baselineQuestions = baselineBank.questions as Question[];
 export const checkpointQuestions = checkpointBank.questions as Question[];
 export const lessons = lessonContent.lessons as Lesson[];
 export const sources = sourceRegistry.sources as Source[];
-export const contentVersions = {
-  baseline: baselineBank.bank_version,
-  checkpoint: checkpointBank.bank_version,
-  lessons: lessonContent.content_version,
-};

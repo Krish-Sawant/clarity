@@ -1,6 +1,6 @@
 # Purchase Impact Preview
 
-Visit `/purchase-impact` in the frontend for the synthetic interactive demo.
+Used by the Purchase preview tab on `/before-you-commit` through `src/api/purchase.ts`.
 It supports manual before-purchase exploration and a detected posted-purchase
 example. The customer sees the tradeoff without a buy/don't-buy recommendation.
 
@@ -21,8 +21,8 @@ All amounts here use **USD dollars**, matching the advisor and generic simulator
 not the integer-cent contract of the separate root `finance.ts` module.
 
 ```ts
-import { detectLargePurchases } from '@/lib/advisor/engine';
-import { previewPurchase } from '@/lib/advisor/purchase';
+import { detectLargePurchases } from './engine';
+import { previewPurchase } from './purchase';
 
 const result = previewPurchase({
   label: 'TV', purchaseAmount: 1200,
@@ -64,11 +64,7 @@ separate integration work. Stable signal IDs support deduplication by the caller
 
 ## Verification
 
-From the repository root, on Node 22.13:
-
-```sh
-node --experimental-strip-types --test frontend/src/lib/advisor/purchase.test.ts frontend/src/lib/sim/sim.test.ts
-```
+From `ui/clarity-editorial`, `npm test` runs every engine test with the app's tests.
 
 Tests cover the $1200 example, posted balances, goal timing, zero/invalid amounts,
 shortfalls, horizon exhaustion, detector exclusions and threshold boundaries.

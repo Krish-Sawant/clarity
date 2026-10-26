@@ -61,12 +61,12 @@ answers. The Gemini key never reaches the browser.
 ### Tools Gemini can call
 
 Defined in `ui/clarity-editorial/src/server/decision-agent.ts`, run by
-`frontend/src/lib/chat/tools.ts`.
+`ui/clarity-editorial/src/engines/chat/tools.ts`.
 
 | Tool | What it does |
 | --- | --- |
 | `pick_scenario` | Starts a preset comparison; returns its fields and suggested follow-ups. |
-| `define_comparison` | Starts a custom comparison from two structured options (income, costs, one-time costs, debts, assets) and a list of assumptions. Validated and clamped in `frontend/src/lib/sim/custom.ts`. |
+| `define_comparison` | Starts a custom comparison from two structured options (income, costs, one-time costs, debts, assets) and a list of assumptions. Validated and clamped in `ui/clarity-editorial/src/engines/sim/custom.ts`. |
 | `set_inputs` | Changes inputs by field key (for answers and what-ifs). |
 | `ask_user` | Shows one question with answer choices and waits for the user. |
 | `run_simulation` | Runs the projection; returns the only projected numbers Gemini may quote. |
@@ -104,7 +104,7 @@ the Gemini settings to the **same** file the UI uses, `ui/clarity-editorial/.env
 
 ```sh
 GEMINI_API_KEY=your-key-from-aistudio.google.com
-GEMINI_MODEL=gemini-3.1-flash-lite
+GEMINI_MODEL=gemini-3.5-flash-lite
 ```
 
 Then `npm run dev`, sign in, and open http://127.0.0.1:3001/decisions.
@@ -172,8 +172,8 @@ and the guide cite the same pages. The Approach page still lists only those nine
 | Browser agent and fallback | `ui/clarity-editorial/src/api/decisions.ts` |
 | API route | `ui/clarity-editorial/src/app/api/decisions/chat/route.ts` |
 | Gemini client, retrieval, agent | `ui/clarity-editorial/src/server/gemini.ts`, `rag.ts`, `decision-agent.ts` |
-| Custom comparisons | `frontend/src/lib/sim/custom.ts` |
-| Simulator, tools, scripted guide | `frontend/src/lib/sim/`, `frontend/src/lib/chat/` |
+| Custom comparisons | `ui/clarity-editorial/src/engines/sim/custom.ts` |
+| Simulator, tools, scripted guide | `ui/clarity-editorial/src/engines/sim/`, `ui/clarity-editorial/src/engines/chat/` |
 
 ## Tests
 
@@ -181,7 +181,7 @@ and the guide cite the same pages. The Approach page still lists only those nine
 npm --prefix ui/clarity-editorial run typecheck
 npm --prefix ui/clarity-editorial run lint
 npm --prefix ui/clarity-editorial test     # includes tests/decision-agent.test.ts
-npm --prefix frontend test                 # includes src/lib/sim/custom.test.ts
+npm --prefix ui/clarity-editorial test     # includes src/engines/sim/custom.test.ts
 ```
 
 The unit tests cover the number, percentage and citation checks, thought-signature

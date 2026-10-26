@@ -11,7 +11,7 @@
     "start": "next start --hostname 127.0.0.1 --port 3001",
     "lint": "eslint src tests --max-warnings=0",
     "typecheck": "tsc --noEmit",
-    "test": "node --import tsx --test tests/*.test.ts",
+    "test": "node --import tsx --test tests/*.test.ts tests/*.test.mjs src/engines/*/*.test.ts",
     "test:browser": "playwright test",
     "rag:index": "node --env-file=.env.local scripts/build-rag-index.mjs"
   },

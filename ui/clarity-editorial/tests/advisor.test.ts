@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { detect, detectAdditionalMoments, plan } from "../../../frontend/src/lib/advisor/engine";
-import mergedDemo from "../../../frontend/src/lib/advisor/demo.json";
+import { detect, detectAdditionalMoments, plan } from "../src/engines/advisor/engine";
+import mergedDemo from "../src/engines/advisor/demo.json";
 import { advisorDemo, createAdvisorPlan, detectAdvisorSignals, getAdvisorSignals, getAdvisorCarouselSignals, type AdvisorMoment, type AdvisorPlanInputs } from "../src/api/advisor";
 import { advisorAdapter, backendService, branchIntegrationStatus } from "../src/api/services";
 

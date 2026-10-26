@@ -25,4 +25,4 @@ Stress: one signed recurring-change interval within 24 months, one cost at its s
 
 Zero expense change must be confirmed or stated by the user; missing amounts should remain null during clarification. All money in the proposal is USD dollars. Loan cents conversion occurs only inside the adapter.
 
-Tests: `node --experimental-strip-types --test src/lib/advisor/scenario-ai.test.ts` from frontend.
+Tests: `scenario-ai.test.ts`, run by `npm test` in `ui/clarity-editorial`.

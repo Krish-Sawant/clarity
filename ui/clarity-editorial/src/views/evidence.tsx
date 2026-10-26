@@ -2,11 +2,11 @@ import Link from "next/link";
 import { Icon } from "../components/icon";
 import type { RecordedPilot } from "../lib/evaluation-types";
 
-export function EvidenceView({ pilot, embedded = false }: { pilot: RecordedPilot; embedded?: boolean }) {
+/** Shown as a section beneath Our approach. */
+export function EvidenceView({ pilot }: { pilot: RecordedPilot }) {
   const difference = (pilot.conditions[1].rate - pilot.conditions[0].rate) * 100;
-  const Heading = embedded ? "h2" : "h1";
-  return <div className={`evidence-view${embedded ? " is-embedded" : ""}`} id={embedded ? "evidence" : undefined}>
-    <header className="view-header"><div><p className="eyebrow">METHODS / RECORDED EVIDENCE</p><Heading>Show the work.<br /><em>Keep the context.</em></Heading></div><div className="view-header__aside"><span className="tag">RECORDED PILOT</span><p>{pilot.date}<br /><code>{pilot.model}</code><br />Test tasks. Saved results.</p></div></header>
+  return <div className="evidence-view is-embedded" id="evidence">
+    <header className="view-header"><div><p className="eyebrow">METHODS / RECORDED EVIDENCE</p><h2>Show the work.<br /><em>Keep the context.</em></h2></div><div className="view-header__aside"><span className="tag">RECORDED PILOT</span><p>{pilot.date}<br /><code>{pilot.model}</code><br />Test tasks. Saved results.</p></div></header>
     <p className="inline-notice">These are recorded model-evaluation results. Changing an illustrative financial scenario does not change this pilot. The interactive UI and customer understanding were not evaluated in this study.</p>
     <section className="evidence-section" aria-labelledby="fact-checks-heading"><div className="section-heading"><div><p className="eyebrow">A SHARED TASK SET. A DIFFERENT TOOLKIT.</p><h2 id="fact-checks-heading">Required facts,<br />present and correct.</h2></div><p>The same model answered the same test tasks. Condition B could call the deterministic calculation engine.</p></div>
       <div className="evidence-conditions">{pilot.conditions.map((condition) => <article className="panel evidence-condition" key={condition.id} aria-label={`Condition ${condition.id}: ${condition.label}`}><p className="eyebrow">CONDITION {condition.id} / {condition.label}</p><strong className="evidence-score">{condition.passed}<small> / {condition.checks}</small></strong><span className="evidence-rate">{(condition.rate * 100).toFixed(1)}% of required checks passed</span><div className="evidence-track" role="meter" aria-label={`Condition ${condition.id} required-fact pass rate`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={condition.rate * 100}><span style={{ width: `${condition.rate * 100}%` }} /></div><dl className="evidence-breakdown"><div><dt>Tasks answered</dt><dd>{condition.answered} / {condition.tasks}</dd></div><div><dt>Incorrect supplied values</dt><dd>{condition.incorrect}</dd></div><div><dt>Missing required values</dt><dd>{condition.missing}</dd></div></dl></article>)}</div>

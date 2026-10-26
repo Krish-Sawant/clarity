@@ -1,6 +1,6 @@
 /** UI validation boundary around the merged loan-affordability comparison. */
-import type { Transaction } from "../../../../frontend/src/lib/advisor/engine";
-import { compareLoanAffordability, loanHeadline } from "../../../../frontend/src/lib/advisor/loan";
+import type { Transaction } from "../engines/advisor/engine";
+import { compareLoanAffordability, loanHeadline } from "../engines/advisor/loan";
 import { dollarAmount, record } from "./purchase";
 
 export type LoanComfortInput = { monthlyTakeHome: number; monthlySpending: number; monthlyLoanPayments: number; savings: number; aprPercent: number; termMonths: number; grossMonthly?: number };

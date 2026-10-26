@@ -1,5 +1,5 @@
 /** UI validation boundary around the merged raise and monthly check-in calculations. */
-import { checkIn, saveTheRaise, type MonthlyPlan } from "../../../../frontend/src/lib/advisor/checkins";
+import { checkIn, saveTheRaise, type MonthlyPlan } from "../engines/advisor/checkins";
 import { dollarAmount, record } from "./purchase";
 
 export type { MonthlyPlan };

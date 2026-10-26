@@ -1,11 +1,11 @@
 /** UI validation boundary around the merged purchase detector and simulator. */
-import { detectLargePurchases, type PurchaseSignal, type Transaction } from "../../../../frontend/src/lib/advisor/engine";
-import { previewPurchase, type PurchaseImpactInput } from "../../../../frontend/src/lib/advisor/purchase";
+import { detectLargePurchases, type PurchaseSignal, type Transaction } from "../engines/advisor/engine";
+import { previewPurchase, type PurchaseImpactInput } from "../engines/advisor/purchase";
 
 export type PurchasePreviewInput = PurchaseImpactInput;
 export type PurchasePreviewResult = ReturnType<typeof previewPurchase>;
 
-/** Same synthetic electronics transaction used by the merged frontend preview. */
+/** Same synthetic electronics transaction as the purchase engine's tests. */
 export const purchaseDemo = {
   label: "Electronics purchase",
   asOf: "2026-10-24",

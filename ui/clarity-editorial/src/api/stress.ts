@@ -1,5 +1,5 @@
 /** UI validation boundary around the merged stress-test simulator. */
-import { customStressTest, stressTest, STRESS_LABELS, type CustomShock, type StressEvent, type StressInput } from "../../../../frontend/src/lib/advisor/stress";
+import { customStressTest, stressTest, STRESS_LABELS, type CustomShock, type StressEvent, type StressInput } from "../engines/advisor/stress";
 import { dollarAmount, record } from "./purchase";
 
 export { STRESS_LABELS };

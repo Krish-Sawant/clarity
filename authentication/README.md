@@ -4,11 +4,10 @@ This folder owns shared Auth0 configuration and integration documentation. The e
 
 ```text
 authentication/config.ts → ui/clarity-editorial (Next.js login and session)
-frontend/src/lib         → ui/clarity-editorial (financial engines)
 ui /api/account         → BackEnd/api /api/me (verified Auth0 access token)
 ```
 
-`npm run dev` at the repository root starts the active UI at **http://127.0.0.1:3001**. `frontend/` contains the reusable calculation engines and an older standalone starter; its standalone server is not the authenticated application entry point.
+`npm run dev` at the repository root starts the UI at **http://127.0.0.1:3001**.
 
 ## Configure Auth0
 

@@ -1,10 +1,10 @@
 /**
  * UI boundary for the actual advisor engine merged into main. The calculation
- * and detection algorithms remain owned by frontend/src/lib/advisor/engine.ts.
+ * and detection algorithms remain owned by src/engines/advisor/engine.ts.
  * This adapter adds runtime validation and uses synthetic activity, not a bank.
  */
-import { detect, detectAdditionalMoments, plan, type Snapshot, type Transaction } from "../../../../frontend/src/lib/advisor/engine";
-import mergedDemo from "../../../../frontend/src/lib/advisor/demo.json";
+import { detect, detectAdditionalMoments, plan, type Snapshot, type Transaction } from "../engines/advisor/engine";
+import mergedDemo from "../engines/advisor/demo.json";
 import type { AdvisorMoment, AdvisorPlan, AdvisorPlanInputs, AdvisorSignal } from "./contracts";
 
 export type { AdvisorMoment, AdvisorPlan, AdvisorPlanInputs } from "./contracts";
@@ -55,7 +55,7 @@ function validateDataset(input: unknown): AdvisorDataset {
   return { label: typeof input.label === "string" ? input.label : "Supplied activity", asOf: input.asOf, transactions, snapshots };
 }
 
-/** Source fixture kept in frontend; no duplicate algorithm or fixture is copied. */
+/** Source fixture kept in src/engines; no duplicate algorithm or fixture is copied. */
 export const advisorDemo: AdvisorDataset = validateDataset(mergedDemo);
 
 export function detectAdvisorSignals(input: unknown): AdvisorSignal[] {

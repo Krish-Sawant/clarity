@@ -15,7 +15,7 @@ shared-simulator calculation contract, and interactive `/purchase-impact` demo.
 
 A reusable engine that detects possible life moments in financial activity and produces timely nudges with transparent planning calculations.
 
-[Clarity project overview](../../../../README.md)
+[Clarity project overview](../../../../../README.md)
 
 ## What this feature does
 
@@ -45,29 +45,21 @@ Transaction-based signals are limited to the month of the supplied `asOf` date. 
 | --- | --- |
 | [engine.ts](engine.ts) | Exported types, detection rules, and planning calculations |
 | [demo.json](demo.json) | Synthetic transaction history, balance snapshots, and a fixed as-of date |
-| [advisor.test.mjs](../../../tests/advisor.test.mjs) | Six automated tests for signals, boundaries, and planner validation |
-
-No additional dependencies are required beyond the existing frontend development dependencies.
+| [advisor-engine.test.mjs](../../../tests/advisor-engine.test.mjs) | Six automated tests for signals, boundaries, and planner validation |
 
 ## Run the tests
 
-From the repository root:
-
-```sh
-cd frontend
-npm ci
-node --test tests/advisor.test.mjs
-```
+From `ui/clarity-editorial`, `npm test` runs every engine test with the app's tests.
 
 The bundled demo produces all five signal kinds as of October 24, 2026. Tests cover repeat scans, input ordering, empty and pre-event histories, repeat employers and loan payments, the spending threshold, transfer exclusion, balance dips, and planner validation.
 
 ## Use the engine
 
-Inside the frontend TypeScript application:
+From a module in this folder:
 
 ```ts
-import { detect, plan } from '@/lib/advisor/engine';
-import demo from '@/lib/advisor/demo.json';
+import { detect, plan } from './engine';
+import demo from './demo.json';
 
 const nudges = detect(demo.transactions, demo.snapshots, demo.asOf);
 

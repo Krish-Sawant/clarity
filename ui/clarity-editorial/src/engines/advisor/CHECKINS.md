@@ -1,6 +1,6 @@
 # Save the Raise and Plan Check-Ins
 
-Demo route: `/plan-checkins` in frontend. Not integrated into the editorial UI yet.
+Used by plan check-ins on `/calculators` through `src/api/checkins.ts`.
 
 `saveTheRaise` compares monthly take-home totals and requires recurring-income confirmation. The default savings share is 50%, configurable from 0–100%. It never initiates transfers. The demo asks for approval before selecting a plan.
 

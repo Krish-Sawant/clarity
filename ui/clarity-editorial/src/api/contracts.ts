@@ -1,5 +1,5 @@
 import type { AssessmentStage, Horizon, Shock, SimulationInputs } from "../lib/types";
-import type { Moment, Nudge, plan } from "../../../../frontend/src/lib/advisor/engine";
+import type { Moment, Nudge, plan } from "../engines/advisor/engine";
 
 /** These are UI adapter contracts, NOT claims that HTTP routes currently exist. */
 export type BackendCapabilities = {

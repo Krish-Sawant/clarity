@@ -4,7 +4,7 @@ import path from "node:path";
 const nextConfig: NextConfig = {
   poweredByHeader: false,
   devIndicators: false,
-  // Reuse the reviewed advisor source on main without copying or editing it.
+  // The app imports the root finance.ts, so the build root is the repository root.
   turbopack: { root: path.resolve(__dirname, "../..") },
 };
 

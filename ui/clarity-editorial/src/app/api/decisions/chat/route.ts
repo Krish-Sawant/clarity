@@ -1,4 +1,4 @@
-import type { ChatItem, Session } from "../../../../../../../frontend/src/lib/chat/types";
+import type { ChatItem, Session } from "../../../../engines/chat/types";
 import { auth0 } from "../../../../lib/auth/server";
 import { decideTurn } from "../../../../server/decision-agent";
 import { GeminiError } from "../../../../server/gemini";

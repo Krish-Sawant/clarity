@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { detectLargePurchases } from "../../../frontend/src/lib/advisor/engine";
-import { previewPurchase } from "../../../frontend/src/lib/advisor/purchase";
+import { detectLargePurchases } from "../src/engines/advisor/engine";
+import { previewPurchase } from "../src/engines/advisor/purchase";
 import { createPurchasePreview, detectPurchaseSignals, getPurchaseSignals, purchaseDemo } from "../src/api/purchase";
 
 const input = { label: "TV", purchaseAmount: 1200, currentSavings: 3000, targetSavings: 6000, monthlyContribution: 600, timing: "planned" as const, horizonMonths: 120 };

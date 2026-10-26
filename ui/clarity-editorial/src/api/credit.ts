@@ -1,13 +1,13 @@
 /** UI validation boundary around the merged credit-card readiness comparison. */
-import type { Transaction } from "../../../../frontend/src/lib/advisor/engine";
-import { compareCardReadiness, detectCreditMoment, type Readiness } from "../../../../frontend/src/lib/advisor/credit";
-import { CREDIT_DEMO_AS_OF, CREDIT_DEMO_COVERAGE, CREDIT_DEMO_TRANSACTIONS } from "../../../../frontend/src/lib/advisor/credit-demo";
+import type { Transaction } from "../engines/advisor/engine";
+import { compareCardReadiness, detectCreditMoment, type Readiness } from "../engines/advisor/credit";
+import { CREDIT_DEMO_AS_OF, CREDIT_DEMO_COVERAGE, CREDIT_DEMO_TRANSACTIONS } from "../engines/advisor/credit-demo";
 import { record } from "./purchase";
 
 export type { Readiness };
 export type CardReadinessResult = ReturnType<typeof compareCardReadiness>;
 
-/** Same synthetic activity used by the merged frontend preview. */
+/** Same synthetic activity as the credit engine's fixture. */
 export const cardDemo = { asOf: CREDIT_DEMO_AS_OF, coveredFrom: CREDIT_DEMO_COVERAGE, transactions: CREDIT_DEMO_TRANSACTIONS };
 export const unansweredReadiness: Readiness = { repayment: "unknown", missedPayments: "unknown", historyConfirmed: "unknown" };
 const interestExample: Transaction = { id: "demo-interest-fee", date: CREDIT_DEMO_AS_OF, amount: -35, merchant: "Card interest charge", category: "credit_card_interest" };

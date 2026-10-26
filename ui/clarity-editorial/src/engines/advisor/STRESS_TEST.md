@@ -1,6 +1,6 @@
 # Stress test
 
-Run the frontend app and open `/stress-test`. This standalone demo is ready for later integration into `ui/clarity-editorial`; it is not yet connected to its navigation or customer data.
+Used by the stress test on `/future-lab` through `src/api/stress.ts`.
 
 Import `stressTest` and `STRESS_LABELS` from this directory. The function wraps the existing `sim/project.ts` engine. Inputs are USD dollars, with at most two decimals: available savings, monthly take-home income, total monthly expenses, and monthly rent already included in expenses. The optional horizon is 1–120 months (default 24).
 
@@ -12,7 +12,7 @@ Render baseline and stressed timelines on the same axes with an explicit zero li
 
 The page uses editable synthetic inputs. Production adapters must confirm account coverage and avoid double-counting rent, card repayments and underlying purchases. Preserve user inputs when switching scenarios; reset is explicit. No API key or live AI/RAG is needed.
 
-Tests: `node --experimental-strip-types --test src/lib/advisor/stress.test.ts` from `frontend`.
+Tests: `stress.test.ts`, run by `npm test` in `ui/clarity-editorial`.
 
 ## Custom scenarios
 

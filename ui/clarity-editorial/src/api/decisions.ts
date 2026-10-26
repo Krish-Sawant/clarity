@@ -1,15 +1,14 @@
 /** The merged scenario, projection and scripted-chat modules remain the source of truth. */
-import { SCENARIOS, CITY_OPTIONS, type Field, type Scenario, type Values } from "../../../../frontend/src/lib/sim/scenarios";
-import { compare } from "../../../../frontend/src/lib/sim/project";
-import { lookupScenario } from "../../../../frontend/src/lib/sim/custom";
-import { futureYouMessage } from "../../../../frontend/src/lib/sim/message";
-import { TABLE_ROW_KEYS, TABLE_ROWS, budgetRows, summarize, type TableRow, type TableRowKey } from "../../../../frontend/src/lib/sim/summary";
-import { runAgentLoop, type LoopEvent } from "../../../../frontend/src/lib/chat/loop";
-import { mockAgent } from "../../../../frontend/src/lib/chat/mockAgent";
-import type { Agent, AgentTurn, Block, ChartMetric, ChatItem, Session, Snapshot } from "../../../../frontend/src/lib/chat/types";
+import { CITY_OPTIONS, type Field, type Scenario, type Values } from "../engines/sim/scenarios";
+import { compare } from "../engines/sim/project";
+import { lookupScenario } from "../engines/sim/custom";
+import { futureYouMessage } from "../engines/sim/message";
+import { TABLE_ROW_KEYS, TABLE_ROWS, budgetRows, summarize, type TableRow, type TableRowKey } from "../engines/sim/summary";
+import { runAgentLoop, type LoopEvent } from "../engines/chat/loop";
+import { mockAgent } from "../engines/chat/mockAgent";
+import type { Agent, AgentTurn, Block, ChartMetric, ChatItem, Session, Snapshot } from "../engines/chat/types";
 
 export type { Block, ChartMetric, ChatItem, Field, LoopEvent, Scenario, Session, Snapshot, TableRowKey, Values };
-export const decisionScenarios = SCENARIOS;
 export const decisionCities = CITY_OPTIONS;
 
 export function getDecisionScenario(id: unknown): Scenario {
@@ -56,16 +55,6 @@ export function createDecisionSession(scenarioId: unknown, overrides: unknown = 
   const values: Values = {};
   for (const field of scenario.fields) values[field.key] = readDecisionField(field, input[field.key]);
   return { scenarioId: scenario.id, values, years: readYears(years ?? scenario.defaultYears) };
-}
-
-/** Source derive rules (such as city → typical rent) run only on deliberate edits. */
-export function updateDecisionSession(session: Session, key: string, raw: unknown): Session {
-  const current = createDecisionSession(session.scenarioId, session.values, session.years);
-  const scenario = getDecisionScenario(current.scenarioId);
-  const field = scenario.fields.find((item) => item.key === key);
-  if (!field) throw new Error("That input is not part of this comparison.");
-  const values = { ...current.values, [key]: readDecisionField(field, raw) };
-  return createDecisionSession(scenario.id, { ...values, ...scenario.derive?.(key, values) }, current.years);
 }
 
 export function getDecisionResult(snapshot: Snapshot | Session) {

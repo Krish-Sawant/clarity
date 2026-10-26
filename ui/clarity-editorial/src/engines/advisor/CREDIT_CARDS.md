@@ -1,8 +1,7 @@
 # Credit card readiness and rewards comparison
 
-Demo route in the **frontend app**: `/credit-cards`. This is not automatically
-installed in `ui/clarity-editorial`; import the reusable module there through an
-adapter when integrating. The frontend homepage links to the demo.
+Used by the Card readiness tab on `/before-you-commit?tab=card` through
+`src/api/credit.ts`.
 
 ## Product behavior
 
@@ -27,10 +26,9 @@ adapter when integrating. The frontend homepage links to the demo.
 | `credit.ts` / `detectCreditMoment` | Reuses `engine.ts` new-job detection and supports first payroll observed in supplied history |
 | `credit-demo.ts` | Fictional fixture, as-of date and coverage start |
 | `credit.test.ts` | Arithmetic, gating, history, refund, cap and moment tests |
-| `app/credit-cards/preview.tsx` | Interactive demo; accepts transactions, asOf and coveredFrom props |
 
 ```ts
-import { compareCardReadiness, detectCreditMoment } from '@/lib/advisor/credit';
+import { compareCardReadiness, detectCreditMoment } from './credit';
 const result = compareCardReadiness(transactions, '2026-10-24', '2026-07-01', {
   repayment: 'full', // full | carry | first-card | unknown
   missedPayments: 'no', // yes | no | unknown
@@ -108,13 +106,7 @@ New products require verified issuer terms and a separate approved catalog.
 
 ## Run
 
-From `frontend`:
-
-```sh
-node --experimental-strip-types --test src/lib/advisor/credit.test.ts
-npm run dev
-```
-
-Open `/credit-cards` on the printed port. Choose full repayment, no missed
+From `ui/clarity-editorial`, run `npm test`, then `npm run dev` and open
+`/before-you-commit?tab=card`. Choose full repayment, no missed
 payments, and representative history to compare. Choose carried balance or
 toggle the interest-charge example to demonstrate “not yet.”

@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { allowedNumbers, inputProblems, keepKnownCitations, toProviderMessages, toToolCall, unverifiedAmounts } from "../src/server/decision-agent";
-import type { ChatItem, Session, ToolCall } from "../../../frontend/src/lib/chat/types";
+import type { ChatItem, Session, ToolCall } from "../src/engines/chat/types";
 
 const history: ChatItem[] = [
   { role: "user", text: "Lease at $350/mo or buy used for $15,000?" },

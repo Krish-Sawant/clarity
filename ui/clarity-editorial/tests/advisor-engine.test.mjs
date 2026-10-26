@@ -3,9 +3,9 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import ts from 'typescript';
 const moduleShim = { exports: {} };
-new Function('exports', ts.transpileModule(fs.readFileSync('src/lib/advisor/engine.ts','utf8'), {compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText)(moduleShim.exports);
+new Function('exports', ts.transpileModule(fs.readFileSync('src/engines/advisor/engine.ts','utf8'), {compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022}}).outputText)(moduleShim.exports);
 const {detect,plan} = moduleShim.exports;
-const demo = JSON.parse(fs.readFileSync('src/lib/advisor/demo.json', 'utf8'));
+const demo = JSON.parse(fs.readFileSync('src/engines/advisor/demo.json', 'utf8'));
 test('demo fires all five distinct moments, independent of input order',()=>{
  const hits=detect(demo.transactions,demo.snapshots,demo.asOf);
  assert.equal(hits.length,5);
